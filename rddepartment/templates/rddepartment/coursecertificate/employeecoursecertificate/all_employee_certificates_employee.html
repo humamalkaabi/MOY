@@ -1,0 +1,81 @@
+{% extends 'core/base.html' %}
+
+{% block title %}الشهادات التدريبية الخاصة بـ {{ employee.get_full_name }}{% endblock %}
+
+{% block content %}
+<h2>الشهادات التدريبية الخاصة بـ {{ employee.get_full_name }}</h2>
+
+{% if certificates %}
+<table class="custom-table">
+
+        <thead>
+            <tr>
+                <th>نوع الشهادة</th>
+                <th>اسم المؤسسة المانحة</th>
+                <th>تاريخ الإصدار</th>
+                <th>مدة الدورة</th>
+                <th>ملف الشهادة</th>
+             
+            </tr>
+        </thead>
+        <tbody>
+            {% for certificate in certificates %}
+            <tr>
+                <td>{{ certificate.coursecertificatetype.name_in_arabic }}</td>
+                <td>{{ certificate.name_of_the_institution.name_in_arabic }}</td>
+                <td>{{ certificate.date_issued }}</td>
+                <td>{{ certificate.course_duration }}</td>
+                <td>
+                    {% if certificate.certificate_file %}
+                        <a href="{{ certificate.certificate_file.url }}" target="_blank">عرض</a>
+                    {% else %}
+                        لا يوجد
+                    {% endif %}
+                </td>
+               
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>لا توجد شهادات تدريبية لهذا الموظف.</p>
+{% endif %}
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">عدد نتائج البحث : {{ certificates_count }}</label>
+
+<div class="search-container">
+    <form method="get" action="">
+        <div class="grid-item input-container">
+            <select name="certificate_type">
+                <option value="">اختر نوع الشهادة</option>
+                {% for type in certificate_types %}
+                    <option value="{{ type.id }}" {% if request.GET.certificate_type == type.id|stringformat:"s" %}selected{% endif %}>
+                        {{ type.name_in_arabic }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <br>
+        <button type="submit" class="leftsidemenu-button">بحث</button>
+    </form>
+</div>
+{% endblock %}
+
+
+
+{% block sidemenu %}
+
+
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+   
+    
+</div>
+
+
+
+{% endblock %}

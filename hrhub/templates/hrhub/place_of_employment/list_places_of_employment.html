@@ -1,0 +1,81 @@
+{% extends 'core/base.html' %}
+
+{% block title %}قائمة الأماكن{% endblock %}
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:list_places_of_employment' %}" class="custom-button">  اماكن التنسيب       </a>
+    <a href="{% url 'hrhub:add_place_of_employment' %}" class="custom-button">إضافة مكان عمل جديد</a>
+    <a href="{% url 'hrhub:upload_place_of_employment_csv' %}" class="custom-button">رفع ملف CSV   </a>
+
+
+
+    
+</div>
+{% endblock %}
+
+{% block content %}
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>عنوان المؤسسة</th>
+            <th>الوصف</th>
+            <th>تفاصيل</th>
+            <th>تحديث</th>
+            <th>حذف</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for place in places_of_employment %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ place.name_in_arabic }}</td>
+            <td>{{ place.description }}</td>
+            
+            <td>
+                {% if place.slug %}
+                <a href="{% url 'hrhub:list_children_of_employment' parent_slug=place.slug %}">عرض المحتوى</a>
+            {% endif %}
+            
+
+               </td>
+            <td>
+                {% if place.slug %}
+    <td><a href="{% url 'hrhub:update_place_of_employment' slug=place.slug %}">تحديث</a></td>
+{% else %}
+    <td>لا يوجد معرف</td>
+{% endif %}
+
+       
+            
+            </td>
+            <td>
+                
+                {% if place.slug %}
+                <td><a href="{% url 'hrhub:delete_place_of_employment' slug=place.slug %}" onclick="return confirm('هل أنت متأكد من حذف هذا المكان؟');">حذف</a></td>
+            {% else %}
+                <td>لا يوجد معرف</td>
+            {% endif %}
+                        
+            
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">لا توجد أماكن مسجلة حالياً.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

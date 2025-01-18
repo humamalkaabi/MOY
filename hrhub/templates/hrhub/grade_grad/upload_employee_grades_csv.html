@@ -1,0 +1,37 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+    <form method="post" enctype="multipart/form-data" class="border p-4 rounded">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            <label for="csv_file" class="form-label">تحميل ملف CSV:</label>
+            {{ form.csv_file }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">رفع الملف</button>
+    </form>
+
+
+    {% endblock %}
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:main_employee_grade_step' %}" class="custom-button">  الترفيعات والعلاوات        </a> 
+     <a href="{% url 'hrhub:main_employee_grade' %}" class="custom-button">  صفحة الدرجات الوظيفية      </a>
+    <a href="{% url 'hrhub:employee_grade_create' %}" class="custom-button">  اضافة درجة وظيفية    </a> 
+    <a href="{% url 'hrhub:upload_employee_grades_csv' %}" class="custom-button">   رفع CSV     </a>
+
+    
+</div>
+{% endblock %}
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

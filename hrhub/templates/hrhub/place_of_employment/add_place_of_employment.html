@@ -1,0 +1,20 @@
+{% extends 'core/base.html' %}
+
+{% block title %}إضافة مكان عمل{% endblock %}
+
+{% block titlesidemenu %}
+<h2 style="color: #fff;">مرحبا، {{ user.username }}</h2>
+{% endblock %}
+
+{% block sidemenu %}
+<p><a href="{% url 'hrhub:list_places_of_employment' %}" class="button">عودة إلى قائمة الأماكن</a></p>
+{% endblock %}
+
+{% block content %}
+<h2>إضافة مكان عمل جديد</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">حفظ</button>
+</form>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends 'core/base.html' %}
+
+{% block title %}سجلات الغياب{% endblock %}
+
+
+{% block content %}
+<h2>سجلات الغياب للموظف: {{ employee.get_full_name }}</h2>
+
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>نوع الغياب</th>
+            <th>رقم السجل</th>
+            <th>تاريخ الغياب</th>
+            <th>الفترة</th>
+            <th>ملاحظات</th>
+            <th>ملف PDF</th>
+           
+        </tr>
+    </thead>
+    <tbody>
+        {% for absence in absences %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ absence.absence_type.absence_name }}</td>
+            <td>{{ absence.absence_number }}</td>
+            <td>{{ absence.date_issued }}</td>
+            <td>
+                من: {{ absence.start_date }} <br>
+                إلى: {{ absence.end_date }}
+            </td>
+            <td>{{ absence.comments|default:"-" }}</td>
+            <td>
+                {% if absence.pdf_file %}
+                <a href="{{ absence.pdf_file.url }}" target="_blank">عرض الملف</a>
+                {% else %}
+                لا يوجد
+                {% endif %}
+            </td>
+           
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="8">لا توجد سجلات غياب.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">عدد سجلات الغياب: {{ absences_count }}</label>
+
+<div class="search-container">
+    <form method="get" action="">
+        <div class="grid-item input-container">
+            <select name="absence_type">
+                <option value="">اختر نوع الغياب</option>
+                {% for absence_type in absence_types %}
+                    <option value="{{ absence_type.id }}" {% if request.GET.absence_type == absence_type.id|stringformat:"s" %}selected{% endif %}>
+                        {{ absence_type.absence_name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <br>
+        <button type="submit" class="leftsidemenu-button">بحث</button>
+    </form>
+</div>
+{% endblock %}
+
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+   
+
+    
+</div>
+{% endblock %}

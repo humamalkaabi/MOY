@@ -1,0 +1,46 @@
+
+
+{% extends 'core/base.html' %}
+
+{% block title %} مقدم الطلب      {% endblock %}
+
+
+
+
+
+
+{% block content %}
+<div class="container">
+    <h2>تقديم طلب جديد لـ {{ requester.user.username }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="update_button">إرسال الطلب</button>
+    </form>
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+{% block sidemenu %}
+
+
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    
+</div>
+
+
+
+{% endblock %}
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+
+

@@ -1,0 +1,90 @@
+{% extends 'core/base.html' %}
+
+{% block title %}الصفحة الرئيسية للدراسات والبحث والتطوير   {% endblock %}
+
+
+
+
+
+
+{% block sidemenu %}
+
+
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'rddepartment:main_rddepartment' %}" class="custom-button">   الشهادات والتطوير     </a>
+    <a href="{% url 'rddepartment:mainemployeecoursecertificate' %}" class="custom-button">   الشهادات غير الاكاديمية     </a>
+    <a href="{% url 'rddepartment:add_coursecertificatetype' %}" class="custom-button">  اضافة  نوع الشهادة    </a>
+    
+    
+</div>
+
+
+
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+
+
+
+
+
+
+
+{% block content %}
+
+
+<h2>قائمة انواع الشهادات المتوفرة بالنظام</h2>
+
+
+<table class="custom-table">
+
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>نوع الشهادة</th>
+            <th>مدخل البيانات </th>
+            <th> لديها تاثير اداري </th>
+            <th>تفاصيل البيانات </th>
+            <th>تحديث البيانات </th>
+            <th>حذف البيانات </th>
+           
+        </tr>
+    </thead>
+    <tbody>
+        {% for coursecertificatetype in coursecertificatetypes %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ coursecertificatetype.name_in_arabic }}</td>
+            
+            <td>{{ coursecertificatetype.created_by }}
+                <td>{% if coursecertificatetype.is_approved %}نعم{% else %}كلا{% endif %}</td>
+
+            </td>
+          
+             <td> 
+                <a href="{% url 'rddepartment:coursecertificatetype_detail' slug=coursecertificatetype.slug %}" class="update_button">  التفاصيل </a>  
+            
+            </td> 
+
+            
+        <td> <a href="{% url 'rddepartment:update_coursecertificatetype' coursecertificatetype.slug %}" class="update_button">تحديث</a>
+            </td> 
+
+        <td> <a href="{% url 'rddepartment:delete_coursecertificatetype' coursecertificatetype.slug %}" class = "delete_button" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا النوع من الشهادة؟')">حذف</a>
+            </td> 
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="10">لا توجد بيانات مسجلة حالياً.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}

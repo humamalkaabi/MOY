@@ -1,0 +1,78 @@
+{% extends 'core/base.html' %}
+
+{% block title %}تفاصيل التنسيب{% endblock %}
+
+{% block content %}
+    
+    <table class="custom-table">
+        <thead>
+            <tr>
+                <th>رقم الأمر الصادر</th>
+                <th>نوع التنسيب</th>
+                <th>مكان التنسيب</th>
+                <th>تاريخ البداية</th>
+                <th>تاريخ النهاية</th>
+             
+                <th>ملف PDF</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for placement in placements %}
+            <tr>
+                <td>{{ placement.name }}</td>
+                <td>{{ placement.get_placement_type_display }}</td>
+                <td>{{ placement.place_of_placement.name_in_arabic }}</td>
+                <td>{{ placement.start_date }}</td>
+                <td>{{ placement.end_date }}</td>
+              
+                <td>
+                    {% if placement.pdf_file %}
+                        <a href="{{ placement.pdf_file.url }}">عرض الملف</a>
+                    {% else %}
+                        لا يوجد ملف PDF
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="10">لا توجد تنسيبات لهذا الموظف.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">عدد سجلات التنسيب: {{ placements_count }}</label>
+
+<div class="search-container">
+    <form method="get" action="">
+        <div class="grid-item input-container">
+            <select name="placement_type">
+                <option value="">اختر نوع التنسيب</option>
+                {% for value, label in PLACEMENT_CHOICES %}
+                    <option value="{{ value }}" {% if request.GET.placement_type == value %}selected{% endif %}>
+                        {{ label }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <br>
+        <button type="submit" class="leftsidemenu-button">بحث</button>
+    </form>
+</div>
+{% endblock %}
+
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+   
+
+
+</div>
+{% endblock %}
+
+

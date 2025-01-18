@@ -1,0 +1,59 @@
+{% extends 'core/base.html' %}
+
+
+{% block title %}
+
+{% endblock %}
+
+
+
+
+
+
+
+{% block sidemenu %}
+
+
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'personalinfo:main_personalinfo' %}" class="custom-button"> ادارة المعلومات الشخصية     </a>
+    <a href="{% url 'personalinfo:main_nationalism' %}" class="custom-button">   صفحة القوميات الرئيسية     </a>
+
+    {% if perms.personalinfo.can_create_nationalism %}
+    <a href="{% url 'personalinfo:add_nationalism' %}"class="custom-button">إضافة قومية</a>
+    {%  else %}
+    لا تمتلك الصلاحية
+    {% endif %}
+    <a href="{% url 'personalinfo:export_nationalism_csv' %}" class="custom-button"> تصدير CSV       </a>
+
+
+    
+
+</div>
+
+{% endblock %}
+
+
+{% block titlecontent %}
+
+{% endblock %} 
+
+{% block content %}
+
+
+<h2>تحديث القومية: {{ religion.name_in_arabic }}</h2>
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="update_button">تحديث</button>
+  </form>
+
+{% endblock %}
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">   محدث البيانات: {{ created_by }}</label>
+
+{% endblock %}

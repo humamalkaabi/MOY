@@ -1,0 +1,977 @@
+body {
+    margin: 0;
+    font-family: 'Cairo', sans-serif;
+    background: linear-gradient(to bottom, #F5F9FF, #DDEAF7);
+    color: #2C3E50;
+    line-height: 1.6;
+    direction: rtl; /* تحديد اتجاه النصوص من اليمين إلى اليسار */
+text-align: right; 
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(90deg, #4267B2, #5DADE2);
+    color: #FFFFFF;
+    padding: 1rem 6rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sections {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* يجعل العناصر تصطف في الأعلى بناءً على محتواها */
+    gap: 1rem;
+    padding: 2rem 6rem;
+}
+
+
+.section {
+    background: #FFFFFF;
+    border: 1px solid #BFD3E6;
+    border-radius: 10px;
+    padding: 1.5rem;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    flex: none; /* إزالة التأثير التلقائي لتكبير القسم */
+}
+
+.section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.section:first-child {
+    flex: 0.6; /* الحجم الافتراضي للقسم الأول */
+}
+
+.section:nth-child(2) {
+    flex: 2.4; /* تكبير القسم الثاني */
+}
+
+.section:last-child {
+    flex: 0.7; /* تصغير القسم الثالث */
+}
+
+footer {
+    text-align: center;
+    background: linear-gradient(90deg, #5DADE2, #4267B2);
+    color: #FFFFFF;
+    padding: 1rem;
+    margin-top: 2rem;
+    box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logo img {
+    max-height: 60px;
+}
+
+.project-name {
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.main_searchbar {
+    height: 140px;
+    background: linear-gradient(to right, #EAF2F8, #D6EAF8);
+    border: 1px solid #BFD3E6;
+    border-bottom: 2px solid #5DADE2;
+    margin: auto; /* مركز الشريط أفقياً */
+    border-radius: 8px;
+    display: flex;
+    justify-content: center; /* توسيط المحتوى أفقيًا */
+    align-items: center; /* توسيط المحتوى عموديًا */
+    padding: 0.5rem;
+    overflow: hidden;
+    position: relative; /* لضمان التحكم بالتمركز */
+}
+
+
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 0.5rem;
+    width: 95%;
+    height: 90%;
+    box-sizing: border-box;
+}
+
+.grid-item {
+    background: #FFFFFF;
+    border: 1px solid #BFD3E6;
+    border-radius: 8px;
+    text-align: center;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+.input-container select {
+    width: 100%; /* اجعل عرض العنصر يملأ الحاوية بالكامل */
+    height: 100%; /* اجعل ارتفاع العنصر يملأ الحاوية بالكامل */
+    box-sizing: border-box; /* تضمين الحواف والمسافات الداخلية ضمن الحجم الكلي */
+}
+
+
+.grid-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+.bento-button p {
+    color: rgba(255, 255, 255, 0.9); /* لون أبيض ناعم مع شفافية */
+}
+
+.contact-link, .login-link {
+    color: rgba(255, 255, 255, 0.9); /* لون الروابط بنفس اللون الأبيض الناعم */
+    text-decoration: none; /* إزالة الخط السفلي */
+    font-weight: 500;
+    transition: color 0.3s ease; /* تأثير ناعم عند التمرير */
+}
+
+.contact-link:hover, .login-link:hover {
+    color: #FFFFFF; /* لون أبيض نقي عند التمرير */
+    text-decoration: underline; /* إضافة خط سفلي عند التمرير */
+}
+
+.pagination-container {
+    height: 50px; /* نفس ارتفاع الفوتر */
+    width: 30%; /* عرض القسم */
+    background: linear-gradient(90deg, #EAF2F8, #D6EAF8);
+    border-top: 1px solid #BFD3E6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    margin: 1rem auto; /* توسيط القسم مبدئيًا */
+    transform: translateX(5%); /* تزحيف القسم 10% إلى اليسار */
+    border-radius: 8px;
+}
+
+
+.pagination-info {
+    font-size: 0.9rem;
+    color: #2C3E50;
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.pagination-controls button {
+    background: #5DADE2;
+    color: #FFFFFF;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.pagination-controls button:hover {
+    background: #4267B2;
+}
+
+.pagination-controls span {
+    font-size: 0.9rem;
+    color: #2C3E50;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem; /* المسافة بين الأزرار */
+    margin-top: 1rem; /* مسافة من أعلى النص */
+}
+
+.custom-button {
+    background: linear-gradient(90deg, #5DADE2, #4267B2);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 6px;
+    padding: 0.7rem 1.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%; /* جعل الأزرار بحجم متناسق داخل حدود القسم */
+    max-width: 200px; /* تحديد عرض أقصى */
+}
+
+.custom-button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(90deg, #4267B2, #5DADE2);
+}
+
+.result-label {
+    display: inline-block;
+    background: rgba(178, 245, 246, 0.94); /* لون خلفي شفاف */
+    color: #2C3E50; /* لون النص غامق */
+    padding: 0.5rem 1rem; /* مساحة داخلية */
+    border-radius: 8px; /* حواف مستديرة */
+    font-weight: bold; /* جعل النص غامق */
+    font-size: 1rem; /* حجم النص */
+    box-shadow: 0 2px 4px rgba(98, 166, 218, 0.57); /* ظل خفيف */
+    margin: 1rem 0; /* مسافة حول العنصر */
+}
+
+.main_searchbar button {
+    background: rgba(178, 245, 246, 0.94); /* نفس لون result-label */
+    color: #2C3E50; /* نفس لون النص في result-label */
+    border: 1px solid #BFD3E6; /* نفس تنسيق الحدود */
+    border-radius: 8px; /* حواف مستديرة لتطابق التصميم */
+    padding: 0.5rem; /* نفس التباعد الداخلي */
+    font-size: 0.9rem; /* نفس حجم النص */
+    text-align: center; /* محاذاة النص إلى المنتصف */
+    width: 100%; /* يشغل عرض الشبكة */
+    height: 100%; /* يشغل ارتفاع الشبكة */
+    box-shadow: 0 2px 4px rgba(98, 166, 218, 0.57); /* ظل خفيف */
+    transition: box-shadow 0.3s ease, transform 0.3s ease; /* تأثيرات عند التمرير */
+    cursor: pointer; /* إضافة المؤشر */
+}
+
+.main_searchbar button:hover {
+    transform: translateY(-5px); /* رفع الزر عند التمرير */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* زيادة الظل */
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse; /* إزالة المسافات بين الخلايا */
+    margin-top: 1rem; /* مسافة أعلى الجدول */
+}
+
+th, td {
+    border: 1px solid #BFD3E6; /* إضافة حدود للخلايا */
+    text-align: center; /* توسيط النصوص */
+    padding: 0.5rem; /* مسافة داخلية للخلايا */
+}
+
+th {
+    background: rgba(178, 245, 246, 0.94); /* نفس لون result-label */
+    color: #2C3E50; /* لون النص في رؤوس الأعمدة */
+    font-weight: bold; /* جعل النص غامق */
+}
+
+tr:nth-child(even) {
+    background: #F9F9F9; /* لون خلفي مختلف للصفوف الزوجية */
+}
+
+tr:hover {
+    background: #EAF6FF; /* لون عند التمرير */
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column; /* ترتيب العناصر عموديًا */
+    justify-content: center; /* محاذاة العمودي */
+    align-items: center; /* محاذاة الأفقي */
+    height: 100%; /* تطابق ارتفاع العنصر مع الشبكة */
+    width: 100%; /* تطابق عرض العنصر مع الشبكة */
+    box-sizing: border-box; /* تضمين الحواف ضمن الحجم */
+}
+
+.input-container label {
+    display: block; /* عرض النص ككتلة */
+    text-align: center; /* توسيط النص */
+    margin-bottom: 0.5rem; /* مسافة بين النص وحقل الإدخال */
+    font-size: 0.9rem; /* حجم النص */
+    color: #2C3E50; /* لون النص */
+}
+
+.input-container input {
+    width: 100%; /* عرض الإدخال مطابق لعرض العنصر */
+    height: 100%; /* ارتفاع الإدخال مطابق لارتفاع العنصر */
+    box-sizing: border-box; /* تضمين الحواف ضمن الحجم */
+    border: 1px solid #BFD3E6; /* حدود الإدخال */
+    border-radius: 4px; /* حواف مستديرة */
+    text-align: center; /* محاذاة النص داخل الإدخال */
+    padding: 0.3rem; /* مسافة داخلية */
+    font-size: 0.9rem; /* حجم النص */
+    transition: box-shadow 0.3s ease, transform 0.3s ease; /* تأثير عند التفاعل */
+}
+
+.input-container input:focus {
+    outline: none; /* إزالة التأثير الافتراضي عند التحديد */
+    box-shadow: 0 0 5px #5DADE2; /* إضافة تأثير ظل عند التحديد */
+    border-color: #5DADE2; /* تغيير لون الحدود عند التحديد */
+}
+
+.search-container {
+    display: flex;
+    flex-direction: column; /* ترتيب العناصر عموديًا */
+    gap: 1rem; /* إضافة مسافة بين العناصر */
+    margin-top: 1rem; /* مسافة علوية من النص */
+}
+
+.search-container label {
+    font-size: 0.9rem; /* حجم النص */
+    color: #2C3E50; /* لون النص */
+    margin-bottom: 0.5rem; /* مسافة سفلية */
+}
+
+.search-container select {
+    width: 100%; /* عرض كامل داخل القسم */
+    padding: 0.5rem; /* مساحة داخلية */
+    border: 1px solid #BFD3E6; /* حدود العناصر */
+    border-radius: 4px; /* حواف مستديرة */
+    background: #FFFFFF; /* خلفية بيضاء */
+    font-size: 1rem; /* حجم النص داخل القائمة */
+    box-sizing: border-box; /* ضمان احتساب الحواف ضمن الحجم */
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.search-container select:focus {
+    outline: none; /* إزالة الخط الخارجي الافتراضي */
+    box-shadow: 0 0 5px #5DADE2; /* تأثير الظل عند التحديد */
+    border-color: #5DADE2; /* تغيير لون الحدود */
+}
+
+@media (max-width: 768px) {
+    header {
+        flex-direction: column; /* جعل العناصر في الهيدر عمودية */
+        align-items: center; /* توسيط العناصر */
+    }
+
+    .main_searchbar {
+        margin: 1rem; /* تقليل المسافة الجانبية */
+    }
+
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr); /* عرض عمودين في الشبكة */
+    }
+
+    .sections {
+        padding: 1rem; /* تقليل الحواف */
+        flex-direction: column; /* جعل الأقسام عمودية */
+    }
+}
+
+@media (max-width: 480px) {
+    .grid-container {
+        grid-template-columns: 1fr; /* جعل الشبكة في عمود واحد */
+    }
+
+    .pagination-container {
+        flex-direction: column; /* ترتيب أزرار التنقل عمودياً */
+        gap: 0.5rem; /* إضافة مسافة بين الأزرار */
+    }
+
+    header .project-name {
+        font-size: 1.4rem; /* تقليل حجم النص في الهواتف الصغيرة */
+    }
+}
+.pagination-form {
+    display: inline-block; /* لجعل النموذج جزءًا من النص */
+    margin-left: 0.5rem; /* مسافة صغيرة بين النص وحقل الإدخال */
+}
+
+.pagination-input {
+    width: 60px; /* عرض الحقل */
+    padding: 0.3rem; /* مسافة داخلية */
+    border: 1px solid #BFD3E6; /* حدود الإدخال */
+    border-radius: 4px; /* حواف مستديرة */
+    text-align: center; /* توسيط النص داخل الإدخال */
+    font-size: 0.9rem; /* حجم النص */
+    transition: box-shadow 0.3s ease, transform 0.3s ease; /* تأثير عند التفاعل */
+}
+
+.pagination-input:focus {
+    outline: none; /* إزالة التأثير الافتراضي عند التحديد */
+    box-shadow: 0 0 5px #5DADE2; /* إضافة تأثير ظل عند التحديد */
+    border-color: #5DADE2; /* تغيير لون الحدود عند التحديد */
+}
+
+
+.pagination-button {
+    background: #5DADE2;
+    color: #FFFFFF;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    text-decoration: none;
+    text-align: center;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin: 0 5px;
+}
+
+.pagination-button:hover {
+    background: #4267B2;
+}
+
+
+
+
+
+
+
+.form-container {
+    width: 80%;
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #ffffff;
+    border: 1px solid #bfd3e6;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-title {
+    text-align: center;
+    font-size: 1.8rem;
+    color: #4267b2;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    font-size: 1rem;
+    color: #5dade2;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.form-group input, 
+.form-group select, 
+.form-group textarea {
+    padding: 0.8rem;
+    font-size: 1rem;
+    color: #2c3e50;
+    border: 1px solid #bfd3e6;
+    border-radius: 5px;
+    background: #eaf2f8;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form-group input:focus, 
+.form-group select:focus, 
+.form-group textarea:focus {
+    outline: none;
+    border-color: #5dade2;
+    box-shadow: 0 0 5px rgba(93, 173, 226, 0.5);
+}
+
+.help-text {
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    margin-top: 0.3rem;
+}
+
+.error-text {
+    font-size: 0.85rem;
+    color: #e74c3c;
+    margin-top: 0.3rem;
+}
+
+.btn-submit {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.2rem;
+    color: #ffffff;
+    background: linear-gradient(90deg, #5dade2, #4267b2);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+}
+
+.btn-submit:hover {
+    background: linear-gradient(90deg, #4267b2, #5dade2);
+    transform: translateY(-3px);
+}
+
+
+
+.info-container {
+    background: none; /* إزالة الخلفية */
+    border: none; /* إزالة الحدود */
+    border-radius: 0; /* إزالة الحواف المستديرة */
+    padding: 1rem 6rem; /* تقليل المسافة الداخلية */
+    margin: 0; /* إزالة المسافة الخارجية */
+    line-height: 1.8; /* تحسين تباعد النصوص */
+    color: #2c3e50; /* لون النص الرئيسي */
+}
+
+.info-container p {
+    margin: 0.5rem 0; /* تقليل المسافات بين الفقرات */
+    font-size: 1rem; /* حجم النص */
+    color: #2c3e50; /* لون النص */
+}
+
+.info-container p strong {
+    color: #4267b2; /* لون مميز للعناوين */
+    font-weight: bold; /* جعل النص غامق */
+}
+
+.info-container p:nth-child(odd) {
+    background: none; /* إزالة الخلفية عن الصفوف الفردية */
+    padding: 0; /* إزالة المسافات الداخلية */
+    border-radius: 0; /* إزالة الحواف المستديرة */
+}
+
+
+.info-container p:hover {
+    color: #5DADE2; /* تغيير لون النص عند التمرير */
+    transition: color 0.3s ease; /* تأثير ناعم */
+}
+
+
+
+
+.custom-button {
+    display: inline-block;
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #007bff;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.custom-button:hover {
+    background-color: #0056b3;
+}
+
+
+
+
+
+/* تنسيق الحاوية */
+.button-group {
+    display: flex; /* ترتيب الزرين بجانب بعضهما */
+    gap: 1rem; /* مسافة بين الزرين */
+    justify-content: center; /* توسيط الزرين داخل الحاوية */
+    align-items: center; /* محاذاة عمودية */
+}
+
+/* تنسيق زر التحديث */
+.update_button {
+    display: inline-block;
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #5DADE2;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+.update_button:hover {
+    background-color: #4267B2;
+}
+
+/* تنسيق زر الحذف */
+.delete_button {
+    display: inline-block;
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #E74C3C; /* لون أحمر متناسق */
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+.delete_button:hover {
+    background-color: #C0392B; /* لون أغمق عند التمرير */
+}
+
+
+
+.details-button {
+    display: inline-block;
+    padding: 10px 20px;
+    color: #FFFFFF; /* لون النص أبيض */
+    background: linear-gradient(90deg, #5DADE2, #4267B2); /* خلفية متدرجة تتناسب مع ألوان الصفحة */
+    text-align: center;
+    text-decoration: none; /* إزالة الخط السفلي */
+    border-radius: 5px; /* حواف مستديرة */
+    transition: background 0.3s ease, transform 0.3s ease; /* تأثيرات عند التفاعل */
+    font-size: 14px; /* حجم النص */
+    font-weight: bold; /* جعل النص غامق */
+}
+
+.details-button:hover {
+    background: linear-gradient(90deg, #4267B2, #5DADE2); /* تبديل الألوان عند التمرير */
+    transform: translateY(-3px); /* رفع الزر قليلاً */
+}
+
+
+.leftsidemenu-button {
+    background: rgba(178, 245, 246, 0.94); /* نفس لون result-label */
+    color: #2C3E50; /* نفس لون النص */
+    border: 1px solid #BFD3E6; /* نفس الحدود */
+    border-radius: 8px; /* نفس الحواف المستديرة */
+    padding: 0.5rem; /* نفس المسافة الداخلية */
+    font-size: 0.9rem; /* نفس حجم النص */
+    text-align: center; /* محاذاة النص */
+    width: 100%; /* يشغل عرض الشبكة */
+    height: 100%; /* يشغل ارتفاع الشبكة */
+    box-shadow: 0 2px 4px rgba(98, 166, 218, 0.57); /* نفس الظل */
+    transition: box-shadow 0.3s ease, transform 0.3s ease; /* تأثيرات عند التمرير */
+    cursor: pointer; /* إضافة المؤشر */
+}
+
+.leftsidemenu-button:hover {
+    transform: translateY(-5px); /* نفس التأثير عند التمرير */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* زيادة الظل */
+}
+
+
+
+
+
+
+
+
+/* استهداف الجدول الطولي */
+table.long_custom-table {
+    width: 100%; /* عرض الجدول بالكامل */
+    border-collapse: collapse; /* إزالة المسافات بين الخلايا */
+    margin-top: 1rem; /* مسافة علوية */
+    font-size: 0.9rem; /* حجم نص أصغر قليلاً */
+    direction: rtl; /* اتجاه النص من اليمين إلى اليسار */
+    table-layout: auto; /* السماح بتعديل الأعمدة حسب المحتوى */
+    background: #FAFCFF; /* خلفية خفيفة */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* ظل خفيف للجدول */
+    border-radius: 8px; /* حواف مستديرة */
+    overflow: hidden; /* معالجة الحواف */
+}
+
+/* تنسيق رؤوس الجدول */
+table.long_custom-table th {
+    background: #5DADE2; /* خلفية مميزة لرؤوس الحقول */
+    color: #FFFFFF; /* لون النص أبيض */
+    text-align: center; /* محاذاة النص في الوسط */
+    padding: 0.8rem; /* مسافة داخلية */
+    font-weight: bold; /* جعل النص غامق */
+    font-size: 1rem; /* تكبير النص للرؤوس */
+}
+
+/* تنسيق خلايا البيانات */
+table.long_custom-table td {
+    border: 1px solid #BFD3E6; /* حدود للخلايا */
+    background: #FFFFFF; /* خلفية بيضاء للبيانات */
+    color: #2C3E50; /* لون النص */
+    padding: 0.6rem 1rem; /* مسافة داخلية للخلايا */
+    text-align: right; /* محاذاة النص لليمين */
+    vertical-align: middle; /* محاذاة النص في المنتصف */
+    font-size: 0.9rem; /* حجم النص */
+}
+
+/* صفوف بألوان متبادلة */
+table.long_custom-table tr:nth-child(even) td {
+    background: #F7F9FC; /* خلفية خفيفة للصفوف الزوجية */
+}
+
+/* تأثير عند التمرير */
+table.long_custom-table tr:hover td {
+    background: #EAF6FF; /* خلفية مميزة عند التمرير */
+    transition: background 0.3s ease; /* تأثير ناعم */
+}
+
+/* تنسيق الروابط داخل الجدول */
+table.long_custom-table a {
+    color: #5DADE2; /* لون الروابط */
+    text-decoration: none; /* إزالة الخط السفلي للروابط */
+    font-weight: bold; /* نص غامق */
+    transition: color 0.3s ease; /* تأثير عند التمرير */
+}
+
+table.long_custom-table a:hover {
+    color: #4267B2; /* لون عند التمرير */
+}
+
+/* تحسين تصميم العناوين */
+table.long_custom-table caption {
+    text-align: center; /* توسيط العنوان */
+    font-size: 1.2rem; /* حجم النص */
+    font-weight: bold; /* نص غامق */
+    color: #4267B2; /* لون مميز */
+    margin-bottom: 1rem; /* مسافة أسفل العنوان */
+}
+
+
+
+
+
+.form-container {
+    width: 50%; /* جعل الحاوية أصغر وأكثر تركيزًا */
+    margin: 3rem auto; /* توسيط الحاوية عموديًا وأفقيًا */
+    padding: 2rem;
+    background: #FFFFFF;
+    border: 1px solid #BFD3E6;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.form-title {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #4267B2;
+    margin-bottom: 1.5rem;
+}
+.btn-submit {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.2rem;
+    color: #FFFFFF;
+    background: linear-gradient(90deg, #5DADE2, #4267B2);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.btn-submit:hover {
+    background: linear-gradient(90deg, #4267B2, #5DADE2);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+.form-title i {
+    margin-right: 10px;
+    color: #5DADE2;
+    font-size: 1.5rem;
+}
+.help-text {
+    font-size: 0.9rem;
+    color: #7F8C8D;
+    margin-top: 0.5rem;
+    background: #EAF2F8;
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #BFD3E6;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+
+
+
+
+
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* تكبير حجم الكروت */
+    gap: 2.5rem; /* زيادة المسافة بين الكروت */
+    justify-content: center;
+    padding: 2rem; /* حواف عامة مناسبة */
+    background: linear-gradient(to bottom, #F5F9FF, #DDEAF7);
+}
+
+.card {
+    background: linear-gradient(145deg, #ffffff, #e3f1ff);
+    border: 1px solid rgba(93, 173, 226, 0.5);
+    border-radius: 12px; /* حواف ناعمة */
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1), -4px -4px 10px rgba(255, 255, 255, 0.7);
+    width: 100%; /* لتتناسب مع الشبكة */
+    max-width: 250px; /* تكبير الكارت */
+    padding: 1rem; /* زيادة المسافة الداخلية */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+}
+
+.card:hover {
+    transform: translateY(-8px); /* زيادة تأثير الحركة */
+    box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.15), -6px -6px 15px rgba(255, 255, 255, 0.85);
+}
+
+.card-title {
+    font-size: 1.3rem; /* تكبير حجم العنوان */
+    color: #4267B2;
+    margin-bottom: 0.5rem; /* مسافة مناسبة */
+    font-weight: bold;
+}
+
+.card-description {
+    font-size: 0.95rem; /* تكبير حجم النص */
+    color: #2C3E50;
+    margin-bottom: 1rem; /* مسافة مريحة مع الزر */
+    line-height: 1.5; /* تباعد مناسب بين الأسطر */
+}
+
+.button {
+    background: linear-gradient(90deg, #5DADE2, #4267B2);
+    color: #FFFFFF;
+    text-align: center;
+    text-decoration: none;
+    padding: 0.5rem 1rem; /* تكبير الزر */
+    border-radius: 40px; /* حواف ناعمة */
+    font-size: 0.9rem; /* تكبير النص داخل الزر */
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(93, 173, 226, 0.3);
+}
+
+.button:hover {
+    background: linear-gradient(90deg, #4267B2, #5DADE2);
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(93, 173, 226, 0.5);
+}
+
+
+select {
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+#id_foreign_university {
+    width: 100%; /* أو أي عرض مناسب */
+    max-width: 300px;
+    display: block;
+}
+
+
+
+
+
+.avatar-wrapper {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%; /* جعل الصورة دائرية بالكامل */
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #d6d6d6;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* استخدام background-image بدلاً من <img> لضمان عمل الصورة في Safari */
+.avatar-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* لضمان اقتصاص الصورة بشكل صحيح */
+    display: block;
+    border-radius: 50%; /* جعل الصورة دائرية بالكامل */
+}
+
+/* إصلاح مشاكل Safari فقط */
+@supports (-webkit-touch-callout: none) {
+    .avatar-wrapper {
+        width: 90px; /* تقليل الحجم قليلاً في Safari */
+        height: 90px;
+        border-radius: 50%;
+    }
+}
+
+/* محاذاة الصورة بدون استخدام float */
+.avatar-wrapper.left {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.avatar-wrapper.right {
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+
+
+
+
+/* تنسيق قسم البيانات الشخصية */
+.personal-info-container {
+    background-color: #ffffff; /* خلفية بيضاء نظيفة */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* تأثير الظل */
+    margin: 20px 0;
+}
+
+/* تنسيق العناوين داخل القسم */
+.personal-info-container strong {
+    color: #007acc; /* لون أزرق مميز للعناوين */
+    font-weight: bold;
+    font-size: 16px; /* حجم خط متوسط */
+}
+
+/* تنسيق النصوص */
+.personal-info-container p {
+    font-size: 14px;
+    color: #333; /* لون رمادي داكن للنصوص */
+    margin-bottom: 10px;
+    line-height: 1.6; /* تباعد مريح بين السطور */
+}
+
+/* إضافة أيقونات قبل النصوص (اختياري) */
+.personal-info-container p:before {
+    content: "• "; /* نقطة بداية لكل عنصر */
+    color: #007acc;
+    font-weight: bold;
+}
+
+/* تأثير عند التمرير على النصوص */
+.personal-info-container p:hover {
+    background-color: #f0f8ff; /* خلفية خفيفة عند التمرير */
+    padding: 5px 10px; /* إضافة مساحة داخل النص */
+    border-radius: 5px; /* حواف مدورة للنص */
+    transition: background-color 0.3s ease, padding 0.3s ease;
+}
+
+/* تنسيق الروابط (مثل الروابط القابلة للتعديل) */
+.personal-info-container a {
+    color: #ff5722; /* لون برتقالي مميز للروابط */
+    font-weight: bold;
+    text-decoration: none; /* إزالة الخط تحت النص */
+}
+
+.personal-info-container a:hover {
+    text-decoration: underline;
+    color: #e64a19; /* لون مختلف عند التمرير */
+}
+
+/* تحسين المسافات بين الأقسام */
+.personal-info-container p:last-child {
+    margin-bottom: 0;
+}
+
+
+
+
+.header-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px; /* تقليل ارتفاع الحاوية */
+}
+
+
+.header-logo img {
+    width: 50px; /* تصغير عرض الشعار */
+    height: 50px; /* تصغير ارتفاع الشعار */
+    border-radius: 50%; /* جعله دائريًا */
+    object-fit: cover;
+    border: 1px solid #fff; /* تصغير الإطار */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* تصغير الظل */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.header-logo {
+    margin-right: 10px; /* تقليل المسافة بين الشعار والنص */
+}
+header {
+    padding: 0.5rem 4rem; /* تقليل المسافة الداخلية للهيدر */
+}

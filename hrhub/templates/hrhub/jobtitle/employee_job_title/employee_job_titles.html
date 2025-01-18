@@ -1,0 +1,83 @@
+{% extends 'core/base.html' %}
+
+{% block searchbar %}
+
+{% endblock %}
+
+
+{% block titleleftsidemenu %}
+<!-- أي محتوى خاص بالقائمة الجانبية هنا -->
+{% endblock %}
+
+
+
+{% block titlecontent %}
+{% endblock %}
+
+{% block content %}
+
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th>العنوان الوظيفي عند التعيين</th>
+            <th>تاريخ التعيين</th>
+            <th>العنوان الوظيفي الحالي</th>
+            <th>تاريخ العنوان الوظيفي الحالي</th>
+            <th>العنوان الوظيفي القادم</th>
+            <th>تاريخ العنوان الوظيفي القادم</th>
+            <th> تحديث </th>
+            <th> حذف </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for job_title in employee_job_titles %}
+            <tr>
+                <td>{{ job_title.start_employee_job_title.title_in_arabic }}</td>
+                <td>{{ job_title.start_employee_job_title_date }}</td>
+                <td>{{ job_title.employee_job_title.title_in_arabic }}</td>
+                <td>{{ job_title.employee_job_title_date }}</td>
+                <td>{{ job_title.next_employee_job_title.title_in_arabic }}</td>
+                <td>{{ job_title.next_employee_job_title_date }}</td>
+                <td><a href="{% url 'hrhub:update_employee_job_title' job_title.slug%}" class="update_button" >تعديل    </a></td>
+                <td><a href="{% url 'hrhub:delete_employee_job_title' job_title.slug%}" class="delete_button">حذف    </a></td>
+
+                
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="10">لا توجد عناوين وظيفية لهذا الموظف.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+{% endblock %}
+
+
+{% block titlesidemenu %}
+<!-- أي محتوى خاص بالقائمة الجانبية هنا -->
+{% endblock %}
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+   
+
+    <a href="{% url 'hrhub:main_job_title' %}" class="custom-button"> العناوين الوظيفية   </a>
+
+    <a href="{% url 'hrhub:add_employment_history' basic_info.slug %}" class="custom-button">اضافة عنوان وظيفي     </a>
+
+    
+    
+    {% comment %} <a href="{% url 'hrhub:upload_employees_csv' %}" class="custom-button">رفع ملف CSV </a> {% endcomment %}
+    {% comment %} <a href="{% url 'hrhub:download_employee_offices_csv_template' %}" class="custom-button">تحميل نموذج CSV </a> {% endcomment %}
+</div>
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

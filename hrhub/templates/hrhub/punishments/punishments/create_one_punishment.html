@@ -1,0 +1,25 @@
+{% extends 'core/base.html' %}
+
+{% block title %}إضافة كتاب عقوبة{% endblock %}
+
+{% block content %}
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">حفظ العقوبة</button>
+</form>
+
+{% endblock %}
+
+
+
+{% block sidemenu %}
+
+
+<p><a href="{% url 'accounts:view_profile' %}" class="button">الصفحة الشخصية   </a></p>
+<p><a href="{% url 'hrhub:main_thanks_type' %}" class="button">صفحة انواع كتب الشكر       </a></p>
+
+<p><a href="{% url 'hrhub:main_thanks' %}" class="button">صفحة  كتب شكر         </a></p>
+
+{% endblock %}

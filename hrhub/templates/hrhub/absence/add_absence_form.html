@@ -1,0 +1,20 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h1>إضافة غياب للموظفين</h1>
+<form method="post" action="{% url 'hrhub:save_absence' %}">
+    {% csrf_token %}
+    <h3>الموظفون المختارون:</h3>
+    <ul>
+        {% for employee in selected_employees %}
+        <li>
+            {{ employee.get_full_name }}
+            <input type="hidden" name="selected_employees" value="{{ employee.id }}">
+        </li>
+        {% endfor %}
+    </ul>
+    <hr>
+    {{ form.as_p }}
+    <button type="submit">حفظ</button>
+</form>
+{% endblock %}

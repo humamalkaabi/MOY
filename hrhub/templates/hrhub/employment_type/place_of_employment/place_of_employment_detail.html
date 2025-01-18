@@ -1,0 +1,28 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+تفاصيل المؤسسة
+{% endblock %}
+
+{% block titlesidemenu %}
+<h2 style="color: #fff;">مرحبا، {{ user.username }}</h2>
+{% endblock %}
+
+{% block sidemenu %}
+<!-- يمكنك إضافة روابط هنا حسب الحاجة -->
+{% endblock %}
+
+{% block titlecontent %}
+<h2>تفاصيل المؤسسة</h2>
+{% endblock %}
+
+{% block content %}
+<p><strong>اسم المؤسسة:</strong> {{ place.title_in_arabic }} {% if place.parent %} - الجزء التابع لـ {{ place.parent.title_in_arabic }} {% else %} (عنوان رئيسي) {% endif %}</p>
+<p><strong>وصف المؤسسة:</strong> {{ place.description|default:"لا يوجد وصف" }}</p>
+<p><strong>تاريخ الإنشاء:</strong> {{ place.created_at }}</p>
+<p><strong>تاريخ آخر تحديث:</strong> {{ place.updated_at }}</p>
+<p><strong>أنشأ بواسطة:</strong> {{ place.created_by }}</p>
+
+<a href="{% url 'hrhub:update_place_of_employment' place.slug %}" class="button">تحديث</a>
+<a href="{% url 'hrhub:delete_place_of_employment' place.slug %}" class="deletebutton red-button" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه المؤسسة؟')">حذف</a>
+{% endblock %}

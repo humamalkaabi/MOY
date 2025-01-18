@@ -1,0 +1,40 @@
+<!-- detail.html -->
+{% extends 'core/base.html' %}
+{% block content %}
+<h2>تحديث الوثيقة</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" class="update_button">تحديث الوثيقة</button>
+</form>
+{% endblock %}
+
+
+
+{% block sidemenu %}
+
+<div class="button-container">
+
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'personalinfo:main_personalinfo' %}" class="custom-button"> ادارة المعلومات الشخصية     </a>
+    <a href="{% url 'personalinfo:mainemployeeofficialdocuments' %}" class="custom-button"> صفحة وثائق الموظفين       </a>
+
+    {% if perms.personalinfo.can_create_official_documents_type %}
+    <a href="{% url 'personalinfo:add_official_document' %}" class="custom-button">  اضافة نوع وثيقة   </a>
+    {% endif %}
+
+    <a href="{% url 'personalinfo:export_official_documents_csv' %}" class="custom-button"> تصدير CSV         </a>
+
+
+</div>
+
+
+
+{% endblock %}
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">   مدخل البيانات : {{ created_by }}</label>
+
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+    <title>رصيد الإجازات للموظف</title>
+{% endblock %}
+
+{% block titlesidemenu %}
+{% endblock %}
+
+{% block titlecontent %}
+    <h2>رصيد الإجازات للموظف: {{ employee.firstname }} {{ employee.secondname }}</h2>
+{% endblock %}
+
+{% block content %}
+    <table class="custom-table">
+        <thead>
+            <tr>
+                <th>نوع الإجازة</th>
+                <th>الرصيد القديم</th>
+                <th>الرصيد الحالي</th>
+                <th>تاريخ البداية</th>
+                <th>تحديث </th>
+                <th>حذف </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for balance in leave_balances %}
+                <tr>
+                    <td>{{ balance.leave_type.name }}</td>
+                    <td>{{ balance.old_balance }}</td>
+                    <td>{{ balance.balance }}</td>
+                    <td>{{ balance.start_date }}</td>
+                   
+                    <td> <a href="{% url 'hrhub:update_leave_balance_view' balance.slug %}" class="update_button">تحديث   </a></td>
+                    <td> <a href="{% url 'hrhub:delete_leave_balance' balance.slug %}" class="delete_button">حذف   </a></td>
+
+
+
+                    
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5">لا توجد بيانات متاحة</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:main_leave_balance' %}" class="custom-button">  صفحة ارصدة الاجازات       </a>
+    <a href="{% url 'hrhub:main_leave_request' %}" class="custom-button">  صفحة  الاجازات الرئيسية       </a>
+    <a href="{% url 'hrhub:main_leave_type' %}" class="custom-button">  صفحة  انواع الاجازات        </a>
+
+    <a href="{% url 'hrhub:upload_leave_balance_csv' %}" class="custom-button">رفع CSV   </a>
+
+</div>
+{% endblock %}
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

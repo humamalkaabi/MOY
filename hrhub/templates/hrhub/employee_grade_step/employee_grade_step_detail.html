@@ -1,0 +1,63 @@
+{% extends "core/base.html" %}
+
+{% block title %} تفاصيل الدرجة الوظيفية {% endblock %}
+
+{% block content %}
+<h2>تفاصيل الدرجة الوظيفية للموظف: {{ employee.basic_info.get_full_name }}</h2>
+
+{% if grade_step %}
+    <table>
+        <tr>
+            <th>الدرجة عند التعيين</th>
+            <td>{{ grade_step.start_grade }}</td>
+        </tr>
+        <tr>
+            <th>المرحلة عند التعيين</th>
+            <td>{{ grade_step.start_step }}</td>
+        </tr>
+        <tr>
+            <th>تاريخ بداية الدرجة</th>
+            <td>{{ grade_step.start_grade_date }}</td>
+        </tr>
+        <tr>
+            <th>الدرجة الحالية</th>
+            <td>{{ grade_step.grade_now }}</td>
+        </tr>
+        <tr>
+            <th>المرحلة الحالية</th>
+            <td>{{ grade_step.step_now }}</td>
+        </tr>
+        <tr>
+            <th>تاريخ آخر تحديث</th>
+            <td>{{ grade_step.updated_at }}</td>
+        </tr>
+    </table>
+{% else %}
+    <p>لا يوجد سجل درجة وظيفية لهذا الموظف.</p>
+{% endif %}
+
+{% endblock %}
+
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:main_employee_grade' %}" class="custom-button">  الدرجات الوظيفية        </a> 
+    <a href="{% url 'hrhub:main_employee_step' %}" class="custom-button">  المراحل الوظيفية        </a> 
+    <a href="{% url 'hrhub:update_employee_grade_step_settings' %}" class="custom-button">  اعدادات  الترفعيات         </a> 
+
+
+    
+    
+    
+</div>
+{% endblock %}
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+

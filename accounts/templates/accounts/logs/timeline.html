@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منحنى التعديلات الزمنية</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<h2 style="text-align: center;">📈 منحنى التعديلات عبر الزمن</h2>
+<canvas id="changeLogChart" width="800" height="400"></canvas>
+
+<script>
+    fetch('/accounts/change_logs_data/')
+        .then(response => response.json())
+        .then(data => {
+            const timestamps = Object.keys(data.data);
+            const createData = timestamps.map(time => data.data[time].create);
+            const updateData = timestamps.map(time => data.data[time].update);
+            const deleteData = timestamps.map(time => data.data[time].delete);
+
+            const ctx = document.getElementById('changeLogChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: timestamps,
+                    datasets: [
+                        {
+                            label: 'إضافات',
+                            data: createData,
+                            borderColor: 'green',
+                            backgroundColor: 'rgba(0, 255, 0, 0.2)',
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'تعديلات',
+                            data: updateData,
+                            borderColor: 'blue',
+                            backgroundColor: 'rgba(0, 0, 255, 0.2)',
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'حذف',
+                            data: deleteData,
+                            borderColor: 'red',
+                            backgroundColor: 'rgba(255, 0, 0, 0.2)',
+                            fill: true,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'التعديلات الزمنية على النظام'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'الزمن'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'عدد التعديلات'
+                            }
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => console.error('Error loading data:', error));
+</script>
+
+</body>
+</html>

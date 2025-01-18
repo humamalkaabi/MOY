@@ -1,0 +1,96 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h1>إدارة الصلاحيات الجماعية</h1>
+
+<!-- قائمة لاختيار التطبيق -->
+<label for="app_filter">اختر التطبيق:</label>
+<select id="app_filter">
+    <option value="all">جميع التطبيقات</option>
+    {% for group in grouped_permissions %}
+        <option value="{{ group.app_label }}">{{ group.verbose_name }}</option>
+    {% endfor %}
+</select>
+
+<form method="post">
+    {% csrf_token %}
+
+    {% for group in grouped_permissions %}
+        <div class="app-group" data-app="{{ group.app_label }}">
+            <h2>{{ group.verbose_name }}</h2>
+            {% for model_group in group.models %}
+                <h3>الجدول: {{ model_group.model }}</h3>
+                {% if model_group.permissions %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>كود الصلاحية</th>
+                                <th>اسم الصلاحية</th>
+                                <th>تحديد</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for perm in model_group.permissions %}
+                                <tr>
+                                    <td>{{ perm.codename }}</td>
+                                    <td>{{ perm.name }}</td>
+                                    <td>
+                                        <input type="checkbox" name="permissions" value="{{ perm.id }}">
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>لا توجد صلاحيات مخصصة لهذا الجدول.</p>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary">منح الصلاحيات</button>
+</form>
+
+<script>
+    // JavaScript لتصفية الصلاحيات حسب التطبيق
+    document.getElementById('app_filter').addEventListener('change', function() {
+        const selectedApp = this.value;
+        const appGroups = document.querySelectorAll('.app-group');
+
+        appGroups.forEach(group => {
+            if (selectedApp === 'all' || group.dataset.app === selectedApp) {
+                group.style.display = '';
+            } else {
+                group.style.display = 'none';
+            }
+        });
+    });
+</script>
+{% endblock %}
+
+
+
+{% block sidemenu %}
+
+<div class="button-container">
+
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'accounts:mainlistpermissions' %}" class="custom-button">صفحة الصلاحيات </a>
+
+    <a href="{% url 'accounts:assign_bulk_permissions' %}" class="custom-button">إدارة الصلاحيات الجماعية</a>
+    <a href="{% url 'accounts:revoke_bulk_permissions' %}" class="custom-button">سحب الصلاحيات الجماعية</a>
+
+    
+
+</div>
+
+
+
+{% endblock %}
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+

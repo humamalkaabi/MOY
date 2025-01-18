@@ -1,0 +1,80 @@
+{% extends 'core/base.html' %}
+
+{% block title %}سجلات العمل للموظفين{% endblock %}
+
+
+{% block content %}
+{% if employment_histories %}
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>تاريخ البدء</th>
+            <th>تاريخ الانتهاء</th>
+            <th>مدة الخدمة</th>
+            <th>نوع الوظيفة</th>
+            <th>مكان الوظيفة</th>
+           
+          
+        </tr>
+    </thead>
+    <tbody>
+        {% for history in employment_histories %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ history.start_date }}</td>
+            <td>{{ history.end_date|default:"حتى الآن" }}</td>
+            <td>
+                {{ history.employee_duration_year }} سنة، 
+                {{ history.employee_duration_month }} شهر،
+                {{ history.employee_duration_day }} يوم
+            </td>
+            <td>{{ history.employee_type.name|default:"غير محدد" }}</td>
+            <td>{{ history.employee_place.name_in_arabic|default:"غير محدد" }}</td>
+           
+
+        </tr>
+
+       
+        
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="empty-message">
+    لا توجد سجلات وظيفية لهذا الموظف.
+</div>
+{% endif %}
+    
+{% endblock %}
+
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+   
+
+</div>
+{% endblock %}
+{% block leftsidemenu %}
+<label class="result-label">عدد السجلات الوظيفية: {{ employment_histories_count }}</label>
+
+<div class="search-container">
+    <form method="get" action="">
+        <div class="grid-item input-container">
+            <select name="employee_type">
+                <option value="">اختر نوع الوظيفة</option>
+                {% for employment_type in employment_types %}
+                    <option value="{{ employment_type.id }}" {% if request.GET.employee_type == employment_type.id|stringformat:"s" %}selected{% endif %}>
+                        {{ employment_type.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <br>
+        <button type="submit" class="leftsidemenu-button">بحث</button>
+    </form>
+</div>
+{% endblock %}

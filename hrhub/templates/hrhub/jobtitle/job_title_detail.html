@@ -1,0 +1,44 @@
+{% extends 'core/base.html' %}
+
+
+{% block title %}
+
+{% endblock %}
+
+
+
+{% block titlesidemenu %}
+
+{% endblock %}
+
+
+{% block sidemenu %}
+
+<p><a href="{% url 'accounts:view_profile' %}" class="button">الصفحة الشخصية   </a></p>
+<p>  <a href="{% url 'accounts:main_control_panel' %}" class="button">لوحة التحكم الادارية    </a></p>
+<p>  <a href="{% url 'hrhub:main_hrhub' %}" class="button">صفحة الموارد البشرية      </a></p>
+<p>  <a href="{% url 'hrhub:main_job_title' %}" class="button">صفحة العناوين الوظيفية       </a></p>
+
+
+
+{% endblock %}
+
+
+{% block titlecontent %}
+
+{% endblock %} 
+
+{% block content %}
+
+
+<h2> تفاصيل الديانة </h2>
+<p><strong>اسم العنوان الوظيفي :</strong> {{ job_title.title_in_arabic }}   {% if job_title.parent %} {% else %}
+    عنوان رئيسي
+{% endif %}</p>
+<p><strong>اسم مدخل البيانات  :</strong> {{ job_title.created_by }}</p>
+<p><strong>تاريخ الادخال    :</strong> {{ job_title.created_at }}</p>
+<p><strong>تاريخ اخر تحديث    :</strong> {{ job_title.updated_at }}</p>
+<a href="{% url 'hrhub:update_job_title' job_title.slug %}" class="button">تحديث</a> 
+<a href="{% url 'hrhub:delete_job_title' job_title.slug %}" class="deletebutton red-button" onclick="return confirm('هل أنت متأكد أنك تريد حذف  هذا العنوان الوظيفي ؟')">حذف</a> 
+
+{% endblock %}

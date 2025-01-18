@@ -1,0 +1,150 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مشروع الموارد البشرية</title>
+    <link rel="stylesheet" href="{% static 'css/base_style.css' %}">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="logo.png" alt="Logo">
+        </div>
+
+        
+        <div class="project-name">وزارة الشباب والرياضة</div>
+        <div class="bento-button">
+            <p>
+                <a href="#" class="contact-link">اتصل بنا</a> | 
+                {% if user.is_authenticated %}
+                <a href="#" class="login-link">تسجيل خروج</a>
+                {% else %}
+                <a href="#" class="login-link">تسجيل الدخول</a>
+                {% endif %}
+            </p>
+        </div>
+        
+    </header>
+    <div class="main_searchbar">
+        <div class="grid-container">
+
+            <div class="grid-item input-container">
+                <input type="text" id="job-number" name="job-number" placeholder = "ادخل الرقم  الوظيفي">
+            </div>
+
+            <div class="grid-item input-container">
+                <input type="text" id="job-number" name="job-number" placeholder = "ادخل   الاسم الاول">
+            </div>
+
+            <div class="grid-item input-container">
+                <input type="text" id="job-number" name="job-number" placeholder = "ادخل   الاسم الثاني">
+            </div>
+
+            <div class="grid-item input-container">
+                <input type="text" id="job-number" name="job-number" placeholder = "ادخل   الاسم الثالث">
+            </div>
+
+           
+            <button >زر البحث  </button>
+            <div class="grid-item">بحث 6</div>
+            <div class="grid-item">بحث 7</div>
+            <div class="grid-item">بحث 8</div>
+        </div>
+    </div>
+    <main>
+        <div class="sections">
+           
+            <div class="section">
+                <h3>القسم الثالث</h3>
+              
+                <div class="button-container">
+                    <button class="custom-button">زر </button>
+                    <button class="custom-button">زر </button>
+                    <button class="custom-button">زر </button>
+                    <button class="custom-button">زر </button>
+                </div>
+
+            </div>
+            
+            <div class="section">
+                <h3>القسم الثاني</h3>
+                <p>محتوى القسم الثاني.</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>العمود 1</th>
+                            <th>العمود 2</th>
+                            <th>العمود 3</th>
+                            <th>العمود 4</th>
+                            <th>العمود 5</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>بيانات 1</td>
+                            <td>بيانات 2</td>
+                            <td>بيانات 3</td>
+                            <td>بيانات 4</td>
+                            <td>بيانات 5</td>
+                        </tr>
+                        <tr>
+                            <td>بيانات 1</td>
+                            <td>بيانات 2</td>
+                            <td>بيانات 3</td>
+                            <td>بيانات 4</td>
+                            <td>بيانات 5</td>
+                        </tr>
+                        <tr>
+                            <td>بيانات 1</td>
+                            <td>بيانات 2</td>
+                            <td>بيانات 3</td>
+                            <td>بيانات 4</td>
+                            <td>بيانات 5</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <h3>القسم الأول</h3>
+                <p>محتوى القسم الأول.</p>
+                <label class="result-label">عدد النتائج: 20</label>
+
+                
+                <div class="search-container">
+                    <label for="search-option-1">البحث عن الخيار الأول:</label>
+                    <select id="search-option-1" name="search-option-1">
+                        <option value="1">الخيار 1</option>
+                        <option value="2">الخيار 2</option>
+                        <option value="3">الخيار 3</option>
+                    </select>
+                    
+                   
+                    <button class="custom-button">بحث</button>
+                </div>
+                
+            </div>
+
+            
+        </div>
+    </main>
+ <!-- القسم الجديد -->
+ <div class="pagination-container">
+    <div class="pagination-info">
+        <span>عدد العناصر بالصفحة: 10</span>
+    </div>
+    <div class="pagination-controls">
+        <button>السابق</button>
+        <span>صفحة 1 من 5</span>
+        <button>التالي</button>
+    </div>
+</div>
+
+
+    <footer>
+        &copy; 2025 مشروع الموارد البشرية. جميع الحقوق محفوظة.
+    </footer>
+</body>
+</html>

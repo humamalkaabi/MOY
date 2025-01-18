@@ -1,0 +1,54 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="form-container">
+    <h2 class="form-title">إضافة وثيقة  للموظف: {{ employee.username }}</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}
+            <small class="help-text">{{ field.help_text }}</small>
+            {% endif %}
+            {% for error in field.errors %}
+            <small class="error-text">{{ error }}</small>
+            {% endfor %}
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn-submit">حفظ</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">مدخل البيانات   : {{ created_by }}</label>
+
+
+
+{% endblock %}
+
+
+{% block sidemenu %}
+
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'personalinfo:main_personalinfo' %}" class="custom-button"> ادارة المعلومات الشخصية     </a>
+    <a href="{% url 'personalinfo:main_official_documents_type' %}" class="custom-button"> صفحة انواع الوثائق       </a>
+    <a href="{% url 'personalinfo:mainemployeeofficialdocuments' %}" class="custom-button"> صفحة وثائق الموظفين        </a>
+
+    {% comment %} {% if perms.personalinfo.can_create_nationalism %} {% endcomment %}
+    {% comment %} {%  else %}
+    لا تمتلك الصلاحية
+    {% endif %} {% endcomment %}
+    {% comment %} <a href="{% url 'personalinfo:export_nationalism_csv' %}" class="custom-button"> تصدير CSV       </a> {% endcomment %}
+
+
+    
+
+</div>
+
+
+
+{% endblock %}

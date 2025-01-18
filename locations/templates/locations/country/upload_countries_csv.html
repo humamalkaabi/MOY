@@ -1,0 +1,61 @@
+{% extends 'core/base.html' %}
+
+
+{% block searchbar %}
+
+
+{% endblock %}
+
+{% block titleleftsidemenu %}
+
+
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+
+
+{% block titlecontent %}
+
+{% endblock %}
+
+
+
+
+{% block content %}
+<h2>  CSV المحافظات</h2>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="update_button">رفع الملف</button>
+</form>
+{% endblock %}
+
+{% block pagination %}
+
+{% endblock %}
+
+
+
+{% block titlesidemenu %}
+
+{% endblock %}
+
+
+
+{% block sidemenu %}
+
+<div class="button-container">
+
+<a href="{% url 'locations:main_locations_dashboard' %}" class="custom-button">الاماكن</a>
+<a href="{% url 'locations:continent_statistics' %}" class="custom-button">صفحة الدول</a>
+
+
+
+
+</div>
+
+
+{% endblock %}

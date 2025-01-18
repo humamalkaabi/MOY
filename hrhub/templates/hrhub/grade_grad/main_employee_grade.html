@@ -1,0 +1,59 @@
+<!-- templates/app_name/main_employee_grade.html -->
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h2>الدرجات الوظيفية</h2>
+
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>رقم الدرجة</th>
+            <th>اسم الدرجة</th>
+            <th>مدخل البيانات</th>
+            {% comment %} <th>التفاصيل</th> {% endcomment %}
+            <th>تحديث</th>
+            <th>حذف</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for grade in employee_grades %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ grade.grade_number }}</td>
+            <td>{{ grade.name_in_words }}</td>
+            <td>{{ grade.created_by.username }}</td>
+            {% comment %} <td><a href="{% url 'hrhub:grade_detail' grade.slug %}" class="update_button">عرض </a></td> {% endcomment %}
+            <td><a href="{% url 'hrhub:update_employee_grade' grade.slug %}" class="update_button">تحديث</a></td>
+            <td><a href="{% url 'hrhub:delete_employee_grade' grade.slug %}" class="delete_button" onclick="return confirm('هل أنت متأكد؟')">حذف</a></td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7">لا توجد درجات وظيفية مسجلة حالياً.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:main_employee_grade_step' %}" class="custom-button">  الترفيعات والعلاوات        </a> 
+
+    <a href="{% url 'hrhub:employee_grade_create' %}" class="custom-button">  اضافة درجة وظيفية    </a> 
+    {% comment %} <a href="{% url 'hrhub:upload_employee_grades_csv' %}" class="custom-button">   رفع CSV     </a> {% endcomment %}
+
+    
+</div>
+{% endblock %}
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+

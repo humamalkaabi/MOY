@@ -1,0 +1,45 @@
+
+{% extends 'core/base.html' %}
+
+{% block title %} الرئيسية      {% endblock %}
+
+
+{% block content %}
+
+
+
+
+        <!-- نموذج الإضافة -->
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="custom-button">إضافة</button>
+           
+        </form>
+
+
+{% endblock %}
+
+
+
+
+{% block sidemenu %}
+
+
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'rddepartment:main_rddepartment' %}" class="custom-button">   الشهادات والتطوير     </a>
+    <a href="{% url 'rddepartment:mainemployeecoursecertificate' %}" class="custom-button">   الشهادات غير الاكاديمية     </a>
+    <a href="{% url 'rddepartment:main_coursecertificatetype' %}" class="custom-button">   انواع الشهادات غير الاكاديمية     </a>
+    
+</div>
+
+
+
+{% endblock %}
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+

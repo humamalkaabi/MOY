@@ -1,0 +1,83 @@
+{% extends 'core/base.html' %}
+
+
+{% block searchbar %}
+
+
+{% endblock %}
+
+{% block titleleftsidemenu %}
+
+
+{% endblock %}
+
+{% block leftsidemenu %}
+
+<label class="result-label">
+    موظف الادخال  : {{ request.user }}
+</label>
+{% endblock %}
+
+
+
+
+{% block titlecontent %}
+
+{% endblock %}
+
+
+
+
+{% block content %}
+<h2>  CSV الدوائر</h2>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="update_button">رفع الملف</button>
+</form>
+{% endblock %}
+
+{% block pagination %}
+
+{% endblock %}
+
+
+
+{% block titlesidemenu %}
+
+{% endblock %}
+
+
+{% block sidemenu %}
+
+<h3>  </h3>
+<div class="button-container">
+
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+   
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+
+   
+   
+    <a href="{% url 'hrhub:main_offices' %}" class="custom-button">الوحدات الادارية  </a>
+
+    <a href="{% url 'hrhub:mainemployeeoffice' %}" class="custom-button"> صفحة دوائر الموظفين  </a>
+
+    {% if perms.hrhub.can_add_office %}
+    <a href="{% url 'hrhub:add_office' %}" class="custom-button">  اضافة وحدة ادارية   </a>
+    {% endif %}
+    <a href="{% url 'hrhub:download_offices_csv_template' %}" class="custom-button">  نموذج CSV       </a>
+    {% if perms.hrhub.can_add_office %}
+        <a href="{% url 'hrhub:upload_offices_csv' %}" class="custom-button">  رفع ملف CSV     </a>
+        {% endif %}
+
+
+</div>
+
+
+
+
+
+{% endblock %}

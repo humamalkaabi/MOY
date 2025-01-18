@@ -1,0 +1,66 @@
+{% extends 'core/base.html' %}
+
+{% block title %}قائمة الموظفين{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+   
+<a href="{% url 'hrhub:add_duty_assignment_order' %}" class="custom-button">  اضافة عنوان الامر   </a>
+</div>
+
+
+{% endblock %}
+
+{% block content %}
+    <table class="custom-table">
+            <thead>
+        <tr>
+            <th>#</th>
+            <th>اسم نوع الامر </th>
+            <th>مدخل البيانات </th>
+            <th>تفاصيل البيانات </th>
+            <th>تحديث البيانات </th>
+            <th>حذف البيانات </th>
+           
+        </tr>
+    </thead>
+    <tbody>
+        {% for duty_assignment_order in duty_assignment_orders %}
+        <tr>
+            <td>{{ duty_assignment_order.counter }}</td>
+            <td>{{ duty_assignment_order.name_in_arabic }}</td>
+          
+            <td>{{ duty_assignment_order.created_by.basic_info.get_full_name }}
+            </td>
+          
+            <td> 
+        <a href="{% url 'hrhub:duty_assignment_order_detail' slug=duty_assignment_order.slug %}" class="update_button">  التفاصيل </a>   
+            
+            </td>
+            <td> 
+         <a href="{% url 'hrhub:update_duty_assignment_order' duty_assignment_order.slug %}" class="update_button">تحديث</a> 
+            </td>
+
+            <td>
+               <a href="{% url 'hrhub:delete_duty_assignment_order' duty_assignment_order.slug %}" class="delete_button" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه  البيانات؟ سيتم حذف جميع  البيانات الاخرى المرتبطة بها')">حذف</a> 
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">لا توجد ديانات مسجلة حالياً.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

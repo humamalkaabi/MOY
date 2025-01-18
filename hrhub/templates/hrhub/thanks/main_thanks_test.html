@@ -1,0 +1,159 @@
+{% extends 'core/base.html' %}
+
+{% block searchbar %}
+<div class="search-bar">
+    <form method="get" action="{% url 'hrhub:main_thanks_test' %}">
+        <!-- الحقول الخاصة بالبحث -->
+        <div class="form-group">
+            <label for="username">اسم المستخدم:</label>
+            <input type="text" name="username" value="{{ request.GET.username }}" placeholder="ابحث عن اسم المستخدم" />
+        </div>
+        <div class="form-group">
+            <label for="firstname">الاسم الأول:</label>
+            <input type="text" name="firstname" value="{{ request.GET.firstname }}" placeholder="ابحث عن الاسم الأول" />
+        </div>
+        <div class="form-group">
+            <label for="secondname">الاسم الثاني:</label>
+            <input type="text" name="secondname" value="{{ request.GET.secondname }}" placeholder="ابحث عن الاسم الثاني" />
+        </div>
+        <div class="form-group">
+            <label for="thirdname">الاسم الثالث:</label>
+            <input type="text" name="thirdname" value="{{ request.GET.thirdname }}" placeholder="ابحث عن الاسم الثالث" />
+        </div>
+
+        <!-- حقل مخفي لحفظ قائمة الموظفين المختارين -->
+        <input type="hidden" name="selected_employees" id="selected-employees-hidden" value="{% for emp_id in selected_employees_ids %}{{ emp_id }},{% endfor %}">
+
+        <button type="submit" class="button">بحث</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block titlecontent %}
+<h2 class="title-content">قائمة الموظفين</h2>
+{% endblock %}
+
+{% block content %}
+<div class="table-container">
+    {% if employees %}
+    <table class="employee-table">
+        <thead>
+            <tr>
+                <th>اختر</th>
+                <th>الرقم الوظيفي</th>
+                <th>الاسم الكامل</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for employee in employees %}
+            <tr>
+                <!-- اختيار الموظف -->
+                <td>
+                    <input 
+                        type="checkbox" 
+                        class="select-employee" 
+                        data-employee-id="{{ employee.basic_info.id }}" 
+                        {% if employee.basic_info.id in selected_employees_ids %}checked{% endif %}>
+                </td>
+                <td>{{ employee.basic_info.emp_id }}</td>
+                <td>{{ employee.basic_info.get_full_name }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>لا توجد نتائج تطابق بحثك.</p>
+    {% endif %}
+</div>
+
+<div id="selected-employees-container">
+    <h3>الموظفون المختارون:</h3>
+    <ul id="selected-employees-list">
+        {% for emp in selected_employees %}
+        <li data-employee-id="{{ emp.id }}">{{ emp.get_full_name }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<form id="thanks-form">
+    <div>
+        <label for="thanks_type">نوع الشكر:</label>
+        <select id="thanks_type">
+            {% for thanks_type in thanks_types %}
+            <option value="{{ thanks_type.id }}">{{ thanks_type.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div>
+        <label for="thanks_number">رقم كتاب الشكر:</label>
+        <input type="text" id="thanks_number" name="thanks_number">
+    </div>
+    <button type="button" id="submit-thanks">إرسال الشكر</button>
+</form>
+{% endblock %}
+
+<script>
+    const selectedEmployeesHidden = document.getElementById('selected-employees-hidden');
+    const selectedEmployeesList = document.getElementById('selected-employees-list');
+
+    // تحديث واجهة المستخدم لقائمة الموظفين المختارين
+    function updateSelectedEmployees() {
+        const selectedEmployees = Array.from(document.querySelectorAll('.select-employee:checked'))
+            .map(checkbox => ({
+                id: checkbox.dataset.employeeId,
+                name: checkbox.closest('tr').querySelector('td:nth-child(3)').innerText
+            }));
+
+        // تحديث الحقل المخفي
+        selectedEmployeesHidden.value = selectedEmployees.map(emp => emp.id).join(',');
+
+        // تحديث قائمة العرض
+        selectedEmployeesList.innerHTML = '';
+        selectedEmployees.forEach(emp => {
+            const li = document.createElement('li');
+            li.textContent = emp.name;
+            li.setAttribute('data-employee-id', emp.id);
+            selectedEmployeesList.appendChild(li);
+        });
+    }
+
+    // عند تغيير الاختيارات
+    document.querySelectorAll('.select-employee').forEach(checkbox => {
+        checkbox.addEventListener('change', updateSelectedEmployees);
+    });
+
+    // استعادة الاختيارات من الحقل المخفي عند التحميل
+    document.addEventListener('DOMContentLoaded', function() {
+        const selectedEmployeeIds = selectedEmployeesHidden.value.split(',').filter(id => id);
+        document.querySelectorAll('.select-employee').forEach(checkbox => {
+            if (selectedEmployeeIds.includes(checkbox.dataset.employeeId)) {
+                checkbox.checked = true;
+            }
+        });
+        updateSelectedEmployees();
+    });
+
+    // إرسال الموظفين المختارين
+    document.getElementById('submit-thanks').addEventListener('click', function() {
+        const thanksTypeId = document.getElementById('thanks_type').value;
+        const thanksNumber = document.getElementById('thanks_number').value;
+
+        fetch("{% url 'hrhub:send_thanks' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            body: JSON.stringify({
+                employee_ids: selectedEmployeesHidden.value.split(','),
+                thanks_type_id: thanksTypeId,
+                thanks_number: thanksNumber,
+                date_issued: new Date().toISOString().split('T')[0]
+            })
+        }).then(response => response.json()).then(data => {
+            alert(data.message);
+            selectedEmployeesHidden.value = '';
+            selectedEmployeesList.innerHTML = '';
+        });
+    });
+</script>

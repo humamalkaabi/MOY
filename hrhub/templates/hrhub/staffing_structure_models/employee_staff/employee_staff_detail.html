@@ -1,0 +1,74 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+    <title>تفاصيل نوع الملاك</title>
+{% endblock %}
+
+{% block content %}
+    <h1>تفاصيل نوع الملاك</h1>
+    <table class="custom-table">
+        <tr>
+            <th>اسم الموظف:</th>
+            <td>{{ employee_staff_kind.basic_info.get_full_name }}</td>
+        </tr>
+        <tr>
+            <th>نوع الملاك:</th>
+            <td>{{ employee_staff_kind.employee_staff_type }}</td>
+        </tr>
+
+        <tr>
+            <th>نوع الموازنة:</th>
+            <td>{{ employee_staff_kind.employee_staff_type.payroll_budget_type }}</td>
+        </tr>
+        <tr>
+            <th>الرقم الإداري:</th>
+            <td>{{ employee_staff_kind.employee_staff_type_number }}</td>
+        </tr>
+        <tr>
+            <th>تاريخ الأمر:</th>
+            <td>{{ employee_staff_kind.employee_staff_type_number_date|date:"Y-m-d" }}</td>
+        </tr>
+        <tr>
+            <th>ملاحظات:</th>
+            <td>{{ employee_staff_kind.comments }}</td>
+        </tr>
+        <tr>
+            <th>ملف PDF:</th>
+            <td>
+                {% if employee_staff_kind.pdf_file %}
+                    <a href="{{ employee_staff_kind.pdf_file.url }}" target="_blank">عرض الملف</a>
+                {% else %}
+                    لا يوجد ملف
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>تاريخ الإنشاء:</th>
+            <td>{{ employee_staff_kind.created_at|date:"Y-m-d H:i" }}</td>
+        </tr>
+        <tr>
+            <th>آخر تحديث:</th>
+            <td>{{ employee_staff_kind.updated_at|date:"Y-m-d H:i" }}</td>
+        </tr>
+    </table>
+
+{% endblock %}
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:upload_employee_staff_kind_csv' %}" class="custom-button"> رفع ملف    </a>
+    <a href="{% url 'hrhub:main_payroll_budget' %}" class="custom-button"> صفحة انواع الموازنات     </a>
+    <a href="{% url 'hrhub:main_staff_structer_type' %}" class="custom-button"> صفحة انواع الملاك     </a>
+
+
+    
+</div>
+{% endblock %}
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

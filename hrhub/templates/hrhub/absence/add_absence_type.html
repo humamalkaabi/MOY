@@ -1,0 +1,19 @@
+{% extends 'core/base.html' %}
+
+{% block title %}إضافة نوع غياب{% endblock %}
+
+{% block titlesidemenu %}
+{% endblock %}
+
+{% block sidemenu %}
+
+{% endblock %}
+
+{% block content %}
+<h1>إضافة نوع غياب</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">إضافة</button>
+</form>
+{% endblock %}

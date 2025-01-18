@@ -1,0 +1,75 @@
+{% extends 'core/base.html' %}
+
+{% block title %}تفاصيل الشهادة الأكاديمية{% endblock %}
+
+{% block titlesidemenu %}
+<h2 style="color: #fff;">مرحبا</h2>
+{% endblock %}
+
+{% block sidemenu %}
+
+<p><a href="{% url 'accounts:view_profile' %}" class="button">الصفحة الشخصية   </a></p>
+<p>  <a href="{% url 'accounts:main_control_panel' %}" class="button">لوحة التحكم الادارية    </a></p>
+
+<p> <a href="{% url 'rddepartment:main_rddepartment' %}" class="button"> صفحة الشهادات والتطوير </a> </p>
+<p>  <a href="{% url 'rddepartment:main_employeecoursecertificate' %}" class="button">صفحة الشهادات التدريبية</a></p>
+
+<p> <a href="{% url 'rddepartment:all_employee_certificates' employeecoursecertificate.basic_info.slug %}" class="button">
+    عرض جميع الشهادات الخاصة بـ {{ employeecoursecertificate.basic_info.get_full_name }}
+</a></p>
+
+
+
+{% comment %} <a href="{% url 'rddepartment:main_employeeeducation' %}">العودة إلى قائمة الشهادات</a> {% endcomment %}
+
+{% endblock %}
+
+{% block content %}
+
+<h2>تفاصيل الشهادة الأكاديمية</h2>
+
+<div class="education-detail">
+    <p><strong>الرقم الوظيفي:</strong> {{ employeecoursecertificate.basic_info.emp_id }}</p>
+    <p><strong>الاسم الكامل:</strong> {{ employeecoursecertificate.basic_info.get_full_name }}</p>
+
+    <p><strong>نوع الشهادة:</strong> {{ employeecoursecertificate.coursecertificatetype.name_in_arabic }}</p>
+    
+    <p><strong>اسم المؤسسة المانحة:</strong> {{ employeecoursecertificate.name_of_the_institution.name_in_arabic }}</p>
+    
+    <p><strong>تاريخ الإصدار:</strong> {{ employeecoursecertificate.date_issued }}</p>
+
+    <p><strong>رقم كتاب اصدار الشهادة:</strong> {{ employeecoursecertificate.course_number }}</p>
+    
+    <p><strong>تاريخ المباشرة بالدورة:</strong> {{ employeecoursecertificate.start_date }}</p>
+    
+    <p><strong>تاريخ انتهاء الدورة:</strong> {{ employeecoursecertificate.end_date }}</p>
+
+    <p><strong>مدة الدورة:</strong> {{ employeecoursecertificate.course_duration }}</p>
+
+    <p><strong>ملاحظات:</strong> {{ employeecoursecertificate.comments }}</p>
+
+    <p><strong>ملف الشهادة:</strong>
+        {% if employeecoursecertificate.certificate_file %}
+            <a href="{{ employeecoursecertificate.certificate_file.url }}" target="_blank">عرض الشهادة</a>
+        {% else %}
+            لا يوجد ملف
+        {% endif %}
+    </p>
+
+    <p><strong>تم الإنشاء بواسطة:</strong> {{ employeecoursecertificate.created_by }}</p>
+
+    <p><strong>تاريخ الإضافة:</strong> {{ employeecoursecertificate.created_at }}</p>
+    <p><strong>تاريخ التعديل:</strong> {{ employeecoursecertificate.updated_at }}</p>
+
+    <a href="{% url 'rddepartment:update_employeecoursecertificate' employeecoursecertificate.slug %}" class="button"> تحديث   </a>
+
+
+    <a href="{% url 'rddepartment:delete_employeecoursecertificate' employeecoursecertificate.slug %}" 
+       class="danger_button" 
+       onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه البيانات')">
+       حذف
+    </a>  
+
+</div>
+
+{% endblock %}

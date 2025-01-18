@@ -1,0 +1,86 @@
+{% extends 'core/base.html' %}
+
+{% block titlecontent %}احصائيات الاماكن{% endblock %}
+
+
+{% block sidemenu %}
+
+
+<h3>  </h3>
+
+<div class="button-container">
+   
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+   
+    <a href="{% url 'locations:export_governorates_csv' %}" class="custom-button">تصدير المحافظات </a>
+
+
+
+
+
+<a href="{% url 'locations:export_all_regions_csv' %}"class="custom-button">تصدير المناطق </a> 
+
+
+
+<a href="{% url 'locations:export_all_continents_csv' %}" class="custom-button">تصدير القارات </a> 
+
+
+<a href="{% url 'locations:export_all_countries_csv' %}" class="custom-button">تصدير الدول </a> 
+
+
+</div>
+
+
+
+
+
+{% endblock %}
+
+{% block content %}
+<div class="cards-container">
+
+    {% if perms.locations.can_view_governorate_details %}
+    <div class="card">
+        <h3 class="card-title">صفحة المحافظات</h3>
+        <p class="card-description">يهتم هذا الجزء بإعداد الحسابات للموظفين من إنشاء وتغيير باسوورد وصلاحيات.</p>
+        <a href="{% url 'locations:governorate_statistics' %}" class="button">اضغط هنا</a>
+    </div>
+    {% endif %}
+
+    {% if perms.locations.can_view_region_details %}
+    <div class="card">
+        <h3 class="card-title">صفحة المناطق </h3>
+        <p class="card-description">يتناول هذا الجزء البيانات الشخصية للموظفين من بيانات أساسية وبيانات إضافية ووثائق شخصية.</p>
+        <a href="{% url 'locations:region_statistics' %}" class="button">اضغط هنا</a>
+    </div>
+    {% endif %}
+
+    {% if perms.locations.can_view_continent %}
+    <div class="card">
+        <h3 class="card-title">صفحة القارات </h3>
+        <p class="card-description">يهتم هذا الجزء بجانب الشهادات الأكاديمية والأمور التطويرية.</p>
+        <a href="{% url 'locations:continent_statistics' %}" class="button">اضغط هنا</a>
+    </div>
+    {% endif %}
+    
+    {% if perms.locations.can_view_country_details %}
+    <div class="card">
+        <h3 class="card-title">صفحة الدول  </h3>
+        <p class="card-description">يهتم هذا الجزء بجانب المعلومات الجغرافية من قارات ودول و محافظات ومناطق   .</p>
+        <a href="{% url 'locations:country_statistics' %}" class="button">اضغط هنا  </a>
+    </div>
+
+    {% endif %}
+    <!-- أضف المزيد من الكروت هنا -->
+</div>
+
+
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">عدد المحافظات  : {{ total_governorates }}</label>
+<label class="result-label">عـدد الـمــناطـق  : {{ total_regions }}</label>
+<label class="result-label">عـــدد الـــــدول  : {{ total_countries }}</label>
+<label class="result-label">عــــدد الــقــارات  : {{ total_continents }}</label>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'core/base.html' %}
+
+{% block title %}صفحة رفع الجامعات الاجنبية   {% endblock %}
+
+{% block titlesidemenu %}
+{% endblock %}
+
+
+{% block content %}
+  <h2>تحميل بيانات الجامعات الأجنبية من CSV</h2>
+  
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="update_button" >تحميل</button>
+  </form>
+  
+{% endblock %}
+
+
+
+{% block sidemenu %}
+
+
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'rddepartment:main_rddepartment' %}" class="custom-button">   الشهادات والتطوير     </a>
+    <a href="{% url 'rddepartment:main_foreignuniversity' %}" class="custom-button">   الجامعات الاجنبية      </a>
+    {% if perms.rddepartment.can_add_foreign_university %}
+    <a href="{% url 'rddepartment:add_foreignuniversity' %}" class="custom-button">  اضافة  جامعة اجنبية    </a>
+    {% else %}
+    ليس  لديك صلاحية ادخال جامعة 
+    {% endif %}
+
+    {% if perms.rddepartment.can_add_foreign_university %}
+    <a href="{% url 'rddepartment:upload_foreign_university_csv' %}" class="custom-button">   رفع ملف CSV      </a>
+    
+    {% endif %}
+    <a href="{% url 'rddepartment:download_sample_foreign_universities_csv' %}" class="custom-button">   نموذج  CSV      </a>
+
+    
+
+    
+</div>
+
+
+
+{% endblock %}
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %}
+
+{% block title %}صفحة رفع الجامعات الاجنبية   {% endblock %}
+
+{% block titlesidemenu %}
+{% endblock %}
+
+
+{% block content %}
+  <h2>ادخال الشهادات الاكاديمية للموظفين     CSV</h2>
+  
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="update_button" >تحميل</button>
+  </form>
+  
+{% endblock %}
+
+
+{% block sidemenu %}
+
+
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'rddepartment:main_rddepartment' %}" class="custom-button">   الشهادات والتطوير     </a>
+    <a href="{% url 'rddepartment:main_employeeeducation' %}" class="custom-button">   شهادات الموظفين      </a>
+    <a href="{% url 'rddepartment:download_employee_education_sample_csv' %}" class="custom-button">   نموذج CSV      </a>
+
+    {% if perms.personalinfo.can_add_employee_education %} 
+    <a href="{% url 'rddepartment:upload_employee_education_csv' %}" class="custom-button">   رفع CSV      </a>
+    {% else %}
+    ليس لديك صلاحية الرفع
+    {% endif %}
+    
+    
+</div>
+
+
+
+{% endblock %}
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

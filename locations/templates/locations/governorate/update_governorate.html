@@ -1,0 +1,43 @@
+{% extends 'core/base.html' %}
+
+{% block titlecontent %}تحديث المحافظة{% endblock %}
+
+{% block content %}
+<h2>تحديث بيانات المحافظة: {{ governorate.name_arabic }}</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="update_button">تحديث</button>
+</form>
+
+
+{% endblock %}
+
+
+{% block sidemenu %}
+
+<div class="button-container">
+    
+
+<a href="{% url 'locations:main_locations_dashboard' %}" class="custom-button">الاماكن</a>
+<a href="{% url 'locations:governorate_statistics' %}" class="custom-button">المحافظات</a>
+<a href="{% url 'locations:governorate_create' %}" class="custom-button">ادخال محافظة جديدة</a>
+<a href="{% url 'locations:export_governorates_csv' %}" class="custom-button">تصدير CSV</a>
+<a href="{% url 'locations:download_sample_governorates_csv' %}" class="custom-button"> نموذج CSV</a>
+<a href="{% url 'locations:download_all_governorates_csv' %}" class="custom-button">   جميع المحافظات </a>
+<a href="{% url 'locations:upload_governorates_csv' %}" class="custom-button"> رفع CSV</a>
+
+
+
+
+</div>
+
+
+{% endblock %}
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

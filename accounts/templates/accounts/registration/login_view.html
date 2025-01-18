@@ -1,0 +1,38 @@
+
+{% extends 'core/base.html' %}
+
+{% block title %}Login{% endblock %}
+{% block navbar %} {% endblock %}
+
+
+{% block sidemenu %}
+<div style="display: flex; align-items: center; justify-content: flex-start;">
+    <div style="margin-right: 20px;">
+        {% if logo %}
+            <!-- استخدام الفئة التي تم تعريفها في ملف CSS -->
+            <img src="{{ logo.image.url }}" alt="شعار الوزارة" class="logo-image">
+        {% else %}
+            <p>لا يوجد شعار.</p>
+        {% endif %}
+    </div>
+    <div>
+        <!-- أي محتوى آخر في السايد بار -->
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+    <h2>تسجيل الدخول</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">تسجيل الدخول</button>
+    </form>
+   
+    {% comment %} <p>هل نسيت كلمة المرور؟ <a href="{% url 'accounts:password_reset_by_employee_id' %}">إعادة تعيين كلمة المرور</a></p> {% endcomment %}
+
+
+    {% endblock %}
+
+
+    

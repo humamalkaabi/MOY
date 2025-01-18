@@ -1,0 +1,36 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+قائمة المؤسسات
+{% endblock %}
+
+{% block titlesidemenu %}
+<h2 style="color: #fff;">مرحبا، {{ request.user.get_full_name }}</h2>
+{% endblock %}
+
+{% block sidemenu %}
+
+{% endblock %}
+
+{% block titlecontent %}
+<h2>ادخال البيانات </h2>
+{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+    <div >
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<form method="post" novalidate>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">حفظ</button>
+</form>
+{% endblock %}

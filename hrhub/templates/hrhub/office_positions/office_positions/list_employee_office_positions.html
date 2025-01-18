@@ -1,0 +1,84 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+    <title>مناصب الموظف - {{ employee.firstname }} {{ employee.surname }}</title>
+{% endblock %}
+
+
+{% block titlecontent %}
+    <h2>المناصب الخاصة بالموظف: {{ employee.firstname }} {{ employee.surname }}</h2>
+{% endblock %}
+
+{% block content %}
+    {% if office_positions %}
+        <table class="custom-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>المكتب</th>
+                    <th>الوظيفة</th>
+                    <th>نوع الأمر الصادر</th>
+                    <th>رقم الأمر</th>
+                    <th>تاريخ الأمر</th>
+                    <th>الحالة</th>
+                    <th>نوع التكليف</th>
+                    <th>تاريخ البدء</th>
+                  
+                    <th> تفاصيل </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for position in office_positions %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ position.office.name }}</td>
+                        <td>{{ position.position.name }}</td>
+                        <td>{{ position.duty_assignment_order.name }}</td>
+                        <td>{{ position.duty_assignment_order_number|default:"غير متوفر" }}</td>
+                        <td>{{ position.duty_assignment_order_date|date:"d/m/Y"|default:"غير متوفر" }}</td>
+                        <td>{{ position.get_status_display }}</td>
+                        <td>
+                            {% if position.is_primary %}
+                                اصالة
+                            {% else %}
+                                وكالة
+                            {% endif %}
+                        </td>
+                        <td>{{ position.start_date|date:"d/m/Y" }}</td>
+                       
+
+                        <td><a href="{% url 'hrhub:office_position_detail' position.slug %}" class="update_button"> عرض  </a></td>
+
+                        
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+        <p>لا توجد مناصب مرتبطة بهذا الموظف.</p>
+    {% endif %}
+
+    
+{% endblock %}
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:main_position' %}" class="custom-button">  المناصب       </a>
+   
+    <a href="{% url 'hrhub:add_employee_office_position' employee.slug %}" class="custom-button">اضافة منصب  </a>
+
+
+    
+</div>
+{% endblock %}
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+

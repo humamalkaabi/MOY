@@ -1,0 +1,76 @@
+{% extends 'core/base.html' %}
+
+{% block titlecontent %}
+    تحديث دائرة الموظف
+{% endblock %}
+
+{% block content %}
+  <h2>تحديث بيانات الدائرة للموظف: {{ employee_office.basic_info }}</h2>
+  <form method="post">
+    {% csrf_token %}
+    
+    <br>
+
+    <label for="id_parent_office">الوحدة الإدارية الرئيسية:</label>
+    {{ form.parent_office }}
+
+    <br>
+
+    <label for="id_office">الوحدة الإدارية الفرعية:</label>
+    {{ form.office }}
+    <br>
+
+    <label for="id_start_date">تاريخ الانضمام:</label>
+    {{ form.start_date }}
+    <br>
+
+    <label for="id_end_date">تاريخ الانتهاء:</label>
+    {{ form.end_date }}
+    <br>
+
+    <label for="id_comments">ملاحظات:</label>
+    {{ form.comments }}
+<br> 
+    <button type="submit" class="update_button" >حفظ التحديث</button>
+    <a href="{% url 'hrhub:employee_offices_view' employee_office.basic_info.slug %}" class="cancel-button">إلغاء</a>
+  </form>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function () {
+        $("#id_parent_office").change(function () {
+            var parentOfficeId = $(this).val();
+            if (parentOfficeId) {
+                $.ajax({
+                    url: "{% url 'hrhub:ajax_load_emplloyee_offices' %}",
+                    data: { "parent_office": parentOfficeId },
+                    success: function (data) {
+                        var officeField = $("#id_office");
+                        officeField.html('<option value="">اختر الوحدة الإدارية</option>');
+                        $.each(data, function (index, office) {
+                            officeField.append('<option value="' + office.id + '">' + office.name + '</option>');
+                        });
+                    }
+                });
+            } else {
+                $("#id_office").html('<option value="">اختر الوحدة الإدارية</option>');
+            }
+        });
+    });
+  </script>
+{% endblock %}
+
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+   
+    <a href="{% url 'hrhub:mainemployeeoffice' %}" class="custom-button"> صفحة دوائر الموظفين  </a>
+    <a href="{% url 'hrhub:main_offices' %}" class="custom-button">الوحدات الإدارية</a>
+    <a href="{% url 'hrhub:upload_employees_csv' %}" class="custom-button">رفع ملف CSV </a>
+    <a href="{% url 'hrhub:download_employee_offices_csv_template' %}" class="custom-button">تحميل نموذج CSV </a>
+</div>
+{% endblock %}

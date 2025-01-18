@@ -1,0 +1,56 @@
+{% extends 'core/base.html' %}
+
+{% block title %}سجلات العمل للموظفين{% endblock %}
+{% block sidemenu %}
+<p><a href="{% url 'accounts:main_control_panel' %}" class="button">لوحة التحكم الإدارية</a></p>
+<p><a href="{% url 'hrhub:main_hrhub' %}" class="button">صفحة الموارد البشرية</a></p>
+<p><a href="{% url 'hrhub:main_employement' %}" class="button">صفحة انواع الخدمات الوظيفية </a></p>
+<p><a href="{% url 'hrhub:list_places_of_employment' %}" class="button">صفحة اماكن التوظيف </a></p>
+{% endblock %}
+
+{% block searchbar %}
+
+{% endblock %}
+
+{% block content %}
+
+{% block content %}
+<h2>إحصائيات التوظيف</h2>
+
+<!-- إحصائية أكثر نوع توظيف فيه موظفين -->
+{% if most_common_employment_type %}
+    <p><strong>أكثر نوع توظيف فيه موظفين:</strong> {{ most_common_employment_type.name }} ({{ most_common_employment_type.num_employees }} موظف)</p>
+{% else %}
+    <p>لا توجد أنواع توظيف محددة بعد.</p>
+{% endif %}
+
+<!-- إحصائية أقدم تاريخ بداية توظيف -->
+{% if earliest_start_date %}
+    <p><strong>أقدم تاريخ بداية توظيف:</strong> {{ earliest_start_date }}</p>
+{% else %}
+    <p>لا توجد سجلات توظيف بعد.</p>
+{% endif %}
+
+<!-- إحصائية أكثر موظف لديه أنواع توظيف متعددة -->
+{% if employees_with_multiple_employment_types %}
+    <h3>الموظفون الذين لديهم أكثر من نوع توظيف:</h3>
+    <ul>
+        {% for employee, stats in employees_with_multiple_employment_types %}
+            <li>{{ employee.get_full_name }} - عدد أنواع التوظيف: {{ stats.num_employment_types }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>لا يوجد موظفون لديهم أكثر من نوع توظيف.</p>
+{% endif %}
+{% endblock %}
+{% endblock %}
+
+
+{% block leftsidemenu %}
+{% comment %} <div class="results-container">
+    <h2 class="results-title"> </h2>
+    <div class="result-item">
+        <p><strong>نتائج البحث :</strong> {{ total_employees }}</p>
+    </div>
+</div> {% endcomment %}
+{% endblock %}

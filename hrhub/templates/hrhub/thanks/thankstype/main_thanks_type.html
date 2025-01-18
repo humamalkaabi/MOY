@@ -1,0 +1,82 @@
+{% extends 'core/base.html' %}
+
+{% block title %}قائمة الموظفين{% endblock %}
+
+{% block titlesidemenu %}
+{% endblock %}
+
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:main_employeethanks' %}" class="custom-button">  كتب شكر الموظفين       </a>
+   
+    <a href="{% url 'hrhub:add_thanks_type' %}" class="custom-button">  اضافة نوع  كتاب شكر جديد    </a><br>    
+    {% comment %} <a href="{% url 'hrhub:upload_employees_csv' %}" class="custom-button">رفع ملف CSV </a> {% endcomment %}
+    {% comment %} <a href="{% url 'hrhub:download_employee_offices_csv_template' %}" class="custom-button">تحميل نموذج CSV </a> {% endcomment %}
+</div>
+{% endblock %}
+
+
+
+{% block content %}
+
+<table class="custom-table">
+
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>اسم نوع كتاب الشكر  </th>
+            <th>تاثير كتاب الشكر   </th>
+            <th>ملاحظات البيانات </th>
+            <th>مدخل البيانات </th>
+            <th>تفاصيل البيانات </th>
+            <th>تحديث البيانات </th>
+            <th>حذف البيانات </th>
+           
+        </tr>
+    </thead>
+    <tbody>
+        {% for thanks_type in thanks_types %}
+        <tr>
+            <td>{{ thanks_type.counter }}</td>
+            <td>{{ thanks_type.thanks_name }}</td>
+            <td>{{ thanks_type.thanks_impact }}</td>
+            <td>{{ thanks_type.details }}</td>
+            <td>{{ thanks_type.created_by }}
+            </td>
+          
+            <td>
+             <a href="{% url 'hrhub:thanks_type_detail' slug=thanks_type.slug %}" class="update_button"> عرض  </a>  
+            
+            </td> 
+            <td> 
+                {% if perms.personalinfo.can_update_thanks_type %}
+         <a href="{% url 'hrhub:update_thanks_type' thanks_type.slug %}" class="update_button">تحديث</a> 
+         {% endif  %}
+            </td> 
+
+             <td>
+                {% if perms.personalinfo.can_delete_thanks_type %}
+               <a href="{% url 'hrhub:delete_thanks_type' thanks_type.slug %}"  class="delete_button" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه  البيانات')">حذف</a> 
+               {% endif  %}
+            </td> 
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">لا توجد ديانات مسجلة حالياً.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">مجموع البيانات     : {{ thanks_types_count }}</label>
+{% endblock %}

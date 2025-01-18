@@ -1,0 +1,34 @@
+{% extends 'core/base.html' %}
+
+
+{% block title %}
+
+{% endblock %}
+
+
+
+{% block titlesidemenu %}
+
+{% endblock %}
+
+
+{% block sidemenu %}
+
+{% endblock %}
+
+
+{% block titlecontent %}
+
+{% endblock %} 
+
+{% block content %}
+
+
+<h2>تحديث العنوان الوظيفي: {{ job_title.title_in_arabic }} - {{ job_title.parent }}</h2>
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="update_button">تحديث</button>
+  </form>
+
+{% endblock %}

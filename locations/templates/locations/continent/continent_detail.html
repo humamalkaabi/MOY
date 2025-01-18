@@ -1,0 +1,35 @@
+{% extends 'core/base.html' %}
+
+{% block titlecontent %}تفاصيل القارة{% endblock %}
+
+{% block content %}
+
+
+
+<div class="main-content">
+    <h2>تفاصيل القارة: {{ continent.name_arabic }}</h2>
+    <p><strong>الاسم باللغة الإنجليزية:</strong> {{ continent.name_english }}</p>
+    <p><strong>الوصف:</strong> {{ continent.description }}</p>
+    <p><strong>مدخل البيانات:</strong> {{ continent.created_by.get_full_name }}</p>
+    <p><strong>تاريخ الإنشاء:</strong> {{ continent.created_at }}</p>
+    <p><strong>تاريخ التحديث:</strong> {{ continent.updated_at }}</p>
+</div>
+
+
+<a href="{% url 'locations:update_continent' continent.slug %}" class="update_button">تحديث</a>
+<a href="{% url 'locations:delete_continent' continent.slug %}" class="delete_button" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه المحافظة؟')">حذف</a>
+
+{% endblock %}
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'locations:main_locations_dashboard' %}" class="custom-button">الأماكن</a>
+    <a href="{% url 'locations:create_continent' %}" class="custom-button">إدخال قارة</a>
+</div>
+{% endblock %}
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

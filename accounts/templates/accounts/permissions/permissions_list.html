@@ -1,0 +1,46 @@
+{% extends 'core/base.html' %}
+
+{% block titlecontent %}
+<h2>تفاصيل الموظف</h2>
+{% endblock %}
+
+{% block content %}
+
+<h1>صلاحيات التطبيقات</h1>
+{% for app, models in permissions_dict.items %}
+    <h2>{{ app }}</h2>
+    {% if models %}
+        <table>
+            <thead>
+                <tr>
+                    <th>الموديل</th>
+                    <th>كود الصلاحية</th>
+                    <th>اسم الصلاحية</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for model, permissions in models.items %}
+                    {% for codename, name in permissions %}
+                    <tr>
+                        <td>{{ model }}</td>
+                        <td>{{ codename }}</td>
+                        <td>{{ name }}</td>
+                    </tr>
+                    {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>لا توجد صلاحيات مخصصة.</p>
+    {% endif %}
+{% endfor %}
+{% endblock %}
+
+
+
+{% block sidemenu %}
+
+
+
+
+{% endblock %}

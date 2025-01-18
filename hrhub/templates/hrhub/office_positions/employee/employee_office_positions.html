@@ -1,0 +1,74 @@
+{% extends 'core/base.html' %}
+
+
+
+{% block leftsidemenu %}
+
+<div class="results-container">
+    <h2 class="results-title"> </h2>
+    <div class="result-item">
+        <p><strong>نتائج البحث   :</strong> {{ total_results }}</p>
+       
+    </div>
+    <!-- يمكنك تكرار result-item لكل نتيجة -->
+</div>
+
+{% endblock %}
+
+
+{% block searchbar %}
+<div class="searchbar-container">
+   
+    <form method="get" action="{% url 'hrhub:employee_office_positions' slug=employee.slug %}">
+        <label for="status">اختر الحالة:</label>
+        <select name="status" id="status">
+            <option value="">جميع الحالات</option>
+            <option value="ongoing" {% if status_filter == 'ongoing' %}selected{% endif %}>مستمر</option>
+            <option value="ended" {% if status_filter == 'ended' %}selected{% endif %}>منتهي</option>
+        </select>
+        <button type="submit">بحث</button>
+    </form>
+    
+</div>
+{% endblock %}
+
+
+{% block content %}
+<h2>المناصب والمواقع التي شغلها الموظف {{ employee.firstname }} {{ employee.secondname }} {{ employee.surname }}</h2>
+
+<!-- جدول عرض المناصب -->
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th>رقم</th>
+            <th>المكتب</th>
+            <th>الوظيفة</th>
+            <th>تاريخ المباشرة</th>
+            <th>تاريخ الانتهاء</th>
+            <th>الحالة</th>
+            <th>مدة الخدمة</th>
+            <th>ملاحظات</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for position in office_positions %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ position.office.name }}</td>
+            <td>{{ position.position.name }}</td>
+            <td>{{ position.start_date }}</td>
+            <td>{{ position.end_date }}</td>
+            <td>{{ position.get_status_display }}</td>
+            <td>{{ position.get_duration.0 }} سنوات، {{ position.get_duration.1 }} شهور، {{ position.get_duration.2 }} أيام</td>
+            <td>{{ position.comments }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7">لا توجد علاقات مكتبية أو وظيفية لهذا الموظف.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+

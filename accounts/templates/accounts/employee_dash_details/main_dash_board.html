@@ -1,0 +1,289 @@
+{% extends 'core/base.html' %}
+
+{% block title %}قائمة الموظفين{% endblock %}
+
+{% block titlesidemenu %}
+{% endblock %}
+
+{% block searchbar %}
+
+<div class="search-bar">
+    <form class="form-horizontal" method="get" action="{% url 'accounts:main_dash_board' %}">
+        <!-- الصف الأول -->
+        <div class="form-group">
+           
+            <input type="text" name="search" id="search" value="{{ query }}" placeholder="أدخل رقم الوظيفة" />
+        </div>
+        <div class="form-group">
+           
+            <input type="text" name="firstname" id="firstname" value="{{ request.GET.firstname }}" placeholder="أدخل الاسم الأول" />
+        </div>
+     <div class="form-group">
+           
+            <input type="text" name="secondname" id="secondname" value="{{ request.GET.secondname }}" placeholder="أدخل الاسم الثاني" />
+     </div>
+     <div class="form-group">
+          
+            <input type="text" name="thirdname" id="thirdname" value="{{ request.GET.thirdname }}" placeholder="أدخل الاسم الثالث" />
+        </div>
+    
+        <!-- الصف الثاني -->
+        <div class="form-group">
+           
+            <select name="basic_info_filter" id="basic_info_filter">
+                <option value="" {% if basic_info_filter == "" %}selected{% endif %}>الكل</option>
+                <option value="has_info" {% if basic_info_filter == "has_info" %}selected{% endif %}>لديه معلومات أساسية</option>
+                <option value="no_info" {% if basic_info_filter == "no_info" %}selected{% endif %}>ليس لديه معلومات أساسية</option>
+            </select>
+        </div>
+        <div class="form-group">
+    
+            
+            <select name="additional_info_filter" id="additional_info_filter">
+                <option value="" {% if additional_info_filter == "" %}selected{% endif %}>الكل</option>
+                <option value="has_info" {% if additional_info_filter == "has_info" %}selected{% endif %}>لديه معلومات إضافية</option>
+                <option value="no_info" {% if additional_info_filter == "no_info" %}selected{% endif %}>ليس لديه معلومات إضافية</option>
+            </select>
+        </div>
+
+       
+        <div class="form-group">
+            <!-- حقل اختيار عدد العناصر في الصفحة -->
+            <label for="per_page">عدد العناصر في الصفحة:</label>
+            <select name="per_page" id="per_page">
+                <option value="10" {% if per_page == "10" %}selected{% endif %}>10</option>
+                <option value="1" {% if per_page == "1" %}selected{% endif %}>1</option>
+                <option value="5" {% if per_page == "5" %}selected{% endif %}>5</option>
+                
+                <option value="20" {% if per_page == "20" %}selected{% endif %}>20</option>
+                <option value="50" {% if per_page == "50" %}selected{% endif %}>50</option>
+                <option value="100" {% if per_page == "100" %}selected{% endif %}>100</option>
+            </select>
+        </div>
+            <button type="submit">بحث</button>
+        </div>
+    </form>
+    </div>
+
+
+
+{% endblock%}
+
+{% block content %}
+
+<h2>قائمة الموظفين</h2>
+
+<table class="custom-table">
+        <thead>
+            <tr>
+                <th>الرقم الوظيفي</th>
+                <th>تفعيل الحساب</th>
+                <th>المعلومات الاساسية</th>
+                <th>المعلومات الاضافية </th>
+                <th>قام بإنشاء الحساب</th>
+                <th> العمر </th>
+                <th> لوحة تحكم الموظفين </th>
+
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for employee in employees %}
+            <tr>
+                <td>{{ employee.username }}</td>
+                <td>{{ employee.is_active|yesno:"نعم,لا" }}</td>
+                
+                <td>
+                    {% if employee.basic_info %}
+                        نعم -  {{ employee.basic_info.get_full_name }} -  <a href="{% url 'personalinfo:employee_detail' employee.basic_info.slug %}">عرض معلومات أساسية</a>
+                       
+                
+                    {% else %}
+                        كلا - يجب اضافة البيانات الاساسية اولا   <a href="{% url 'personalinfo:add_basic_info' employee.slug %}">إضافة معلومات أساسية</a>                  
+                    {% endif %}
+
+                   
+                </td>
+                <td>
+                    {% if employee.basic_info and not employee.basic_info.additional_info %}
+                        <a href="{% url 'personalinfo:create_additional_info' employee.basic_info.slug %}">إضافة معلومات إضافية</a>
+                    {% elif employee.basic_info and employee.basic_info.additional_info %}
+                        نعم - <a href="{% url 'personalinfo:additional_info_detail' employee.basic_info.additional_info.slug %}">عرض معلومات إضافية</a>
+                    {% else %}
+                        كلا - يجب إضافة البيانات الأساسية أولاً
+                    {% endif %}
+                </td>
+
+               
+                <td>{{ employee.basic_info.additional_info.created_by.basic_info.get_full_name }}</td>
+                <td>
+                    {% if employee.basic_info %}
+                        {{ employee.basic_info.age }} <!-- عرض العمر -->
+                    {% else %}
+                        غير متوفر
+                    {% endif %}
+                </td>
+                <td>   <a href="{% url 'accounts:main_employee_dash_details' employee.slug %}">لوحة التحكم الموظفين  </a> </td>
+                
+
+
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">لا توجد نتائج.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+<!-- التنقل بين الصفحات -->
+<div class="pagination">
+    <span class="step-links">
+        {% if employees.has_previous %}
+            <!-- رابط الصفحة الأولى -->
+            <a href="?page=1&search={{ query }}&basic_info_filter={{ basic_info_filter }}&additional_info_filter={{ additional_info_filter }}&per_page={{ per_page }}">أولاً</a>
+            <!-- رابط الصفحة السابقة -->
+            <a href="?page={{ employees.previous_page_number }}&search={{ query }}&basic_info_filter={{ basic_info_filter }}&additional_info_filter={{ additional_info_filter }}&per_page={{ per_page }}">السابق</a>
+        {% endif %}
+
+        <span class="current">
+            الصفحة {{ employees.number }} من {{ employees.paginator.num_pages }}.
+        </span>
+
+        {% if employees.has_next %}
+            <!-- رابط الصفحة التالية -->
+            <a href="?page={{ employees.next_page_number }}&search={{ query }}&basic_info_filter={{ basic_info_filter }}&additional_info_filter={{ additional_info_filter }}&per_page={{ per_page }}">التالي</a>
+            <!-- رابط الصفحة الأخيرة -->
+            <a href="?page={{ employees.paginator.num_pages }}&search={{ query }}&basic_info_filter={{ basic_info_filter }}&additional_info_filter={{ additional_info_filter }}&per_page={{ per_page }}">أخيراً</a>
+        {% endif %}
+    </span>
+</div>
+
+
+{% endblock %}
+{% block leftsidemenu %}
+<div class="results-container">
+    <h2 class="results-title"> </h2>
+    <div class="result-item">
+        <p><strong>نتائج البحث :</strong> {{ employees_accounts }}</p>
+    </div>
+    <form method="get">
+        <select name="gender_filter" class="form-select">
+            <option value="">-- اختر الجنس --</option>
+            <option value="M" {% if gender_filter == "M" %}selected{% endif %}>ذكر</option>
+            <option value="F" {% if gender_filter == "F" %}selected{% endif %}>أنثى</option>
+        </select>
+        
+        <select name="place_of_birth" id="place_of_birth" class="form-select">
+            <option value="">-- اختر مكان الولادة --</option>
+            {% for governorate in governorates %}
+                <option value="{{ governorate.id }}" {% if place_of_birth == governorate.id|stringformat:"s" %}selected{% endif %}>
+                    {{ governorate.name }}
+                </option>
+            {% endfor %}
+        </select>
+      
+        <select name="blood_type_filter" id="blood_type_filter" class="form-select">
+            <option value="">-- اختر فصيلة الدم --</option>
+            <option value="A" {% if blood_type_filter == "A" %}selected{% endif %}>A</option>
+            <option value="B" {% if blood_type_filter == "B" %}selected{% endif %}>B</option>
+            <option value="AB" {% if blood_type_filter == "AB" %}selected{% endif %}>AB</option>
+            <option value="O" {% if blood_type_filter == "O" %}selected{% endif %}>O</option>
+            <option value="A-" {% if blood_type_filter == "A-" %}selected{% endif %}>A-</option>
+            <option value="B-" {% if blood_type_filter == "B-" %}selected{% endif %}>B-</option>
+            <option value="AB-" {% if blood_type_filter == "AB-" %}selected{% endif %}>AB-</option>
+            <option value="O-" {% if blood_type_filter == "O-" %}selected{% endif %}>O-</option>
+        </select>
+
+        <select name="marital_status_filter" id="marital_status_filter" class="form-select">
+            <option value="">-- اختر الحالة الاجتماعية --</option>
+            <option value="single" {% if marital_status_filter == "single" %}selected{% endif %}>أعزب</option>
+            <option value="married" {% if marital_status_filter == "married" %}selected{% endif %}>متزوج</option>
+            <option value="divorced" {% if marital_status_filter == "divorced" %}selected{% endif %}>مطلق</option>
+            <option value="widowed" {% if marital_status_filter == "widowed" %}selected{% endif %}>أرمل</option>
+        </select>
+
+        <select name="religion_filter" id="religion_filter" class="form-select">
+            <option value="">-- اختر الديانة --</option>
+            {% for religion in religions %}
+                <option value="{{ religion.id }}" {% if religion_filter == religion.id|stringformat:"s" %}selected{% endif %}>{{ religion.name }}</option>
+            {% endfor %}
+        </select>
+
+        <div class="form-group">
+            <select name="education_degree_type_filter" id="education_degree_type_filter" class="form-select">
+                <option value="">-- اختر نوع الشهادة --</option>
+                {% for degree in education_degrees %}
+                    <option value="{{ degree.id }}" {% if education_degree_type_filter == degree.id|stringformat:"s" %}selected{% endif %}>{{ degree.name_in_arabic }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <a href="#" onclick="this.closest('form').submit();" class="small-link">تصفية</a>
+    </form>
+</div>
+
+<style>
+    .results-container {
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin: 0 auto;
+        width: 100%;
+        max-width: 400px; /* تحديد عرض الحاوية */
+        box-sizing: border-box; /* يشمل الحشو والحدود في الحسابات */
+    }
+
+    .form-select {
+        display: block; /* تأكد من أن كل <select> يعرض في سطر منفصل */
+        width: 100%; /* عرض كامل للحاوية */
+        margin-bottom: 10px; /* مسافة بين العناصر */
+        padding: 8px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .small-link {
+        display: inline-block;
+        padding: 8px 15px;
+        font-size: 14px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-align: center;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .small-link:hover {
+        background-color: #0056b3;
+    }
+
+    .result-item {
+        margin-bottom: 15px;
+    }
+</style>
+{% endblock %}
+
+
+
+{% block sidemenu %}
+<p><a href="{% url 'accounts:view_profile' %}" class="button">الصفحة الشخصية   </a></p>
+<p>  <a href="{% url 'accounts:main_control_panel' %}" class="button">لوحة التحكم الادارية    </a></p>
+
+
+<p><a href="{% url 'personalinfo:main_personalinfo' %}" class="button">ادارة البيانات الشخصية    </a></p>
+
+
+
+    <a href="{% url 'personalinfo:export_additional_info_csv' %}?search={{ query }}&firstname={{ firstname }}&secondname={{ secondname }}&thirdname={{ thirdname }}&basic_info_filter={{ basic_info_filter }}&additional_info_filter={{ additional_info_filter }}" class="button">تصدير إلى CSV</a>
+    <br>  
+    <p><a href="{% url 'personalinfo:additional_info_statistics' %}" class="button">احصائيات سريعة      </a></p>
+    
+
+    
+{% endblock %}

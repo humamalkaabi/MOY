@@ -1,0 +1,31 @@
+{% extends 'core/base.html' %}
+
+
+{% block content %}
+<h2>تحديث رقم الهاتف     للموظف</h2>
+
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="update_button">تحديث</button>
+  </form>
+
+
+{% endblock %}
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+
+
+{% block sidemenu %}
+
+<div class="button-container">
+
+  <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+</div>
+
+
+{% endblock %}

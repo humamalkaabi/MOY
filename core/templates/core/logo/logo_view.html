@@ -1,0 +1,23 @@
+{% extends 'core/base.html' %}
+
+{% block title %} عرض الشعار {% endblock %}
+
+{% block content %}
+    <h1>عرض الشعار</h1>
+
+    {% if logo %}
+        <div>
+            <h2>{{ logo.description }}</h2>
+            <img src="{{ logo.image.url }}" alt="{{ logo.description }}" />
+        </div>
+    {% else %}
+        <p>لا يوجد شعار حالياً.</p>
+    {% endif %}
+    
+{% endblock %}
+
+{% block sidemenu %}
+<p> <a href="{% url 'core:view_main_about_us' %}" class="button">  عرض الصفحة  </a> </p>
+
+{% endblock %}
+

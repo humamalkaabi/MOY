@@ -1,0 +1,35 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h2>إضافة    نوع توظيف</h2>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit" class="update_button">حفظ</button>
+</form>
+
+
+{% endblock %}
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:employee_employment_history' %}" class="custom-button">   الخدمات الوظيفية       </a>
+
+    <a href="{% url 'hrhub:main_employement' %}" class="custom-button">  انواع الخدمات الوظيفية       </a>
+
+    <a href="{% url 'hrhub:employement_type_create' %}" class="custom-button">  اضافة نوع خدمة     </a>
+
+
+   
+</div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'core/base.html' %}
+
+{% block titlecontent %}تفاصيل المنطقة{% endblock %}
+
+{% block content %}
+<h2>تفاصيل المنطقة: {{ region.name_arabic }}</h2>
+<p><strong>اسم المحافظة:</strong> {{ region.governorate.name_arabic }}</p>
+<p><strong>الاسم بالإنكليزي:</strong> {{ region.name_english }}</p>
+<p><strong>الوصف:</strong> {{ region.description }}</p>
+<p><strong>تم إدخال البيانات بواسطة:</strong> {{ region.created_by.get_full_name }}</p>
+<p><strong>تاريخ الإنشاء:</strong> {{ region.created_at }}</p>
+<p><strong>تاريخ التحديث:</strong> {{ region.updated_at }}</p>
+{% if perms.locations.can_update_region %}
+<a href="{% url 'locations:update_region' region.slug %}" class="update_button">تحديث</a>
+{% endif  %}
+{% if perms.locations.can_delete_region %}
+<a href="{% url 'locations:delete_region' region.slug %}" class="delete_button" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه المنطقة؟')">حذف</a>
+{% endif  %}
+{% endblock %}
+
+
+
+
+{% block sidemenu %}
+
+<div class="button-container">
+
+    <a href="{% url 'locations:main_locations_dashboard' %}" class="custom-button">الاماكن</a>
+    {% if perms.locations.can_create_region %}
+    <a href="{% url 'locations:create_region' %}" class="custom-button"> منطقة جديدة</a>
+  {% endif  %}
+   
+    <a href="?governorate={{ request.GET.governorate }}&export=csv" class="custom-button">تصدير إلى CSV</a>
+
+        <a href="{% url 'locations:download_sample_regions_csv' %}" class="custom-button"> نموذج CSV </a>
+
+        {% if perms.locations.can_create_region %}
+        <a href="{% url 'locations:upload_regions_csv' %}" class="custom-button"> رفع CSV </a>
+        {% endif  %}
+  
+   
+        
+
+</div>
+
+
+{% endblock %}
+
+
+
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

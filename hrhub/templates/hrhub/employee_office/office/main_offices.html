@@ -1,0 +1,158 @@
+{% extends 'core/base.html' %}
+
+
+{% block title %}
+
+{% endblock %}
+
+
+{% block leftsidemenu %}
+
+<label class="result-label">
+    عدد النتائج : {{ request.user }}
+</label>
+{% endblock %}
+
+
+
+{% block sidemenu %}
+
+<h3>  </h3>
+
+<div class="button-container">
+
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+   
+    <a href="{% url 'hrhub:mainemployeeoffice' %}" class="custom-button"> صفحة دوائر الموظفين  </a>
+    {% if perms.hrhub.can_add_office %}
+    <a href="{% url 'hrhub:add_office' %}" class="custom-button">  اضافة وحدة ادارية   </a>
+    {% else %}
+     لديك صلاحية ادخال دائرة 
+    {% endif %}
+    <a href="{% url 'hrhub:download_offices_csv_template' %}" class="custom-button">  نموذج CSV       </a>
+    {% if perms.hrhub.can_add_office %}
+        <a href="{% url 'hrhub:upload_offices_csv' %}" class="custom-button">  رفع ملف CSV     </a>
+        {% else %}
+        ليس لديك صلاحية رفع ملف
+        {% endif %}
+
+</div>
+
+
+
+
+
+{% endblock %}
+
+
+
+{% block titlecontent %}
+
+{% endblock %} 
+
+{% block searchbar %}
+<div class="search-wrapper">
+    <form method="get" action="">
+        <div class="main_searchbar">
+            <div class="grid-container">
+                <div class="grid-item input-container">
+                    <select name="office" id="office">
+                        <option value="">اختر وحدة إدارية</option>
+                        {% for office in filtered_offices %}
+                            <option value="{{ office.name }}" {% if selected_office == office.name %}selected{% endif %}>
+                                {{ office.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="grid-item input-container">
+                    <button type="submit">تصفية</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<h2>قائمة الوحدات الادارية المتوفرة بالنظام</h2>
+
+
+<div class="table-container">
+    <table class="custom-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>اسم الدائرة</th>
+            <th>اسم الدائرة الاعلى منها</th>
+            <th>مدخل الدائرة </th>
+            <th>تفاصيل الدائرة </th>
+            <th>تحديث الدائرة </th>
+            <th>حذف الدائرة </th>
+           
+        </tr>
+    </thead>
+    <tbody>
+        {% for office in offices %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ office.name }}</td>
+            <td>{{ office.parent }}</td>
+            <td>{{ office.created_by }}</td>
+            <td><a href="{% url 'hrhub:office_detail' slug=office.slug %}" class="update_button">عرض</a></td>
+            <td>
+                {% if perms.hrhub.can_update_office %}
+                    <a href="{% url 'hrhub:update_office' office.slug %}" class="update_button">تحديث</a>
+                {% else %}
+                    ليس لديك صلاحية
+                {% endif %}
+            </td>
+            <td>
+                {% if perms.hrhub.can_delete_office %}
+                    <a href="{% url 'hrhub:delete_office' office.slug %}" class="delete_button" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه القومية؟')">حذف</a>
+                {% else %}
+                    ليس لديك صلاحية
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7">لا توجد وحدات إدارية مسجلة حالياً.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    
+</table>
+</div>
+{% endblock %}
+
+
+{% block pagination %}
+<div class="pagination-container">
+    <div class="pagination-info">
+        <span>عدد العناصر بالصفحة:</span>
+        <form method="get" action="" class="pagination-form">
+            <input type="number" id="results_per_page" name="results_per_page" placeholder="عدد النتائج لكل صفحة" value="{{ request.GET.results_per_page|default:10 }}" class="pagination-input">
+        </form>
+    </div>
+    <div class="pagination-controls">
+        {% if offices.has_previous %}
+            <a href="?{{ request.GET.urlencode|slice:':-6' }}&page=1" class="pagination-button">الأولى</a>
+            <a href="?{{ request.GET.urlencode|slice:':-6' }}&page={{ offices.previous_page_number }}" class="pagination-button">السابق</a>
+        {% endif %}
+        <span>صفحة {{ offices.number }} من {{ offices.paginator.num_pages }}</span>
+        {% if offices.has_next %}
+            <a href="?{{ request.GET.urlencode|slice:':-6' }}&page={{ offices.next_page_number }}" class="pagination-button">التالي</a>
+            <a href="?{{ request.GET.urlencode|slice:':-6' }}&page={{ offices.paginator.num_pages }}" class="pagination-button">الأخيرة</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

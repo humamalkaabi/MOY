@@ -1,0 +1,108 @@
+{% extends 'core/base.html' %}
+
+{% block title %}إضافة شهادة أكاديمية{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">إضافة شهادة أكاديمية</h1>
+    <form method="post" enctype="multipart/form-data" id="education-form" class="needs-validation" novalidate>
+        {% csrf_token %}
+        <div class="row g-3">
+            <!-- تكرار الحقول مع تحسين التصميم -->
+            {% for field in form %}
+            <div class="col-md-6">
+                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                {{ field }}
+                <div class="form-text">{{ field.help_text }}</div>
+                {% if field.errors %}
+                <div class="text-danger">{{ field.errors }}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <button type="submit" class="update_button">حفظ</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const certificateTypeField = document.getElementById('id_certificat_minstery_type');
+        const universityTypeField = document.getElementById('id_university_Type');
+        const educationFields = document.querySelectorAll('.education-field');
+        const higherEducationFields = document.querySelectorAll('.higher-education-field');
+        const iraqiUniversityField = document.getElementById('id_iraqi_university').closest('div');
+        const foreignUniversityField = document.getElementById('id_foreign_university').closest('div');
+
+        function toggleFields() {
+            const certificateType = certificateTypeField.value;
+            const universityType = universityTypeField ? universityTypeField.value : null;
+
+            // إظهار أو إخفاء الحقول بناءً على نوع الوزارة
+            if (certificateType === 'education') {
+                educationFields.forEach(field => field.closest('.col-md-6').style.display = 'block');
+                higherEducationFields.forEach(field => field.closest('.col-md-6').style.display = 'none');
+            } else if (certificateType === 'higher_education') {
+                educationFields.forEach(field => field.closest('.col-md-6').style.display = 'none');
+                higherEducationFields.forEach(field => field.closest('.col-md-6').style.display = 'block');
+
+                // إظهار الجامعة العراقية أو الأجنبية بناءً على نوع الجامعة
+                if (universityType === 'iraqi_university') {
+                    iraqiUniversityField.style.display = 'block';
+                    foreignUniversityField.style.display = 'none';
+                } else if (universityType === 'foreign_university') {
+                    iraqiUniversityField.style.display = 'none';
+                    foreignUniversityField.style.display = 'block';
+                } else {
+                    iraqiUniversityField.style.display = 'none';
+                    foreignUniversityField.style.display = 'none';
+                }
+            }
+        }
+
+        // استدعاء الدالة عند تغيير القيمة
+        certificateTypeField.addEventListener('change', toggleFields);
+        if (universityTypeField) {
+            universityTypeField.addEventListener('change', toggleFields);
+        }
+
+        // استدعاء الدالة عند تحميل الصفحة
+        toggleFields();
+    });
+</script>
+{% endblock %}
+
+
+{% block sidemenu %}
+
+
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'rddepartment:main_rddepartment' %}" class="custom-button">   الشهادات والتطوير     </a>
+    <a href="{% url 'rddepartment:main_employeeeducation' %}" class="custom-button">   شهادات الموظفين      </a>
+    <a href="{% url 'rddepartment:download_employee_education_sample_csv' %}" class="custom-button">   نموذج CSV      </a>
+
+    {% if perms.personalinfo.can_add_employee_education %} 
+    <a href="{% url 'rddepartment:upload_employee_education_csv' %}" class="custom-button">   رفع CSV      </a>
+    {% else %}
+    ليس لديك صلاحية الرفع
+    {% endif %}
+    
+    
+</div>
+
+
+
+{% endblock %}
+
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+

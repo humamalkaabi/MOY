@@ -1,0 +1,114 @@
+{% extends 'core/base.html' %}
+
+
+{% block searchbar %}
+
+<form method="get" action=""><div class="main_searchbar">
+
+    <div class="grid-container">
+        <div class="grid-item input-container">
+            <input type="text" id="username" name="username" placeholder="ادخل الرقم الوظيفي" value="{{ request.GET.username }}">
+        </div>
+        <div class="grid-item input-container">
+            <input type="text" id="firstname" name="firstname" placeholder="ادخل الاسم الأول" value="{{ request.GET.firstname }}">
+        </div>
+        <div class="grid-item input-container">
+            <input type="text" id="secondname" name="secondname" placeholder="ادخل الاسم الثاني" value="{{ request.GET.secondname }}">
+        </div>
+        <div class="grid-item input-container">
+            <input type="text" id="thirdname" name="thirdname" placeholder="ادخل الاسم الثالث" value="{{ request.GET.thirdname }}">
+        </div>
+        <div class="grid-item input-container">
+            <select name="has_employment_grade">
+                <option value="">لديه درجة وظيفية</option>
+                <option value="yes" {% if request.GET.has_employment_grade == "yes" %}selected{% endif %}>نعم</option>
+                <option value="no" {% if request.GET.has_employment_grade == "no" %}selected{% endif %}>لا</option>
+            </select>
+        </div>
+        
+
+        <div class="grid-item input-container">
+            <select name="gender">
+                <option value="">اختر الجنس</option>
+                <option value="M" {% if request.GET.gender == "M" %}selected{% endif %}>ذكر</option>
+                <option value="F" {% if request.GET.gender == "F" %}selected{% endif %}>أنثى</option>
+            </select>
+        </div>
+        
+        
+       
+        <div class="grid-item input-container">
+            <select name="has_phone">
+                <option value="">لديه رقم هاتف</option>
+                <option value="yes" {% if request.GET.has_phone == "yes" %}selected{% endif %}>نعم</option>
+                <option value="no" {% if request.GET.has_phone == "no" %}selected{% endif %}>لا</option>
+            </select>
+        </div>
+        
+            <div class="grid-item input-container">
+                <button type="submit">بحث</button>
+            </div>
+           
+    </div>
+</div>
+</form>
+
+
+{% endblock %}
+
+{% block titleleftsidemenu %}
+
+
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">عدد نتائج البحث : {{ employee_count }}</label>
+{% endblock %}
+
+
+{% block titlecontent %}
+
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">عرض إعدادات الدرجة الوظيفية</h2>
+
+    <div class="card p-3 mb-4">
+        <h4>الحالة الحالية:</h4>
+        <ul>
+            <li><strong>حساب العلاوة والترفيع تلقائياً:</strong> 
+                {% if settings.auto_grade_step_upgrade %} ✅ مفعّل {% else %} ❌ غير مفعّل {% endif %}
+            </li>
+            <li><strong>حساب العلاوة والترفيع القادم تلقائياً:</strong> 
+                {% if settings.future_auto_grade_step_upgrade %} ✅ مفعّل {% else %} ❌ غير مفعّل {% endif %}
+            </li>
+            <li><strong>أنشئ بواسطة:</strong> {{ settings.created_by }}</li>
+            <li><strong>تاريخ الإنشاء:</strong> {{ settings.created_at }}</li>
+            <li><strong>آخر تحديث:</strong> {{ settings.updated_at }}</li>
+        </ul>
+    </div>
+{% endblock %}
+
+
+
+
+
+{% block titlesidemenu %}
+
+{% endblock %}
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:main_employee_grade' %}" class="custom-button">  الدرجات الوظيفية        </a> 
+    <a href="{% url 'hrhub:main_employee_step' %}" class="custom-button">  المراحل الوظيفية        </a> 
+
+   
+    
+    
+</div>
+{% endblock %}
+

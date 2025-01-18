@@ -1,0 +1,22 @@
+
+
+  {% extends 'core/base.html' %}
+
+  {% block titlecontent %}احصائيات الدول{% endblock %}
+  
+  {% block sidemenu %}
+  
+      
+  
+  {% endblock %}
+  
+  {% block content %}
+  <h2> ادخال دولة</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+  </form>
+
+  {% endblock %}
+  

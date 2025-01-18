@@ -1,0 +1,74 @@
+{% extends 'core/base.html' %}
+
+{% block title %}  تفاصيل {{ degree_type.name_in_arabic }}      {% endblock %}
+
+{% block titlesidemenu %}
+{% endblock %}
+
+
+
+
+{% block sidemenu %}
+
+
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'rddepartment:main_rddepartment' %}" class="custom-button">   الشهادات والتطوير     </a>
+    <a href="{% url 'rddepartment:main_iraqiuniversity' %}" class="custom-button">   الجامعات العراقية      </a>
+
+    {% if perms.rddepartment.can_add_iraqi_university %}
+    <a href="{% url 'rddepartment:add_iraqiuniversity' %}" class="custom-button">  اضافة  جامعة عراقية    </a>
+    {% else %}
+    ليس  لديك صلاحية ادخال جامعة 
+    {% endif %}
+
+    <a href="{% url 'rddepartment:download_sample_iraqi_university_csv' %}" class="custom-button">   نموذج CSV      </a>
+    
+    {% if perms.rddepartment.can_add_iraqi_university %}
+    <a href="{% url 'rddepartment:upload_iraqi_university_csv' %}" class="custom-button">  رفع ملف CSV       </a>
+    {% else %}
+    ليس  لديك صلاحية ادخال جامعة 
+    {% endif %}
+
+
+    
+</div>
+
+
+
+{% endblock %}
+
+
+
+
+{% block content %}
+<h1>اسم الجامعة: {{ iraqiuniversity.name_arabic }}</h1>
+<p><strong>الاسم بالإنجليزية:</strong> {{ iraqiuniversity.name_english }}</p>
+<p><strong>المحافظة :</strong> {{ iraqiuniversity.governorate }}</p>
+<p><strong>العنوان :</strong> {{ iraqiuniversity.address }}</p>
+
+
+
+<p><strong>تم الإنشاء بواسطة:</strong> {{ iraqiuniversity.created_by }}</p>
+<p><strong>تاريخ الإنشاء:</strong> {{ iraqiuniversity.created_at|date:"d/m/Y H:i" }}</p>
+<p><strong>آخر تحديث:</strong> {{ iraqiuniversity.updated_at|date:"d/m/Y H:i" }}</p>
+
+<a href="{% url 'rddepartment:update_iraqiuniversity' slug=iraqiuniversity.slug %}" class="update_button"> تحديث  </a>   
+
+
+
+<a href="{% url 'rddepartment:delete_iraqiuniversity' iraqiuniversity.slug %}" 
+class="delete_button" 
+   onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه الجامعة؟')">
+   حذف
+</a>  
+
+
+{% endblock %}
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

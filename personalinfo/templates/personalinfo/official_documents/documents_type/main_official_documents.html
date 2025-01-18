@@ -1,0 +1,77 @@
+<!-- main.html -->
+{% extends 'core/base.html' %}
+{% block content %}
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>اسم الوثيقة بالعربية</th>
+            <th>اسم الوثيقة بالإنجليزية</th>
+            <th>ملاحظات</th>
+           
+            <th>تفاصيل</th>
+            <th>تحديث</th>
+            <th>حذف</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for document in documents %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ document.name_in_arabic }}</td>
+            <td>{{ document.name_in_english }}</td>
+            <td>{{ document.commennts }}</td>
+            
+            <td><a href="{% url 'personalinfo:document_detail' document.slug %}"  class="details-button">تفاصيل</a></td>
+          
+            <td>  {% if perms.personalinfo.can_update_official_documents_type %}
+                <a href="{% url 'personalinfo:update_official_document' document.slug %}"  class="update_button"  >تحديث</a>
+            
+                {%  else %}
+                لا تمتلك الصلاحية
+                {% endif %}
+            </td>
+            <td>{% if perms.personalinfo.can_delete_official_documents_type %}
+                <a href="{% url 'personalinfo:delete_official_document_type' document.slug %}"  class="delete_button" onclick="return confirm('هل أنت متأكد من حذف هذه الوثيقة؟')">حذف</a>
+                {%  else %}
+                لا تمتلك الصلاحية
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="7">لا توجد وثائق حالياً.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+
+
+{% block sidemenu %}
+
+<div class="button-container">
+
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'personalinfo:main_personalinfo' %}" class="custom-button"> ادارة المعلومات الشخصية     </a>
+    <a href="{% url 'personalinfo:mainemployeeofficialdocuments' %}" class="custom-button"> صفحة وثائق الموظفين       </a>
+
+    {% if perms.personalinfo.can_create_official_documents_type %}
+    <a href="{% url 'personalinfo:add_official_document' %}" class="custom-button">  اضافة نوع وثيقة   </a>
+    {% endif %}
+
+    {% comment %} <a href="{% url 'personalinfo:export_official_documents_csv' %}" class="custom-button"> تصدير CSV         </a> {% endcomment %}
+
+    
+
+</div>
+
+
+
+{% endblock %}
+
+
+{% block leftsidemenu %}
+<label class="result-label">   عدد الوثائق بالنظام  : {{ documents_type_count }}</label>
+
+{% endblock %}
+

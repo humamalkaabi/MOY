@@ -1,0 +1,135 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="cards-container">
+    <div class="card">
+        <div class="card-content">
+            <h3 class="card-title">صفحة انواع الدراسات</h3>
+            <p class="card-description">هنا يتم التعامل مع انواع واسماء الدراسات الاكاديمية يقرا ويكتب - دبلوم - بكالوريوس - ماجستير - دكتوراه</p>
+            <a href="{% url 'rddepartment:main_education_degree_type' %}" class="button">اضغط هنا  </a>
+        </div>
+    </div>
+
+
+    <div class="card">
+        <div class="card-content">
+            <h3 class="card-title">الكليات </h3>
+            <p class="card-description">هنا يتم التعامل مع الكليات  </p>
+            <a href="{% url 'rddepartment:main_college' %}" class="button">اضغط هنا  </a>
+        </div>
+    </div>
+
+    
+    <div class="card">
+        <div class="card-content">
+            <h3 class="card-title">الجامعات الأجنبية</h3>
+            <p class="card-description">هنا يتم التعامل مع اسماء الجامعات الأجنبية</p>
+            <a href="{% url 'rddepartment:main_foreignuniversity' %}" class="button">اضغط هنا  </a>
+        </div>
+    </div>
+
+    
+    
+    <div class="card">
+        <div class="card-content">
+            <h3 class="card-title">الجامعات العراقية</h3>
+            <p class="card-description">هنا يتم التعامل مع الجامعات العراقية</p>
+            <a href="{% url 'rddepartment:main_iraqiuniversity' %}" class="button">اضغط هنا  </a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-content">
+            <h3 class="card-title">الشهادات الأكاديمية</h3>
+            <p class="card-description">هنا يتم التعامل مع الشهادات الأكاديمية للموظفين من حيث الاضافة والحذف والتعديل</p>
+            <a href="{% url 'rddepartment:main_employeeeducation' %}" class="button">اضغط هنا  </a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-content">
+            <h3 class="card-title">الشهادات غير الأكاديمية</h3>
+            <p class="card-description">هنا يتم التعامل مع الشهادات غير الأكاديمية للموظفين من شهادات تدريب و ورش  </p>
+            <a href="{% url 'rddepartment:mainemployeecoursecertificate' %}" class="button">اضغط هنا  </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+{% block leftsidemenu %}
+{% if most_common_degree %}
+    <label class="result-label">
+        أكثر شهادة يحملها الموظفون: {{ most_common_degree.education_degree_type__name_in_arabic }} - عدد الموظفين: {{ most_common_degree.count }}
+    </label>
+{% else %}
+    <label class="result-label">لا توجد بيانات متاحة للشهادات الأكاديمية.</label>
+{% endif %}
+
+{% if most_common_college %}
+    <label class="result-label">
+        أكثر كلية سجل فيها الموظفون: {{ most_common_college.college__name_in_arabic }} - عدد الموظفين: {{ most_common_college.count }}
+    </label>
+{% else %}
+    <label class="result-label">لا توجد بيانات متاحة للكليات.</label>
+{% endif %}
+
+
+
+{% if most_common_iraqi_university %}
+    <label class="result-label">
+        أكثر جامعة عراقية سجل فيها الموظفون: {{ most_common_iraqi_university.iraqi_university__name_in_arabic }} - عدد الموظفين: {{ most_common_iraqi_university.count }}
+    </label>
+{% else %}
+    <label class="result-label">لا توجد بيانات متاحة للجامعات العراقية.</label>
+{% endif %}
+
+
+{% if most_common_foreign_university %}
+    <label class="result-label">
+        أكثر جامعة أجنبية سجل فيها الموظفون: {{ most_common_foreign_university.foreign_university__name_in_english }} - عدد الموظفين: {{ most_common_foreign_university.count }}
+    </label>
+{% else %}
+    <label class="result-label">لا توجد بيانات متاحة للجامعات الأجنبية.</label>
+{% endif %}
+
+{% endblock %}
+
+
+
+{% block sidemenu %}
+
+
+<h3>  </h3>
+
+<div class="button-container">
+   
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم الادارية     </a>
+
+
+   
+    <a href="{% url 'locations:export_governorates_csv' %}" class="custom-button">تصدير اسماء المحافظات </a>
+    <a href="{% url 'locations:export_all_countries_csv' %}" class="custom-button">تصدير اسماء الدول </a>
+
+    <a href="{% url 'rddepartment:export_iraqi_university_to_csv' %}" class="custom-button">تصدير اسماء الجامعات العراقية </a>
+
+    <a href="{% url 'rddepartment:export_education_degree_type_to_csv' %}" class="custom-button">تصدير اسماء الشهادات الاكاديمية </a>
+
+
+    
+
+
+
+    
+
+
+
+</div>
+
+
+
+
+
+{% endblock %}

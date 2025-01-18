@@ -1,0 +1,44 @@
+{% extends 'core/base.html' %}
+
+
+{% block title %}
+
+{% endblock %}
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+   
+<a href="{% url 'hrhub:add_duty_assignment_order' %}" class="custom-button">  اضافة عنوان الامر   </a>
+</div>
+
+
+{% endblock %}
+
+
+{% block titlecontent %}
+
+{% endblock %} 
+
+{% block content %}
+
+
+<h2> تفاصيل الامر  </h2>
+<p><strong>اسم نوع الامر  :</strong> {{ duty_assignment_order.name_in_arabic }}</p>
+<p><strong>اسم مدخل البيانات  :</strong> {{ duty_assignment_order.created_by }}</p>
+<p><strong>تاريخ الادخال    :</strong> {{ duty_assignment_order.created_at }}</p>
+<p><strong>تاريخ اخر تحديث    :</strong> {{ duty_assignment_order.updated_at }}</p>
+<a href="{% url 'hrhub:update_duty_assignment_order' duty_assignment_order.slug %}" class="update_button">تحديث</a> 
+<a href="{% url 'hrhub:delete_duty_assignment_order' duty_assignment_order.slug %}" class="delete_button" onclick="return confirm('هل أنت متأكد أنك تريد حذف  هذا العنوان الوظيفي ؟')">حذف</a> 
+
+{% endblock %}

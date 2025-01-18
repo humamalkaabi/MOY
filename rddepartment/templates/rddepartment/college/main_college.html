@@ -1,0 +1,105 @@
+{% extends 'core/base.html' %}
+
+{% block title %}الصفحة الرئيسية للدراسات والبحث والتطوير   {% endblock %}
+
+{% block titlesidemenu %}
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">عدد نتائج  : {{ colleges_counts }}</label>
+
+
+
+{% endblock %}
+
+{% block sidemenu %}
+
+
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'rddepartment:main_rddepartment' %}" class="custom-button">   الشهادات والتطوير     </a>
+
+   
+    {% if perms.rddepartment.can_add_college %}
+    <a href="{% url 'rddepartment:add_college' %}" class="custom-button">  اضافة  كلية   </a>
+    {% else%}
+    لا تملك صلاحية اضافة كلية
+                   
+{% endif %}
+    <a href="{% url 'rddepartment:export_college_to_csv' %}" class="custom-button">
+        تصدير  إلى CSV
+    </a>
+    
+</div>
+
+
+
+{% endblock %}
+
+
+
+
+
+{% block content %}
+
+
+<h2>قائمة الكليات  المتوفرة بالنظام</h2>
+
+
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>اسم الكلية بالانكليزية </th>
+            <th>اسم الكلية بالعربية </th>
+            <th>  مدخل البيانات </th>
+    
+          
+            <th>تحديث البيانات </th>
+            <th>حذف البيانات </th>
+           
+        </tr>
+    </thead>
+    <tbody>
+        {% for college in colleges %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ college.name_in_english }}</td>
+            <td>{{ college.name_in_arabic }}</td>
+         
+           
+            <td>{{ college.created_by }}</td>
+           
+
+ 
+             
+            
+            <td> 
+                {% if perms.rddepartment.can_update_college %}
+                <a href="{% url 'rddepartment:update_college' college.slug %}" class="update_button">تحديث</a>
+                {% else%}
+لا تملك صلاحية التحديث
+                {% endif %}
+            </td>
+               
+            <td> 
+                {% if perms.rddepartment.can_delete_college %}
+                <a href="{% url 'rddepartment:delete_college' college.slug %}"  class="delete_button"  onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا النوع من الشهادة؟')">حذف</a>
+                {% else%}
+                لا تملك صلاحية الحذف
+                                {% endif %}
+            </td> 
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="10">لا توجد بيانات مسجلة حالياً.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+{% endblock %}

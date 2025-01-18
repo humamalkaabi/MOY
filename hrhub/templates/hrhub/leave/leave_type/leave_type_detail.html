@@ -1,0 +1,50 @@
+{% extends 'core/base.html' %}
+
+{% block title %}اضافة بيانات {% endblock %}
+
+{% block titlesidemenu %}
+{% endblock %}
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:main_leave_balance' %}" class="custom-button">  صفحة ارصدة الاجازات       </a>
+    <a href="{% url 'hrhub:main_leave_type' %}" class="custom-button">  صفحة انواع الاجازات       </a>
+    <a href="{% url 'hrhub:add_leave_type' %}" class="button">  اضافة نوع اجازة    </a><br>
+
+   
+   
+    {% comment %} <a href="{% url 'hrhub:main_thanks_type' %}" class="custom-button">انواع كتب الشكر </a> {% endcomment %}
+    
+    <a href="{% url 'hrhub:upload_leave_requests_csv' %}" class="custom-button">رفع CSV   </a>
+
+
+    
+    {% comment %} <a href="{% url 'hrhub:upload_employees_csv' %}" class="custom-button">رفع ملف CSV </a> {% endcomment %}
+    {% comment %} <a href="{% url 'hrhub:download_employee_offices_csv_template' %}" class="custom-button">تحميل نموذج CSV </a> {% endcomment %}
+</div>
+{% endblock %}
+
+
+{% block content %}
+<h2>تفاصيل نوع الإجازة</h2>
+<p>الاسم: {{ leave_type.name }}</p>
+<p>يعتمد على الرصيد: {{ leave_type.is_balance_based }}</p>
+<p>يقبل الأرقام السالبة: {{ leave_type.accepts_negative_numbers }}</p>
+<p>الحد الأقصى للأيام سنويًا: {{ leave_type.max_days_per_year }}</p>
+<p>الزيادة الشهرية: {{ leave_type.monthly_increment }}</p>
+<p>أنشئ بواسطة: {{ leave_type.created_by }}</p>
+<p>تاريخ الإنشاء: {{ leave_type.created_at }}</p>
+<p>آخر تحديث: {{ leave_type.updated_at }}</p>
+<a href="{% url 'hrhub:update_leave_type' leave_type.slug %}" class="update_button">تحديث</a>
+<a href="{% url 'hrhub:delete_leave_type' leave_type.slug %}" class="delete_button">حذف</a>
+
+
+
+{% endblock %}
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'core/base.html' %}
+
+{% block title %}  تفاصيل {{ degree_type.name_in_arabic }}      {% endblock %}
+
+
+{% block content %}
+<h1>اسم الكلية: {{ coursecertificatetype.name_in_arabic }}</h1>
+<p><strong>الاسم بالإنجليزية:</strong> {{ coursecertificatetype.name_in_english }}</p>
+<p><strong>هل هذا النوع مطلوب للأغراض الإدارية :</strong> 
+   {% if coursecertificatetype.is_approved %} نعم 
+   {% else %} كلا 
+   {% endif %}
+</p>
+
+<p><strong>تم الإنشاء بواسطة:</strong> {{ coursecertificatetype.created_by }}</p>
+<p><strong>تاريخ الإنشاء:</strong> {{ coursecertificatetype.created_at|date:"d/m/Y H:i" }}</p>
+<p><strong>آخر تحديث:</strong> {{ coursecertificatetype.updated_at|date:"d/m/Y H:i" }}</p>
+
+<a href="{% url 'rddepartment:update_coursecertificatetype' slug=coursecertificatetype.slug %}"  class="update_button"> تحديث  </a>    
+
+
+
+<a href="{% url 'rddepartment:delete_coursecertificatetype' coursecertificatetype.slug %}" 
+   class="delete_button" 
+   onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه الجامعة؟')">
+   حذف
+</a>  
+{% endblock %}
+
+
+{% block sidemenu %}
+
+
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'rddepartment:main_rddepartment' %}" class="custom-button">   الشهادات والتطوير     </a>
+    <a href="{% url 'rddepartment:mainemployeecoursecertificate' %}" class="custom-button">   الشهادات غير الاكاديمية     </a>
+    <a href="{% url 'rddepartment:main_coursecertificatetype' %}" class="custom-button">   انواع الشهادات غير الاكاديمية     </a>
+    
+    
+</div>
+
+
+
+{% endblock %}
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+

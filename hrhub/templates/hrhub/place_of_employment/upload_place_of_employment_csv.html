@@ -1,0 +1,44 @@
+
+{% extends 'core/base.html' %}
+
+{% block title %}اضافة تنسيب {% endblock %}
+
+{% block titlesidemenu %}
+{% endblock %}
+
+{% block searchbar %}
+    
+{% endblock %}
+
+{% block content %}
+
+<form method="post" enctype="multipart/form-data" class="border p-4 rounded">
+    {% csrf_token %}
+    
+    <div class="mb-3">
+        <label for="csv_file" class="form-label">تحميل ملف CSV:</label>
+        {{ form.csv_file }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">رفع الملف</button>
+</form>
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:list_places_of_employment' %}" class="custom-button">  اماكن التنسيب       </a>
+
+
+
+</div>
+{% endblock %}
+
+    

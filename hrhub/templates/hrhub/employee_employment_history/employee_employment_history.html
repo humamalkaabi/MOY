@@ -1,0 +1,201 @@
+{% extends 'core/base.html' %}
+
+
+{% block searchbar %}
+
+<form method="get" action=""><div class="main_searchbar">
+
+    <div class="grid-container">
+        <div class="grid-item input-container">
+            <input type="text" id="username" name="username" placeholder="ادخل الرقم الوظيفي" value="{{ request.GET.username }}">
+        </div>
+        <div class="grid-item input-container">
+            <input type="text" id="firstname" name="firstname" placeholder="ادخل الاسم الأول" value="{{ request.GET.firstname }}">
+        </div>
+        <div class="grid-item input-container">
+            <input type="text" id="secondname" name="secondname" placeholder="ادخل الاسم الثاني" value="{{ request.GET.secondname }}">
+        </div>
+        <div class="grid-item input-container">
+            <input type="text" id="thirdname" name="thirdname" placeholder="ادخل الاسم الثالث" value="{{ request.GET.thirdname }}">
+        </div>
+        <div class="grid-item input-container">
+            <select name="has_job">
+                <option value="">لديه وظيفة</option>
+                <option value="yes" {% if request.GET.has_job == "yes" %}selected{% endif %}>نعم</option>
+                <option value="no" {% if request.GET.has_job == "no" %}selected{% endif %}>لا</option>
+            </select>
+        </div>
+
+        <div class="grid-item input-container">
+            <select name="gender">
+                <option value="">اختر الجنس</option>
+                <option value="M" {% if request.GET.gender == "M" %}selected{% endif %}>ذكر</option>
+                <option value="F" {% if request.GET.gender == "F" %}selected{% endif %}>أنثى</option>
+            </select>
+        </div>
+        
+        
+       
+        <div class="grid-item input-container">
+            <select name="has_phone">
+                <option value="">لديه رقم هاتف</option>
+                <option value="yes" {% if request.GET.has_phone == "yes" %}selected{% endif %}>نعم</option>
+                <option value="no" {% if request.GET.has_phone == "no" %}selected{% endif %}>لا</option>
+            </select>
+        </div>
+        
+            <div class="grid-item input-container">
+                <button type="submit">بحث</button>
+            </div>
+           
+    </div>
+</div>
+</form>
+
+
+{% endblock %}
+
+{% block titleleftsidemenu %}
+
+
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">عدد نتائج البحث : {{ employee_count }}</label>
+<div class="search-container">
+    <form method="get" action="">
+        <div class="grid-item input-container">
+            <select name="is_employment_counted">
+                <option value="">نوع التوظيف (محسوب/غير محسوب)</option>
+                <option value="true" {% if request.GET.is_employment_counted == "true" %}selected{% endif %}>محسوب</option>
+                <option value="false" {% if request.GET.is_employment_counted == "false" %}selected{% endif %}>غير محسوب</option>
+            </select>
+        </div>
+
+        <div class="grid-item input-container">
+            <select name="employment_type">
+                <option value="">اختر نوع الخدمة</option>
+                {% for employment_type in employment_types %}
+                    <option value="{{ employment_type.id }}" {% if request.GET.employment_type == employment_type.id|stringformat:"s" %}selected{% endif %}>
+                        {{ employment_type.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <br> <br>
+        <button type="submit" class="leftsidemenu-button">بحث</button>
+    </form>
+</div>
+
+
+{% endblock %}
+
+
+{% block titlecontent %}
+
+{% endblock %}
+
+
+{% block content %}
+<table>
+    <thead>
+        <tr>
+            <th>الرقم الوظيفي </th>
+            <th>الاسم الكامل</th>
+            <th>رقم هاتف الموظف </th>
+            <th> لديه خدمة </th>
+            <th>لوحة تحكم الموظف </th>
+          
+        </tr>
+    </thead>
+    <tbody>
+        {% for employee in employees %}
+        <tr>
+            <td>{{ employee.username }}</td>
+            <td>
+                {% if employee.basic_info %}
+                {{ employee.basic_info.get_full_name }} - 
+                <a href="{% url 'hrhub:add_employment_history' employee.basic_info.slug %}">اضافة  خدمة  </a>
+            {% else %}
+            لا توجد معلومات 
+            {% endif %}
+            </td>
+            <td>
+                {% if employee.basic_info and employee.basic_info.phone_number %}
+                    {{ employee.basic_info.phone_number }}
+                {% else %}
+                    لا يوجد
+                {% endif %}
+            </td>
+            <td>
+                {% if employee.has_service %}
+                    نعم -  <a href="{% url 'hrhub:employment_history_detail' employee.basic_info.slug %}">  عرض  </a> 
+                {% else %}
+                    لا
+                {% endif %}
+            </td>
+            
+            <td>
+                {% if perms.personalinfo.can_access_employee_dashboard %}
+                <a href="{% url 'accounts:employeedashboard' employee.slug %}">عرض لوحة التحكم</a>
+                {% else%}
+                ليس لديك صلاحية الوصول
+                {% endif %}
+            </td>
+
+         
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">لا توجد بيانات لعرضها.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+{% block pagination %}
+<div class="pagination-container">
+    <div class="pagination-info">
+        <span>عدد العناصر بالصفحة:</span>
+        <form method="get" action="" class="pagination-form">
+            <input type="number" id="results_per_page" name="results_per_page" placeholder="عدد النتائج لكل صفحة" value="{{ request.GET.results_per_page|default:10 }}" class="pagination-input">
+        </form>
+    </div>
+    <div class="pagination-controls">
+        {% if employees.has_previous %}
+            <a href="?{{ request.GET.urlencode }}&page=1" class="pagination-button">الأولى</a>
+            <a href="?{{ request.GET.urlencode }}&page={{ employees.previous_page_number }}" class="pagination-button">السابق</a>
+        {% endif %}
+        <span>صفحة {{ employees.number }} من {{ employees.paginator.num_pages }}</span>
+        {% if employees.has_next %}
+            <a href="?{{ request.GET.urlencode }}&page={{ employees.next_page_number }}" class="pagination-button">التالي</a>
+            <a href="?{{ request.GET.urlencode }}&page={{ employees.paginator.num_pages }}" class="pagination-button">الأخيرة</a>
+        {% endif %}
+    </div>
+    
+    
+    
+</div>
+{% endblock %}
+
+
+
+{% block titlesidemenu %}
+
+{% endblock %}
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+   
+    <a href="{% url 'hrhub:main_employement' %}" class="custom-button">  انواع الخدمة       </a>
+   
+
+    <a href="{% url 'hrhub:upload_employment_history_csv' %}" class="custom-button">رفع CSV   </a>
+
+</div>
+{% endblock %}

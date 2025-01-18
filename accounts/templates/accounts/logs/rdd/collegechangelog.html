@@ -1,0 +1,72 @@
+{% extends 'core/base.html' %}
+
+{% block titlecontent %}
+<h2>سجل تغييرات الكليات</h2>
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">نتائج التصفية: {{ results }}</label>
+{% endblock %}
+
+{% block searchbar %}
+<form method="get" action="">
+    <div class="main_searchbar">
+        <div class="grid-container">
+            <div class="grid-item input-container">
+                <input type="text" id="college_name" name="college_name" placeholder="اسم الكلية" value="{{ request.GET.college_name }}">
+            </div>
+            <div class="grid-item input-container">
+                <select name="action">
+                    <option value="">اختر نوع العملية</option>
+                    <option value="create" {% if request.GET.action == "create" %}selected{% endif %}>إضافة</option>
+                    <option value="update" {% if request.GET.action == "update" %}selected{% endif %}>تعديل</option>
+                    <option value="delete" {% if request.GET.action == "delete" %}selected{% endif %}>حذف</option>
+                </select>
+            </div>
+            <div class="grid-item input-container">
+                <input type="text" id="user" name="user" placeholder="المستخدم المسؤول" value="{{ request.GET.user }}">
+            </div>
+            <div class="grid-item input-container">
+                <button type="submit">بحث</button>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>#</th>
+                <th>اسم الكلية</th>
+                <th>التاريخ</th>
+                <th>نوع العملية</th>
+                <th>اسم الحقل</th>
+                <th>القيمة القديمة</th>
+                <th>القيمة الجديدة</th>
+                <th>المستخدم المسؤول</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in change_logs %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ log.college.name_in_arabic|default:"-" }}</td>
+                <td>{{ log.timestamp|date:"Y-m-d H:i" }}</td>
+                <td>{{ log.get_action_display }}</td>
+                <td>{{ log.field_name|default:"-" }}</td>
+                <td>{{ log.old_value|default:"-" }}</td>
+                <td>{{ log.new_value|default:"-" }}</td>
+                <td>{{ log.user.username|default:"-" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8" class="text-center">لا يوجد تغييرات مسجلة.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

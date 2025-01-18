@@ -1,0 +1,49 @@
+{% extends 'core/base.html' %}
+
+
+{% block searchbar %}
+
+    
+{% endblock %}
+
+
+
+{% block titlecontent %}
+
+{% endblock %}
+
+
+{% block content %}
+
+<h2>تحديث العنوان </h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="update_button">حفظ</button>
+</form>
+
+
+{% endblock %}
+
+
+
+{% block titlesidemenu %}
+
+{% endblock %}
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+
+
+{% block sidemenu %}
+
+<div class="button-container">
+
+  <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+</div>
+
+
+{% endblock %}

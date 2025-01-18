@@ -1,0 +1,101 @@
+{% extends 'core/base.html' %}
+
+
+{% block sidemenu %}
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'personalinfo:main_personalinfo' %}" class="custom-button"> ادارة المعلومات الشخصية     </a>
+    <a href="{% url 'personalinfo:main_additionainfo' %}" class="custom-button">  المعلومات الاضافية     </a>
+
+    
+    <a href="{% url 'personalinfo:download_sample_additional_info_csv' %}" class="custom-button"> تحميل نموذج CSV          </a>
+    {% if perms.personalinfo.can_add_employee_additional_info %}
+    <a href="{% url 'personalinfo:upload_additionalinfo_csv' %}" class="custom-button"> رفع CSV          </a>
+    {% else%}
+                ليس لديك صلاحية الرفع
+                {% endif %}
+
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="detail-container">
+    <p><strong>الاسم الأساسي:</strong> {{ additional_info.basic_info.get_full_name }}</p>
+
+    <p><strong>فصيلة الدم:</strong>
+        {% if additional_info.blood_type %}
+            {{ additional_info.blood_type }}
+        {% else %}
+            غير محددة
+        {% endif %}
+    </p>
+
+    <p><strong>الديانة:</strong>
+        {% if additional_info.religion %}
+            {{ additional_info.religion }}
+        {% else %}
+            غير محددة
+        {% endif %}
+    </p>
+
+    <p><strong>عنوان السكن:</strong>
+        {% if additional_info.address %}
+            {{ additional_info.address }}
+        {% else %}
+            غير محدد
+        {% endif %}
+    </p>
+
+    
+    <p><strong>تم الإنشاء في:</strong> {{ additional_info.created_at }}</p>
+    <p><strong>آخر تحديث:</strong> {{ additional_info.updated_at }}</p>
+
+    <p><strong>اسم الشخص للطوارئ:</strong>
+        {% if additional_info.emergency_contact_name %}
+            {{ additional_info.emergency_contact_name }}
+        {% else %}
+            غير محدد
+        {% endif %}
+    </p>
+
+    <p><strong>رقم هاتف الطوارئ:</strong>
+        {% if additional_info.emergency_contact_number %}
+            {{ additional_info.emergency_contact_number }}
+        {% else %}
+            غير محدد
+        {% endif %}
+    </p>
+
+
+
+
+
+
+{% if perms.personalinfo.can_update_employee_additional_info %}
+   
+<a href="{% url 'personalinfo:update_additional_info'  additional_info.slug%}" class="update_button">تحديث المعلومات الاضافية  </a>
+{% else %}
+            ليس لديك صلاحية التحديث
+
+{% endif %}
+
+{% if perms.personalinfo.can_delete_employee_additional_info %}
+<a href="{% url 'personalinfo:delete_additional_info'  additional_info.slug%}" class="delete_button">حذف المعلومات الاضافية  </a>
+{% else %}
+           ليس  لديك صلاحية الحذف
+
+{% endif %}
+</div>
+
+
+
+
+{% endblock %}
+
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

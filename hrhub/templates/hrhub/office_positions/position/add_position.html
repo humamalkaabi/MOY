@@ -1,0 +1,44 @@
+{% extends 'core/base.html' %}
+
+
+{% block title %}
+
+{% endblock %}
+
+
+
+{% block titlesidemenu %}
+
+{% endblock %}
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:main_office_positions' %}" class="custom-button">   مناصب الموظفين    </a>
+    <a href="{% url 'hrhub:main_position' %}" class="custom-button">    عناوين المناصب    </a>
+    <a href="{% url 'hrhub:add_position' %}" class="custom-button">  اضافة منصب ادارية   </a>
+    <a href="{% url 'hrhub:upload_positions_csv' %}" class="custom-button">رفع CSV   </a>
+
+
+    
+</div>
+{% endblock %} 
+
+{% block titlecontent %}
+
+{% endblock %} 
+
+{% block content %}
+
+
+<h2>اضافة وحدة ادارية جديدة  </h2>
+
+<form method="post" novalidate>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">حفظ</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,144 @@
+{% extends 'core/base.html' %}
+
+{% block searchbar %}
+<div class="search-bar">
+    <form method="get" action="{% url 'accounts:employee_accounts_change_log' %}">
+        <div class="form-group">
+            <label for="employee">اسم الموظف:</label>
+            <input type="text" name="employee" value="{{ request.GET.employee }}" placeholder="ابحث عن اسم الموظف" />
+        </div>
+
+        <div class="form-group">
+            <label for="field">الحقل:</label>
+            <input type="text" name="field" value="{{ request.GET.field }}" placeholder="ابحث عن الحقل" />
+        </div>
+
+        <div class="form-group">
+            <label for="changed_by">من قام بالتغيير:</label>
+            <input type="text" name="changed_by" value="{{ request.GET.changed_by }}" placeholder="ابحث عن من قام بالتغيير" />
+        </div>
+
+        <div class="form-group">
+            <label for="date_from">من التاريخ والوقت:</label>
+            <input type="datetime-local" name="date_from" value="{{ request.GET.date_from|date:'Y-m-d\\TH:i' }}" />
+        </div>
+
+        <div class="form-group">
+            <label for="date_to">إلى التاريخ والوقت:</label>
+            <input type="datetime-local" name="date_to" value="{{ request.GET.date_to|date:'Y-m-d\\TH:i' }}" />
+        </div>
+
+       
+            <!-- الحقول الأخرى مثل البحث -->
+            <div class="form-group">
+                <label for="results_per_page">عدد العناصر لكل صفحة:</label>
+                <select name="results_per_page">
+                    <option value="1" {% if results_per_page == 1 %}selected{% endif %}>1</option>
+                    <option value="5" {% if results_per_page == 5 %}selected{% endif %}>5</option>
+                    <option value="10" {% if results_per_page == 10 %}selected{% endif %}>10</option>
+                    <option value="25" {% if results_per_page == 25 %}selected{% endif %}>25</option>
+                    <option value="50" {% if results_per_page == 50 %}selected{% endif %}>50</option>
+                    <option value="100" {% if results_per_page == 100 %}selected{% endif %}>100</option>
+                </select>
+            </div>
+            
+        
+        
+
+        <button type="submit" class="button">بحث</button>
+    </form>
+</div>
+
+
+{% endblock %}
+
+{% block titleleftsidemenu %}
+<!-- أي محتوى خاص بالقائمة الجانبية هنا -->
+{% endblock %}
+
+{% block leftsidemenu %}
+<div class="results-container">
+    <h2 class="results-title">نتائج البحث</h2>
+    <div class="result-item">
+        <p><strong>عدد السجلات:</strong> {{ log_count }}</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block titlecontent %}
+<h2 class="title-content">سجل حركة الموظف</h2>
+{% endblock %}
+
+{% block content %}
+<div class="table-container">
+    {% if logs %}
+    <table class="employee-table">
+        <thead>
+            <tr>
+                <th>الموظف</th>
+                <th>الحقل</th>
+               
+                <th>تاريخ التغيير</th>
+                <th>من قام بالتغيير</th>
+                <th>نوع التغيير  </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in logs %}
+            <tr>
+                <td>{{ log.employee.username }} - {{ log.employee.basic_info.get_full_name }}</td>
+                <td>{{ log.field_name }}</td>
+              
+                <td>{{ log.changed_at }}</td>
+                <td>
+                    {% if log.changed_by %}
+                        {{ log.changed_by.basic_info.get_full_name }}
+                    {% else %}
+                        غير معروف
+                    {% endif %}
+                </td>
+                <td>{{ log.change_type }}</td>  <!-- عرض نوع التغيير -->
+            </tr>
+            
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>لا توجد تغييرات لعرضها.</p>
+    {% endif %}
+</div>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if logs.has_previous %}
+            <a href="?{% if request.GET %}{{ request.GET.urlencode }}&{% endif %}page=1&results_per_page={{ results_per_page }}">الأولى</a>
+            <a href="?{% if request.GET %}{{ request.GET.urlencode }}&{% endif %}page={{ logs.previous_page_number }}&results_per_page={{ results_per_page }}">السابق</a>
+        {% endif %}
+        <span class="current">
+            الصفحة {{ logs.number }} من {{ logs.paginator.num_pages }}
+        </span>
+        {% if logs.has_next %}
+            <a href="?{% if request.GET %}{{ request.GET.urlencode }}&{% endif %}page={{ logs.next_page_number }}&results_per_page={{ results_per_page }}">التالي</a>
+            <a href="?{% if request.GET %}{{ request.GET.urlencode }}&{% endif %}page={{ logs.paginator.num_pages }}&results_per_page={{ results_per_page }}">الأخيرة</a>
+        {% endif %}
+    </span>
+</div>
+
+
+{% endblock %}
+
+{% block titlesidemenu %}
+<!-- أي محتوى خاص بالقائمة الجانبية هنا -->
+{% endblock %}
+
+{% block sidemenu %}
+<p><a href="{% url 'accounts:view_profile' %}" class="button">الصفحة الشخصية</a></p>
+<p><a href="{% url 'personalinfo:main_basicinfo' %}" class="button">إدارة البيانات الشخصية</a></p>
+<a href="{% url 'accounts:export_employee_change_log_csv' %}?employee={{ request.GET.employee }}&field={{ request.GET.field }}&changed_by={{ request.GET.changed_by }}&date_from={{ request.GET.date_from }}&date_to={{ request.GET.date_to }}" 
+class="button">
+    تصدير إلى CSV
+</a>
+
+ <p><a href="{% url 'accounts:basic_info_change_log' %}" class="button">سجل حركة البيانات الاساسية </a></p>
+
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'core/base.html' %}
+
+{% block title %}قائمة الموظفين{% endblock %}
+
+{% block titlesidemenu %}
+{% endblock %}
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:main_leave_balance' %}" class="custom-button">  صفحة ارصدة الاجازات       </a>
+    <a href="{% url 'hrhub:main_leave_request' %}" class="custom-button">  صفحة  الاجازات الرئيسية       </a>
+    <a href="{% url 'hrhub:add_leave_type' %}" class="custom-button">  اضافة نوع اجازة    </a>    
+
+</div>
+{% endblock %}
+
+{% block content %}
+
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>اسم نوع  الاجازة  </th>
+           
+            <th>هل تعتمد على الرصيد المتراكم  </th>
+            <th>هل يمكن ان يكون الرصيد بالسالب  </th>
+            <th>    مقدار الزيادة شهريا </th>
+            <th>مدخل البيانات </th>
+            <th>تفاصيل البيانات </th>
+            <th>تحديث البيانات </th>
+            <th>حذف البيانات </th>
+           
+        </tr>
+    </thead>
+    <tbody>
+        {% for leave_type in leave_types %}
+        <tr>
+            <td>{{ leave_type.counter }}</td>
+            <td>{{ leave_type.name }}</td>
+           
+            <td>{{ leave_type.is_balance_based }}</td>
+            <td>{{ leave_type.accepts_negative_numbers }}
+            <td>{{ leave_type.monthly_increment }}
+            <td>{{ leave_type.created_by }}
+            </td>
+          
+            <td>
+             <a href="{% url 'hrhub:leave_type_detail' slug=leave_type.slug %}" class="update_button"> عرض  </a>   
+            
+            </td> 
+            <td> 
+ <a href="{% url 'hrhub:update_leave_type' leave_type.slug %}" class="update_button">تحديث</a>  
+            </td> 
+
+             <td>
+         <a href="{% url 'hrhub:delete_leave_type' leave_type.slug %}" class="delete_button" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه  البيانات')">حذف</a>  
+            </td> 
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="10">لا توجد بيانات مسجلة حالياً.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'core/base.html' %}
+
+
+{% block title %}
+
+{% endblock %}
+
+
+
+{% block titlesidemenu %}
+
+{% endblock %}
+
+
+
+{% block sidemenu %}
+
+
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'personalinfo:main_personalinfo' %}" class="custom-button"> ادارة المعلومات الشخصية     </a>
+    <a href="{% url 'personalinfo:main_nationalism' %}" class="custom-button">   صفحة القوميات الرئيسية     </a>
+
+    {% if perms.personalinfo.can_create_nationalism %}
+    <a href="{% url 'personalinfo:add_nationalism' %}"class="custom-button">إضافة قومية</a>
+    {%  else %}
+    لا تمتلك الصلاحية
+    {% endif %}
+    <a href="{% url 'personalinfo:export_nationalism_csv' %}" class="custom-button"> تصدير CSV       </a>
+
+
+    
+
+</div>
+
+{% endblock %}
+
+{% block titlecontent %}
+
+{% endblock %} 
+
+{% block content %}
+
+
+<h2> تفاصيل القومية </h2>
+<p><strong>اسم القومية :</strong> {{ nationalism.name_in_arabic }}</p>
+<p><strong>اسم مدخل البيانات  :</strong> {{ nationalism.created_by }}</p>
+<p><strong>تاريخ الادخال    :</strong> {{ nationalism.created_at }}</p>
+<p><strong>تاريخ اخر تحديث    :</strong> {{ nationalism.updated_at }}</p>
+
+{% if perms.personalinfo.can_update_nationalism %}
+<a href="{% url 'personalinfo:main_update_nationalism' nationalism.slug %}" class="update_button">تحديث</a>
+{%  else %}
+لا تمتلك الصلاحية
+{% endif %}
+
+{% if perms.personalinfo.can_delete_nationalism %}
+<a href="{% url 'personalinfo:delete_nationalism' nationalism.slug %}" class="delete_button" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه القومية؟')" >حذف</a>
+{%  else %}
+لا تمتلك الصلاحية
+{% endif %}
+
+{% endblock %}
+
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">   عدد الموظفين الذين لديهم هذه القومية : {{ employee_count }}</label>
+
+{% endblock %}

@@ -1,0 +1,167 @@
+{% extends 'core/base.html' %}
+
+{% block title %}الصفحة الرئيسية للدراسات والبحث والتطوير{% endblock %}
+
+{% block titlesidemenu %}
+{% endblock %}
+{% block searchbar %}
+<form method="get" action="{% url 'rddepartment:main_foreignuniversity' %}">
+    <div class="main_searchbar">
+        <div class="grid-container">
+            <!-- حقل القارة -->
+            <div class="grid-item input-container">
+                <select name="continent" id="continent">
+                    <option value="">-- اختر قارة --</option>
+                    {% for continent in continents %}
+                        <option value="{{ continent.id }}" {% if request.GET.continent == continent.id|stringformat:"s" %}selected{% endif %}>
+                            {{ continent.name_arabic }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- حقل الدولة -->
+            <div class="grid-item input-container">
+                <select name="country" id="country">
+                    <option value="">-- اختر دولة --</option>
+                    {% for country in countries %}
+                        <option value="{{ country.id }}" {% if request.GET.country == country.id|stringformat:"s" %}selected{% endif %}>
+                            {{ country.name_arabic }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- حقل اسم الجامعة بالإنجليزية -->
+            <div class="grid-item input-container">
+                <input type="text" name="name_in_english" id="name_in_english" placeholder="اسم الجامعة بالإنجليزية"
+                       value="{{ request.GET.name_in_english }}">
+            </div>
+
+            <div class="grid-item input-container">
+                <input type="text" name="name_arabic" id="name_arabic" placeholder="اسم الجامعة بالعربية"
+                       value="{{ request.GET.name_arabic }}">
+            </div>
+            
+
+            <!-- زر البحث -->
+            <div class="grid-item input-container">
+                <button type="submit" class="button">بحث</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#continent').change(function () {
+            var continentId = $(this).val();
+            var countryDropdown = $('#country');
+            
+            countryDropdown.empty(); // إفراغ قائمة الدول
+            countryDropdown.append('<option value="">-- اختر دولة --</option>'); // إعادة الخيار الافتراضي
+            
+            if (continentId) {
+                $.ajax({
+                    url: "{% url 'rddepartment:get_countries_by_continent' %}",
+                    data: { 'continent_id': continentId },
+                    success: function (data) {
+                        $.each(data, function (index, country) {
+                            countryDropdown.append(
+                                `<option value="${country.id}">${country.name_arabic}</option>`
+                            );
+                        });
+                    },
+                    error: function () {
+                        alert('حدث خطأ أثناء تحميل الدول.');
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<h2>قائمة الجامعات الأجنبية المتوفرة بالنظام</h2>
+
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>اسم الجامعة بالإنكليزية</th>
+            <th>اسم الجامعة بالعربية</th>
+            <th>مختصر الجامعة</th>
+            <th>رابط الجامعة</th>
+            <th>بلد الجامعة</th>
+            <th>تفاصيل البيانات</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for foreignUniversity in foreignUniversitys %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ foreignUniversity.name_in_english }}</td>
+            <td>{{ foreignUniversity.name_in_arabic }}</td>
+            <td>{{ foreignUniversity.university_name_abbreviation }}</td>
+            <td>{{ foreignUniversity.university_link }}</td>
+            <td>{{ foreignUniversity.country.name_arabic }}</td>
+            <td> 
+                <a href="{% url 'rddepartment:foreignuniversitys_detail' slug=foreignUniversity.slug %}"  class="update_button" >عرض </a>  
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7">لا توجد بيانات مسجلة حالياً.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+
+
+
+{% block sidemenu %}
+
+
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'rddepartment:main_rddepartment' %}" class="custom-button">   الشهادات والتطوير     </a>
+    {% if perms.rddepartment.can_add_foreign_university %}
+    <a href="{% url 'rddepartment:add_foreignuniversity' %}" class="custom-button">  اضافة  جامعة اجنبية    </a>
+    {% else %}
+    ليس  لديك صلاحية ادخال جامعة 
+    {% endif %}
+    <a href="{% url 'rddepartment:download_sample_foreign_universities_csv' %}" class="custom-button">   نموذج  CSV      </a>
+
+    {% if perms.rddepartment.can_add_foreign_university %}
+    <a href="{% url 'rddepartment:upload_foreign_university_csv' %}" class="custom-button">   رفع ملف CSV      </a>
+    
+    {% endif %}
+   
+
+    
+
+    
+</div>
+
+
+
+{% endblock %}
+
+
+{% block leftsidemenu %}
+<label class="result-label">عدد نتائج البحث : {{ foreignuniversitys_count }}</label>
+
+
+
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="form-container">
+    <h2 class="form-title">إضافة معلومات اضافية للموظف: {{ employee.username }}</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}
+            <small class="help-text">{{ field.help_text }}</small>
+            {% endif %}
+            {% for error in field.errors %}
+            <small class="error-text">{{ error }}</small>
+            {% endfor %}
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn-submit">حفظ</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block sidemenu %}
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'personalinfo:main_personalinfo' %}" class="custom-button"> ادارة المعلومات الشخصية     </a>
+    <a href="{% url 'personalinfo:main_additionainfo' %}" class="custom-button">  المعلومات الاضافية     </a>
+
+    
+    <a href="{% url 'personalinfo:download_sample_additional_info_csv' %}" class="custom-button"> تحميل نموذج CSV          </a>
+    {% if perms.personalinfo.can_add_employee_additional_info %}
+    <a href="{% url 'personalinfo:upload_additionalinfo_csv' %}" class="custom-button"> رفع CSV          </a>
+    {% else%}
+                ليس لديك صلاحية الرفع
+                {% endif %}
+
+</div>
+{% endblock %}
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

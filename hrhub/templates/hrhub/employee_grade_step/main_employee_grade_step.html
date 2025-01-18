@@ -1,0 +1,173 @@
+{% extends 'core/base.html' %}
+
+{% block searchbar %}
+<form method="get" action="">
+    <div class="main_searchbar">
+        <div class="grid-container">
+            <!-- البحث حسب الرقم الوظيفي -->
+            <div class="grid-item input-container">
+                <input type="text" id="username" name="username" placeholder="ادخل الرقم الوظيفي" value="{{ request.GET.username }}">
+            </div>
+            <!-- البحث حسب الاسم الأول -->
+            <div class="grid-item input-container">
+                <input type="text" id="firstname" name="firstname" placeholder="ادخل الاسم الأول" value="{{ request.GET.firstname }}">
+            </div>
+            <!-- البحث حسب الاسم الثاني -->
+            <div class="grid-item input-container">
+                <input type="text" id="secondname" name="secondname" placeholder="ادخل الاسم الثاني" value="{{ request.GET.secondname }}">
+            </div>
+            <!-- البحث حسب الاسم الثالث -->
+            <div class="grid-item input-container">
+                <input type="text" id="thirdname" name="thirdname" placeholder="ادخل الاسم الثالث" value="{{ request.GET.thirdname }}">
+            </div>
+            <!-- التصفية حسب البيانات الأساسية -->
+            <div class="grid-item input-container">
+                <select name="has_basicinfo">
+                    <option value="">لديه بيانات أساسية</option>
+                    <option value="yes" {% if request.GET.has_basicinfo == "yes" %}selected{% endif %}>نعم</option>
+                    <option value="no" {% if request.GET.has_basicinfo == "no" %}selected{% endif %}>لا</option>
+                </select>
+            </div>
+            <!-- التصفية حسب الجنس -->
+            <div class="grid-item input-container">
+                <select name="gender">
+                    <option value="">اختر الجنس</option>
+                    <option value="M" {% if request.GET.gender == "M" %}selected{% endif %}>ذكر</option>
+                    <option value="F" {% if request.GET.gender == "F" %}selected{% endif %}>أنثى</option>
+                </select>
+            </div>
+            <!-- التصفية حسب رقم الهاتف -->
+           
+            <!-- التصفية حسب الدائرة -->
+            <div class="grid-item input-container">
+                <select name="office">
+                    <option value="">اختر الدائرة</option>
+                    {% for office in offices %}
+                        <option value="{{ office.id }}" {% if request.GET.office == office.id|stringformat:"d" %}selected{% endif %}>
+                            {{ office.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <!-- زر البحث -->
+            <div class="grid-item input-container">
+                <button type="submit">بحث</button>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block titleleftsidemenu %}
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">عدد نتائج البحث : {{ employee_count }}</label>
+{% endblock %}
+
+{% block titlecontent %}
+{% endblock %}
+
+{% block content %}
+<table>
+    <thead>
+        <tr>
+            <th>الرقم الوظيفي</th>
+            <th>الاسم الكامل</th>
+            <th>رقم الهاتف</th>
+            <th>لديه درجة وعنوان وظيفي؟</th>
+            <th>لوحة تحكم الموظف</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for employee in employees %}
+        <tr>
+            <td>{{ employee.username }}</td>
+            <td>
+                {% if employee.basic_info %}
+                    {{ employee.basic_info.get_full_name }} - 
+                    {% if perms.personalinfo.can_create_official_documents %}
+                    {% comment %} <a href="{% url 'personalinfo:add_official_document' employee.basic_info.slug %}">اضافة وثيقة  </a> {% endcomment %}
+                    {% endif %}
+
+                {% else %}
+                    لا توجد معلومات 
+                    {% if perms.personalinfo.can_add_employee_basic_info %}
+                     
+                    {% else%}
+                    ليس لديك صلاحية الاضافة
+                    {% endif %}
+                {% endif %}
+            </td>
+            <td>
+                {% if employee.basic_info and employee.basic_info.phone_number %}
+                    {{ employee.basic_info.phone_number }}
+                {% else %}
+                    لا يوجد
+                {% endif %}
+            </td>
+            <td>
+                {% if employee.basic_info %}
+                    {% with employee.basic_info.employment_grade_step.all as grade_steps %}
+                        {% if grade_steps %}
+                            نعم -  
+                            {% comment %} <a href="{% url 'hrhub:employee_grade_step_detail' employee.basic_info.slug %}">عرض</a> {% endcomment %}
+                        {% else %}
+                            لا -  
+                            {% comment %} <a href="{% url 'hrhub:add_employee_grade_step' employee.basic_info.slug %}">إضافة بيانات الموظف</a> {% endcomment %}
+                        {% endif %}
+                    {% endwith %}
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'accounts:employeedashboard' employee.slug %}">عرض لوحة التحكم</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">لا توجد بيانات لعرضها.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+{% block pagination %}
+<div class="pagination-container">
+    <div class="pagination-info">
+        <span>عدد العناصر بالصفحة:</span>
+        <form method="get" action="" class="pagination-form">
+            <input type="number" id="results_per_page" name="results_per_page" placeholder="عدد النتائج لكل صفحة" value="{{ request.GET.results_per_page|default:10 }}" class="pagination-input">
+        </form>
+    </div>
+    <div class="pagination-controls">
+        {% if employees.has_previous %}
+            <a href="?{{ request.GET.urlencode }}&page=1" class="pagination-button">الأولى</a>
+            <a href="?{{ request.GET.urlencode }}&page={{ employees.previous_page_number }}" class="pagination-button">السابق</a>
+        {% endif %}
+        <span>صفحة {{ employees.number }} من {{ employees.paginator.num_pages }}</span>
+        {% if employees.has_next %}
+            <a href="?{{ request.GET.urlencode }}&page={{ employees.next_page_number }}" class="pagination-button">التالي</a>
+            <a href="?{{ request.GET.urlencode }}&page={{ employees.paginator.num_pages }}" class="pagination-button">الأخيرة</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:main_employee_grade' %}" class="custom-button">  الدرجات الوظيفية        </a> 
+    <a href="{% url 'hrhub:main_employee_step' %}" class="custom-button">  المراحل الوظيفية        </a> 
+    <a href="{% url 'hrhub:update_employee_grade_step_settings' %}" class="custom-button">  اعدادات  الترفعيات         </a> 
+
+
+    
+    
+    
+</div>
+{% endblock %}

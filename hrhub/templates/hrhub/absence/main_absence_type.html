@@ -1,0 +1,75 @@
+{% extends 'core/base.html' %}
+
+{% block title %}قائمة أنواع الغياب{% endblock %}
+
+{% block titlesidemenu %}
+{% endblock %}
+
+
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:main_absences_employee' %}" class="custom-button">   غياب الموظفين       </a>
+    <a href="{% url 'hrhub:add_absence_type' %}" class="custom-button"> إضافة نوع غياب جديد </a>
+   
+    {% comment %} <a href="{% url 'hrhub:main_thanks_type' %}" class="custom-button">انواع كتب الشكر </a> {% endcomment %}
+
+
+
+    
+    {% comment %} <a href="{% url 'hrhub:upload_employees_csv' %}" class="custom-button">رفع ملف CSV </a> {% endcomment %}
+    {% comment %} <a href="{% url 'hrhub:download_employee_offices_csv_template' %}" class="custom-button">تحميل نموذج CSV </a> {% endcomment %}
+</div>
+{% endblock %}
+
+
+
+{% block content %}
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>اسم نوع الغياب</th>
+            <th>تأثير الغياب</th>
+            <th>تفاصيل إضافية</th>
+            <th>مدخل البيانات</th>
+            <th>تفاصيل البيانات</th>
+            <th>تحديث البيانات</th>
+            <th>حذف البيانات</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for absence_type in absence_types %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ absence_type.absence_name }}</td>
+            <td>{{ absence_type.absence_impact }}</td>
+            <td>{{ absence_type.comments }}</td>
+            <td>{{ absence_type.created_by }}</td>
+            <td>
+                <a href="{% url 'hrhub:absence_type_detail' slug=absence_type.slug %}" class="update_button"> عرض</a> 
+            </td>
+            <td>
+               <a href="{% url 'hrhub:update_absence_type' slug=absence_type.slug %}" class="update_button">تحديث</a> 
+            </td>
+            <td>
+             <a href="{% url 'hrhub:delete_absence_type' slug=absence_type.slug %}" class="delete_button" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه البيانات؟')">حذف</a> 
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="8">لا توجد بيانات مسجلة حالياً.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

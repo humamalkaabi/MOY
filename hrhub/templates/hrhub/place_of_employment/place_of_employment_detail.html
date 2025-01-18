@@ -1,0 +1,29 @@
+{% extends 'core/base.html' %}
+
+{% block title %}تفاصيل مكان العمل{% endblock %}
+
+{% block titlesidemenu %}
+<h2 style="color: #fff;">مرحبا، {{ user.username }}</h2>
+{% endblock %}
+
+{% block sidemenu %}
+<p><a href="{% url 'hrhub:list_places_of_employment' %}" class="button">عودة إلى قائمة الأماكن</a></p>
+{% endblock %}
+
+{% block content %}
+<h2>تفاصيل مكان العمل: {{ place_of_employment.name_in_arabic }}</h2>
+<p><strong>الوصف:</strong> {{ place_of_employment.description }}</p>
+<p><strong>المؤسسة العليا:</strong> {% if place_of_employment.parent %}
+    {{ place_of_employment.parent.name_in_arabic }}
+{% else %}
+    لا يوجد
+{% endif %}
+</p>
+<p><strong>مستخدم الإدخال:</strong> {{ place_of_employment.created_by.basic_info.get_full_name }}</p>
+
+<p><a href="{% url 'hrhub:update_place_of_employment' place_of_employment.slug%}" class="button">تحديث   </a></p>
+<p><a href="{% url 'hrhub:delete_place_of_employment' place_of_employment.slug%}" class="button">حذف   </a></p>
+
+
+
+{% endblock %}

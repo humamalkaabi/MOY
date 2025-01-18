@@ -1,0 +1,35 @@
+{% extends 'core/base.html' %}
+
+{% block title %}اضافة بيانات {% endblock %}
+
+{% block titlesidemenu %}
+{% endblock %}
+
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:main_leave_balance' %}" class="custom-button">  صفحة ارصدة الاجازات       </a>
+    <a href="{% url 'hrhub:main_leave_type' %}" class="custom-button">  صفحة انواع الاجازات       </a>
+    <a href="{% url 'hrhub:add_leave_type' %}" class="custom-button">  اضافة نوع اجازة    </a>    
+    <a href="{% url 'hrhub:upload_leave_requests_csv' %}" class="custom-button">رفع CSV   </a>
+
+</div>
+{% endblock %}
+
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="update_button">إضافة</button>
+</form>
+
+
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

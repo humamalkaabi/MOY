@@ -1,0 +1,67 @@
+<!-- templates/app_name/main_employee_grade.html -->
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h2>الدرجات الوظيفية</h2>
+
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>الاسم</th>
+            <th>افتراضي</th>
+            <th>يُحسب ضمن التوظيف</th>
+
+            <th>مدخل البيانات</th>
+            <th>التفاصيل</th>
+            <th>تحديث</th>
+            <th>حذف</th>
+            <th>ملاحظات</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for type in types %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ type.name }}</td>
+                <td>{{ type.is_default|yesno:"نعم,لا" }}</td>
+                <td>{{ type.is_employment_type_counted|yesno:"نعم,لا" }}</td>
+          
+            <td>{{ type.created_by.username }}</td>
+            <td><a href="{% url 'hrhub:employement_type_detail' type.slug %}"  class="update_button"> التفاصيل</a></td> 
+            <td><a href="{% url 'hrhub:employement_type_update' type.slug %}"  class="update_button">تحديث</a></td>
+            <td><a href="{% url 'hrhub:employement_type_delete' type.slug %}"  class="delete_button" onclick="return confirm('هل أنت متأكد؟')">حذف</a></td>
+
+            <td>{{ type.comments }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="10">لا توجد درجات وظيفية مسجلة حالياً.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+   
+    <a href="{% url 'hrhub:employement_type_create' %}" class="custom-button">  اضافة نوع خدمة     </a>
+    <a href="{% url 'hrhub:employee_employment_history' %}" class="custom-button">   الخدمات الوظيفية       </a>
+
+
+
+   
+</div>
+{% endblock %}
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

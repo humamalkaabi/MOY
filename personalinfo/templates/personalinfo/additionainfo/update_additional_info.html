@@ -1,0 +1,50 @@
+{% extends 'core/base.html' %}
+
+
+{% block title %}
+
+{% endblock %}
+
+
+
+
+
+{% block sidemenu %}
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'personalinfo:main_personalinfo' %}" class="custom-button"> ادارة المعلومات الشخصية     </a>
+    <a href="{% url 'personalinfo:main_additionainfo' %}" class="custom-button">  المعلومات الاضافية     </a>
+
+    
+    <a href="{% url 'personalinfo:download_sample_additional_info_csv' %}" class="custom-button"> تحميل نموذج CSV          </a>
+    {% if perms.personalinfo.can_add_employee_additional_info %}
+    <a href="{% url 'personalinfo:upload_additionalinfo_csv' %}" class="custom-button"> رفع CSV          </a>
+    {% else%}
+                ليس لديك صلاحية الرفع
+                {% endif %}
+
+</div>
+{% endblock %}
+
+
+
+{% block content %}
+
+
+
+<h2>تحديث المعلومات الاضافية للموظف: {{ employee }}</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit"  class="custom-button">تحديث</button>
+    
+</form>
+
+{% endblock %}
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

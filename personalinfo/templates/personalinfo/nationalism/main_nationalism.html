@@ -1,0 +1,94 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+    <title>قائمة القوميات</title>
+{% endblock %}
+
+{% block titlesidemenu %}
+ 
+{% endblock %}
+
+
+
+{% block titlecontent %}
+    <h2>قائمة القوميات المتوفرة بالنظام</h2>
+{% endblock %}
+
+{% block content %}
+    <table class="custom-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>اسم القومية</th>
+                    <th>مدخل القومية</th>
+                    <th>تفاصيل القومية</th>
+                    <th>تحديث القومية</th>
+                    <th>حذف القومية</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for nationalism in nationalisms %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ nationalism.name_in_arabic }}</td>
+                        <td>{{ nationalism.created_by.basic_info }}</td>
+                        <td>
+                            <a href="{% url 'personalinfo:nationalism_detail' slug=nationalism.slug %}" class="details-button">عرض </a>
+                        </td>
+                        <td>
+                            {% if perms.personalinfo.can_update_nationalism %}
+                            <a href="{% url 'personalinfo:main_update_nationalism' nationalism.slug %}" class="update_button">تحديث</a>
+                            {%  else %}
+                            لا تمتلك الصلاحية
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if perms.personalinfo.can_delete_nationalism %}
+                            <a href="{% url 'personalinfo:delete_nationalism' nationalism.slug %}"  class="delete_button" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه القومية؟')" class="danger_button">حذف</a>
+                            {%  else %}
+                            لا تمتلك الصلاحية
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6">لا توجد قوميات مسجلة حالياً.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+{% endblock %}
+
+{% block sidemenu %}
+
+
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'personalinfo:main_personalinfo' %}" class="custom-button"> ادارة المعلومات الشخصية     </a>
+
+    {% if perms.personalinfo.can_create_nationalism %}
+    <a href="{% url 'personalinfo:add_nationalism' %}"class="custom-button">إضافة قومية</a>
+    {%  else %}
+    لا تمتلك الصلاحية
+    {% endif %}
+    <a href="{% url 'personalinfo:export_nationalism_csv' %}" class="custom-button"> تصدير CSV       </a>
+
+
+    
+
+</div>
+
+
+
+{% endblock %}
+
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">عدد القوميات  : {{ nationalism_count }}</label>
+
+{% endblock %}
+
+

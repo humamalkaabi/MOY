@@ -1,0 +1,72 @@
+{% extends 'core/base.html' %}
+
+{% block title %}سجلات العمل للموظفين{% endblock %}
+
+
+{% block content %}
+{% if employment_histories %}
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>تاريخ البدء</th>
+            <th>تاريخ الانتهاء</th>
+            <th>مدة الخدمة</th>
+            <th>نوع الوظيفة</th>
+            <th>مكان الوظيفة</th>
+           
+           <th> عرض </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for history in employment_histories %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ history.start_date }}</td>
+            <td>{{ history.end_date|default:"حتى الآن" }}</td>
+            <td>
+                {{ history.employee_duration_year }} سنة، 
+                {{ history.employee_duration_month }} شهر،
+                {{ history.employee_duration_day }} يوم
+            </td>
+            <td>{{ history.employee_type.name|default:"غير محدد" }}</td>
+            <td>{{ history.employee_place.name_in_arabic|default:"غير محدد" }}</td>
+           
+            <td>   <a href="{% url 'hrhub:employment_single_history_detail' history.slug %}" class="update_button">عرض    </a></td>
+
+        </tr>
+
+       
+        
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="empty-message">
+    لا توجد سجلات وظيفية لهذا الموظف.
+</div>
+{% endif %}
+    
+{% endblock %}
+
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:employee_employment_history' %}"  class="custom-button">الخدمات الوظيفية   </a>
+    <a href="{% url 'hrhub:main_employement' %}" class="custom-button">  انواع الخدمة       </a>
+    <a href="{% url 'hrhub:add_employment_history' employee.slug %}" class="custom-button">اضافة خدمة وظيفية    </a>
+    
+
+    <a href="{% url 'hrhub:upload_employment_history_csv' %}" class="custom-button">رفع CSV   </a>
+
+</div>
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">  {{ request.user }}</label>
+{% endblock %}
+

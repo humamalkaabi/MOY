@@ -1,0 +1,40 @@
+{% extends 'core/base.html' %}
+
+{% block title %}اضافة تنسيب {% endblock %}
+
+{% block titlesidemenu %}
+{% endblock %}
+
+{% block searchbar %}
+    
+{% endblock %}
+
+{% block content %}
+    <h2>تحديث تنسيب </h2>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="custom-button">تحديث التنسيب</button>
+      </form>
+    
+{% endblock %}
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:main_placement' %}" class="custom-button">  صفحة التنسيبات       </a>
+   
+
+    <a href="{% url 'hrhub:upload_placement_csv' %}" class="custom-button">رفع CSV   </a>
+
+
+</div>
+{% endblock %}

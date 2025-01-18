@@ -1,0 +1,103 @@
+{% extends 'core/base.html' %}
+
+{% block titlecontent %}احصائيات القارات{% endblock %}
+
+{% block searchbar %}
+<!-- إذا كان البحث غير مطلوب يمكن حذف هذا البلوك -->
+{% endblock %}
+
+{% block titleleftsidemenu %}
+<!-- عنوان القوائم الجانبية إذا كان مطلوبًا -->
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">عدد القارات: {{ total_continents }}</label>
+
+<div class="search-container">
+    <form method="get" action="">
+        <!-- إذا كان هناك خيارات بحث -->
+        <div class="grid-item input-container">
+            <input type="text" name="continent_name" placeholder="ابحث عن قارة" value="{{ request.GET.continent_name }}">
+        </div>
+        <div class="grid-item input-container">
+            <button type="submit" class="leftsidemenu-button">بحث</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'locations:main_locations_dashboard' %}" class="custom-button">الأماكن</a>
+    {% if perms.locations.can_create_continent %}
+    <a href="{% url 'locations:create_continent' %}" class="custom-button">إدخال قارة</a>
+{% endif %}
+   
+    <a href="{% url 'locations:export_continents_csv' %}" class="custom-button">تصدير CSV</a>
+
+   
+</div>
+{% endblock %}
+
+{% block content %}
+<h2>إحصائيات القارات</h2>
+<div class="table-container">
+    <table class="creative-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>اسم القارة بالعربي</th>
+                <th>اسم القارة بالإنجليزي</th>
+                <th>مدخل القارة</th>
+                <th>ملاحظات</th>
+                <th>تاريخ إنشاء البيانات</th>
+                <th>تاريخ تحديث البيانات</th>
+                <th>عرض التفاصيل</th>
+                <th>تحديث</th>
+                <th>حذف</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for continent in continents %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ continent.name_arabic }}</td>
+                <td>{{ continent.name_english }}</td>
+                <td>{{ continent.created_by }}</td>
+                <td>{{ continent.description }}</td>
+                <td>{{ continent.created_at }}</td>
+                <td>{{ continent.updated_at }}</td>
+                <td>
+                    {% if perms.locations.can_view_continent %}
+                    <a href="{% url 'locations:continent_detail' continent.slug %}" class="update_button">عرض </a>
+                    {% else %}
+                    ليس لديك صلاحية
+                        {% endif %}
+                
+                </td>
+                <td>
+                    {% if perms.locations.can_update_continent %}
+                    <a href="{% url 'locations:update_continent' continent.slug %}" class="update_button">تحديث</a>
+                    {% else %}
+                    ليس لديك صلاحية
+                        {% endif %}
+                    </td>
+
+                <td>
+                    {% if perms.locations.can_delete_continent %}
+                    <a href="{% url 'locations:delete_continent' continent.slug %}" class="delete_button" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه القارة؟')">حذف</a>
+                
+                    {% else %}
+                    ليس لديك صلاحية
+                        {% endif %}
+                    </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="10">لا توجد قارات مسجلة حاليًا.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends 'core/base.html' %}
+
+
+{% block searchbar %}
+
+    
+{% endblock %}
+
+{% block titleleftsidemenu %}
+
+
+{% endblock %}
+
+{% block leftsidemenu %}
+
+{% endblock %}
+
+
+{% block titlecontent %}
+
+{% endblock %}
+
+{% block content %}
+<div class="statistics-container">
+    <table class="custom-table">
+        <thead>
+            <tr>
+                <th>المجال</th>
+                <th>القيمة الأكثر تكرارًا</th>
+                <th>عدد التكرار</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>أكثر اسم أول مكرر</td>
+                <td>{{ most_common_firstname.firstname }}</td>
+                <td>{{ most_common_firstname.count }}</td>
+            </tr>
+            <tr>
+                <td>أكثر اسم ثاني مكرر</td>
+                <td>{{ most_common_secondname.secondname }}</td>
+                <td>{{ most_common_secondname.count }}</td>
+            </tr>
+            <tr>
+                <td>أكثر اسم ثالث مكرر</td>
+                <td>{{ most_common_thirdname.thirdname }}</td>
+                <td>{{ most_common_thirdname.count }}</td>
+            </tr>
+            <tr>
+                <td>أكثر جنس مكرر</td>
+                <td>{{ most_common_gender.gender }}</td>
+                <td>{{ most_common_gender.count }}</td>
+            </tr>
+            <tr>
+                <td>أكثر محافظة ولادة مكررة</td>
+                <td>{{ most_common_place_of_birth.place_of_birth }}</td>
+                <td>{{ most_common_place_of_birth.count }}</td>
+            </tr>
+            <tr>
+                <td>أكثر تاريخ ميلاد مكرر</td>
+                <td>{{ most_common_age.age }}</td>
+                <td>{{ most_common_age.count }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+
+
+{% block titlesidemenu %}
+
+{% endblock %}
+
+{% block sidemenu %}
+<p><a href="{% url 'accounts:view_profile' %}" class="button">الصفحة الشخصية   </a></p>
+<p>  <a href="{% url 'accounts:main_control_panel' %}" class="button">لوحة التحكم الادارية    </a></p>
+
+
+<p><a href="{% url 'personalinfo:main_personalinfo' %}" class="button">ادارة البيانات الشخصية    </a></p>
+
+<p><a href="{% url 'personalinfo:main_basicinfo' %}" class="button">ادارة البيانات الاساسية    </a></p>
+
+
+{% endblock %}
+

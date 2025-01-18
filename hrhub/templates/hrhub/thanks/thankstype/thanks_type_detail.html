@@ -1,0 +1,56 @@
+{% extends 'core/base.html' %}
+
+
+{% block title %}
+
+{% endblock %}
+
+
+
+{% block titlesidemenu %}
+
+{% endblock %}
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+   
+    <a href="{% url 'hrhub:add_thanks_type' %}" class="custom-button">  اضافة نوع  كتاب شكر جديد    </a><br>    
+    {% comment %} <a href="{% url 'hrhub:upload_employees_csv' %}" class="custom-button">رفع ملف CSV </a> {% endcomment %}
+    {% comment %} <a href="{% url 'hrhub:download_employee_offices_csv_template' %}" class="custom-button">تحميل نموذج CSV </a> {% endcomment %}
+</div>
+{% endblock %}
+
+
+
+{% block titlecontent %}
+
+{% endblock %} 
+
+{% block content %}
+
+
+<h2> تفاصيل البيانات </h2>
+<p><strong>اسم عنوان كتاب الشكر  :</strong> {{ thanks_type.thanks_name }} </p>
+<p><strong> تاثير كتاب الشكر  :</strong> {{ thanks_type.thanks_impact }} </p>
+<p><strong> ملاحظات كتاب الشكر  :</strong> {{ thanks_type.details }} </p>
+<p><strong>اسم مدخل البيانات  :</strong> {{ thanks_type.created_by }}</p>
+<p><strong>تاريخ الادخال    :</strong> {{ thanks_type.created_at }}</p>
+<p><strong>تاريخ اخر تحديث    :</strong> {{ thanks_type.updated_at }}</p>
+{% if perms.personalinfo.can_update_thanks_type %}
+ <a href="{% url 'hrhub:update_thanks_type' thanks_type.slug %}" class="update_button">تحديث</a> 
+ {% endif  %} 
+
+ {% if perms.personalinfo.can_delete_thanks_type %}
+ <a href="{% url 'hrhub:delete_thanks_type' thanks_type.slug %}" class="delete_button" onclick="return confirm('هل أنت متأكد أنك تريد حذف  هذه البيانات   ؟')">حذف</a>  
+ {% endif  %} 
+{% endblock %}
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">المتواجد    : {{ request.user }}</label>
+{% endblock %}

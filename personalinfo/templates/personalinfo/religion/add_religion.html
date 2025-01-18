@@ -1,0 +1,55 @@
+{% extends 'core/base.html' %}
+
+
+{% block title %}
+
+{% endblock %}
+
+
+
+{% block titlesidemenu %}
+
+{% endblock %}
+
+
+{% block sidemenu %}
+
+<div class="button-container">
+
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'personalinfo:main_personalinfo' %}" class="custom-button"> ادارة المعلومات الشخصية     </a>
+    <a href="{% url 'personalinfo:mainreligion' %}" class="custom-button"> صفحة الديانات       </a>
+
+
+    {% if perms.personalinfo.can_create_religion %}
+   
+    <a href="{% url 'personalinfo:add_religion' %}" class="custom-button">  اضافة ديانة   </a>
+    {%  else %}
+                لا تمتلك الصلاحية
+                {% endif %}
+
+    <a href="{% url 'personalinfo:export_religions_csv' %}" class="custom-button">  تصدير CSV     </a>
+                
+
+</div>
+
+{% endblock %}
+
+
+{% block leftsidemenu %}
+<label class="result-label"> موظف ادخال البيانات : {{ create_by.username }}</label>
+
+{% endblock %}
+
+{% block content %}
+
+
+<h2>اضافة ديانة جديدة   </h2>
+
+<form method="post" novalidate>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="update_button">حفظ</button>
+</form>
+
+{% endblock %}

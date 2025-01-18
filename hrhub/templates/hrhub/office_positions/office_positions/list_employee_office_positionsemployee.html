@@ -1,0 +1,92 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+    <title>مناصب الموظف - {{ employee.firstname }} {{ employee.surname }}</title>
+{% endblock %}
+
+
+{% block titlecontent %}
+    <h2>المناصب الخاصة بالموظف: {{ employee.firstname }} {{ employee.surname }}</h2>
+{% endblock %}
+
+{% block content %}
+    {% if office_positions %}
+        <table class="custom-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>المكتب</th>
+                    <th>الوظيفة</th>
+                    <th>نوع الأمر الصادر</th>
+                    <th>رقم الأمر</th>
+                    <th>تاريخ الأمر</th>
+                    <th>الحالة</th>
+                    <th>نوع التكليف</th>
+                    <th>تاريخ البدء</th>
+                  
+                   
+                </tr>
+            </thead>
+            <tbody>
+                {% for position in office_positions %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ position.office.name }}</td>
+                        <td>{{ position.position.name }}</td>
+                        <td>{{ position.duty_assignment_order.name }}</td>
+                        <td>{{ position.duty_assignment_order_number|default:"غير متوفر" }}</td>
+                        <td>{{ position.duty_assignment_order_date|date:"d/m/Y"|default:"غير متوفر" }}</td>
+                        <td>{{ position.get_status_display }}</td>
+                        <td>
+                            {% if position.is_primary %}
+                                اصالة
+                            {% else %}
+                                وكالة
+                            {% endif %}
+                        </td>
+                        <td>{{ position.start_date|date:"d/m/Y" }}</td>
+                       
+
+
+                        
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+        <p>لا توجد مناصب مرتبطة بهذا الموظف.</p>
+    {% endif %}
+{% endblock %}
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+   
+   
+    
+
+
+    
+</div>
+{% endblock %}
+
+
+{% block leftsidemenu %}
+<label class="result-label">عدد المناصب: {{ office_positions_count }}</label>
+
+<div class="search-container">
+    <form method="get" action="">
+        <div class="grid-item input-container">
+            <select name="is_primary">
+                <option value="">اختر نوع التكليف</option>
+                <option value="true" {% if request.GET.is_primary == "true" %}selected{% endif %}>أصالة</option>
+                <option value="false" {% if request.GET.is_primary == "false" %}selected{% endif %}>وكالة</option>
+            </select>
+        </div>
+
+        <br>
+        <button type="submit" class="leftsidemenu-button">بحث</button>
+    </form>
+</div>
+{% endblock %}

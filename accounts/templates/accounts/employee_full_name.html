@@ -1,0 +1,110 @@
+{% extends 'core/base.html' %}
+
+{% block sidemenu %}
+<aside class="side-menu">
+    <a href="{% url 'accounts:view_profile' %}"> الملف الشخصي</a>
+    <br>
+
+    <a href="{% url 'certificates:certificate_main_page' %}">صفحة الشهادات الرئيسية</a>
+    <br>
+
+    <a href="{% url 'certificates:school_main_page' %}">صفحة احصائيات المدارس </a>
+    <br>
+
+
+    
+
+    
+</aside>
+{% endblock %}
+
+{% block content %}
+<!-- نموذج البحث -->
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">بحث</button>
+</form>
+
+<!-- عرض رسالة خطأ إذا لم يتم العثور على الموظف -->
+{% if error_message %}
+    <p style="color: red;">{{ error_message }}</p>
+
+<!-- عرض المعلومات الأساسية للموظف إذا تم العثور عليها -->
+{% elif basic_info %}
+    <h2>المعلومات الأساسية للموظف:</h2>
+    <p><strong>الاسم الأول:</strong> {{ basic_info.firstname }}</p>
+    <p><strong>الاسم الثاني:</strong> {{ basic_info.secondname }}</p>
+    <p><strong>الاسم الثالث:</strong> {{ basic_info.thirdname }}</p>
+    <p><strong>اسم الأم:</strong> {{ basic_info.mothername }}</p>
+    <p><strong>رقم الهاتف:</strong> {{ basic_info.phone_number }}</p>
+    <p><strong>البريد الإلكتروني:</strong> {{ basic_info.email }}</p>
+    <p><strong>تاريخ الميلاد:</strong> {{ basic_info.date_of_birth }}</p>
+    <p><strong>مكان الميلاد:</strong> {{ basic_info.place_of_birth }}</p>
+    <p><strong>الجنس:</strong> {{ basic_info.gender }}</p>
+    <p><strong>سيرة قصيرة:</strong> {{ basic_info.bio }}</p>
+
+    <!-- التحقق وعرض بيانات المدرسة إذا كانت موجودة -->
+    {% if school %}
+        <h3>المدرسة المرتبطة: 
+            <strong><a href="{% url 'certificates:school_update' slug=school.slug %}">تحديث المدرسة</a> | <a href="{% url 'certificates:school_delete' slug=school.slug %}">حذف المدرسة</a>
+            
+            </strong>
+             </h3>
+        <p><strong>اسم المدرسة:</strong> {{ school.name }}</p>
+        <p><strong>المحافظة:</strong> {{ school.governorate }}</p>
+        <p><strong>العنوان:</strong> {{ school.address }}</p>
+        <p><strong>تاريخ بدء الدراسة:</strong> {{ school.start_study }}</p>
+        <p><strong>تاريخ انتهاء الدراسة:</strong> {{ school.end_study }}</p>
+    {% else %}
+        <p style="color: orange;">هذا الموظف ليس له مدرسة مرتبطة.</p>
+    {% endif %}
+{% endif %}
+
+<!-- عرض جميع الموظفين من all_basic_info -->
+
+
+<!-- عرض جميع الموظفين من all_basic_info -->
+<h2>جميع الموظفين:</h2>
+<table border="1">
+    <thead>
+        <tr>
+            <th>اسم الموظف</th>
+            <th>آخر مكان عمل</th>
+            <th>رقم الهاتف</th>
+            <th>البريد الإلكتروني</th>
+            <th>تاريخ الميلاد</th>
+            <th>مكان الميلاد</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for info in all_basic_info %}
+        <tr>
+            <td>{{ info.get_full_name }}</td>
+            <td>
+                {% with latest_position=info.office_positions.last %}
+                {% if latest_position %}
+                    <strong>المكتب:</strong> {{ latest_position.office }}<br>
+                    <strong>الوظيفة:</strong> {{ latest_position.position }}<br>
+                   
+                {% else %}
+                    <p>لا توجد معلومات عن الوظيفة لهذا الموظف.</p>
+                {% endif %}
+                {% endwith %}
+            </td>
+            <td>{{ info.phone_number }}</td>
+            <td>{{ info.email }}</td>
+            <td>{{ info.date_of_birth }}</td>
+            <td>{{ info.place_of_birth }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">لا توجد معلومات أساسية متاحة.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+{% endblock %}

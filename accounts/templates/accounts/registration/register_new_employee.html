@@ -1,0 +1,67 @@
+{% extends 'core/base.html' %}
+{% load i18n %}
+
+{% block titlesidemenu %}
+
+{% comment %} <a href="{% url 'accounts:accounts_main_page'  %}">الصفحة الرئيسية لادارة حسابات الموظفين   </a> {% endcomment %}
+<br>
+
+ 
+
+
+
+{% endblock %}
+
+
+{% block content %}
+
+
+{% if perms.accounts.has_register_employee_permission %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="update_button">تسجيل</button>
+    </form>
+{% else %}
+    <p>ليس لديك الصلاحيات اللازمة لتسجيل موظف جديد.</p>
+{% endif %}
+
+
+{% endblock %}
+
+
+
+
+
+
+{% block sidemenu %}
+
+
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  التحكم الرئيسية     </a>
+    <a href="{% url 'accounts:main_accounts_page' %}" class="custom-button">  الحسابات الرئيسية      </a>
+    <a href="{% url 'accounts:generate_sample_upload_employees_csv_csv' %}"class="custom-button">  نموذج ملف CSV  </a> 
+    {% if perms.accounts.has_register_employee_permission %}
+
+    <a href="{% url 'accounts:upload_employees_csv' %}" class="custom-button"> تسجيل موظفين CSV  </a>  
+    {% else %}
+    <p>ليس لديك الصلاحيات اللازمة لتسجيل موظف جديد.</p>
+{% endif %}
+    
+
+</div>
+
+
+
+{% endblock %}
+
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">   مدخل البيانات      : {{ request.user }}</label>
+
+{% endblock %}

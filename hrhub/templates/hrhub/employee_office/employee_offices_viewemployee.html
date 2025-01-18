@@ -1,0 +1,88 @@
+{% extends 'core/base.html' %}
+
+
+{% block searchbar %}
+
+
+{% endblock %}
+
+{% block titleleftsidemenu %}
+
+
+{% endblock %}
+
+{% block leftsidemenu %}
+
+<label class="result-label">
+    موظف الادخال  : {{ request.user }}
+</label>
+{% endblock %}
+
+
+
+
+{% block titlecontent %}
+
+{% endblock %}
+
+
+{% block content %}
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>اسم الدائرة</th>
+            <th>تفاصيل</th>
+            <th>تحديث</th>
+            <th>حذف</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for employee_office in employee_offices %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ employee_office.office.name }}</td>
+                <td>
+                    <a href="{% url 'hrhub:office_detail' employee_office.office.slug %}" class="details-button">
+                        تفاصيل الدائرة
+                    </a>
+                </td>
+                <td>
+                    {% if perms.hrhub.can_update_employee_office %}
+                    <a href="{% url 'hrhub:update_employee_office' employee_office.slug %}" class="update_button">
+                        تحديث
+                    </a>
+                    {% else %}
+                    ليس لديك صلاحية التحديث
+                    {% endif %}
+                </td>
+
+                <td>
+                    {% if perms.hrhub.can_delete_employee_office %}
+                    <a href="{% url 'hrhub:delete_employee_office' employee_office.slug %}" class="delete_button"
+                       onclick="return confirm('هل أنت متأكد من أنك تريد حذف هذه العلاقة؟');">
+                        حذف
+                    </a>
+                    {% else %}
+                    ليس لديك صلاحية التحديث
+                    {% endif %}
+                </td>
+
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="10">لا توجد دوائر مسجلة حالياً.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    
+</div>
+{% endblock %}

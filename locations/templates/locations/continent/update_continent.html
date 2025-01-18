@@ -1,0 +1,32 @@
+{% extends 'core/base.html' %}
+
+{% block titlecontent %} {% endblock %}
+
+{% block content %}
+
+
+<div class="main-content">
+    <h2>تحديث القارة: {{ continent.name_arabic }}</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">تحديث</button>
+    </form>
+</div>
+
+{% endblock %}
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'locations:main_locations_dashboard' %}" class="custom-button">الأماكن</a>
+    <a href="{% url 'locations:create_continent' %}" class="custom-button">إدخال قارة</a>
+</div>
+{% endblock %}
+
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+

@@ -1,0 +1,17 @@
+{% extends 'core/base.html' %}
+
+{% block sidemenu %}
+
+{% endblock %}
+
+{% block content %}
+  <h1>موافقة الموظف: {{ employee.username }}</h1>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">حفظ التعديلات</button>
+  </form>
+  
+  {% comment %} <a href="{% url 'employee_list' %}">العودة إلى قائمة الموظفين</a> {% endcomment %}
+{% endblock %}

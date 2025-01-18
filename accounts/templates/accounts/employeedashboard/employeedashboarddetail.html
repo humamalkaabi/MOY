@@ -1,0 +1,204 @@
+{% extends 'core/base.html' %}
+
+{% block searchbar %}
+
+{% endblock %}
+
+{% block titlecontent %}
+{% endblock %}
+
+{% block content %}
+
+<h2>معلومات الموظف</h2>
+    
+    <p><strong> الرقم الوظيفي:</strong> {{ employee.username }}</p>
+    {% if basic_info %}
+    
+
+    <div class="personal-info-container">
+        
+        <p><strong>الاسم الثلاثي:</strong> {{ basic_info.get_full_name }} 
+        
+    </p>
+
+    <p><strong>اسم الوالدة :</strong> {{ basic_info.mothername }} 
+       
+    </p>
+    <p><strong>رقم الهاتف  :</strong> {{ basic_info.phone_number }} 
+        
+    </p>
+    
+    <p><strong>البريد الالكتروني   :</strong> {{ basic_info.email }} 
+       
+    </p>
+    
+    <p><strong> تاريخ الميلاد   :</strong> {{ basic_info.date_of_birth }} 
+       
+    </p>
+
+
+<p><strong> عمر الموظف    :</strong> {{ basic_info.emplpyee_age }} </p>
+
+<p><strong> محل الميلاد   :</strong> {{ basic_info.place_of_birth.name_arabic }} 
+    <p><strong>  الجنس   :</strong> {{ basic_info.get_gender_display }} 
+      
+    </p>
+
+
+
+<p><strong>  السيرة الذاتية   :</strong> {{ basic_info.bio }} 
+   
+</p>
+
+<p><strong>  تحديث المعلومات الاساسية    :</strong>  <a href="{% url 'personalinfo:updatebasicinfo' basic_info.slug %}" >تحديث معلومات أساسية</a>   
+
+</p>
+
+    </div> 
+
+   
+
+
+
+    <div class="personal-info-container">
+        {% if additional_info %}
+
+        <p><strong>فصيلة الدم:</strong> {{ additional_info.blood_type }}</p> 
+
+
+        <p><strong>الديانة:</strong> {{ additional_info.religion.name_in_arabic }}  </p> 
+
+
+        <p><strong>القومية:</strong> {{ additional_info.nationalism.name_in_arabic }}  </p> 
+        <p><strong>الحالة الاجتماعية:</strong> {{ additional_info.get_marital_status_display }} </p> 
+        <p><strong>المحافظة:</strong> {{ additional_info.governorate_of_residence.name_arabic }}
+           </p> 
+
+           <p><strong>العنوان:</strong> {{ additional_info.address }}  </p> 
+           <p><strong>اسم الطوارئ:</strong> {{ additional_info.emergency_contact_name }}
+            </p> 
+            <p><strong>رقم الطوارئ:</strong> {{ additional_info.emergency_contact_number }}</p>
+
+
+<p><strong>  تحديث المعلومات الاضافية    :</strong>  <a href="{% url 'personalinfo:update_additional_info' additional_info.slug %}" >تحديث معلومات الاضافية</a>   
+
+</p>
+
+
+{% else %}
+لا يوجد معلومات اضافية -  <a href="{% url 'personalinfo:add_additional_info' employee.basic_info.slug %}">إضافة معلومات إضافية</a>
+{% endif %}
+    
+    </div> 
+
+
+
+
+
+
+
+{% else %}
+لا يوجد معلومات اساسية  <a href="{% url 'personalinfo:addbasicinfo' employee.slug %}" class="update_button">إضافة معلومات أساسية</a>   
+{% endif %}
+    
+
+
+{% endblock %}
+
+{% block pagination %}
+
+{% endblock %}
+
+{% block titlesidemenu %}
+{% endblock %}
+
+
+
+{% block sidemenu %}
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية</a>
+    {% if user.is_superuser %}
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">لوحة التحكم</a>
+    
+    {% endif %}
+    {% if basic_info %}
+
+    <a href="{% url 'personalinfo:employee_documents' basic_info.slug%}" class="custom-button"> الوثائق الرسمية   </a>
+    <a href="{% url 'rddepartment:employeeeducation_detail' basic_info.slug%}" class="custom-button"> الشهادات الاكاديمية </a>
+    <a href="{% url 'rddepartment:all_employee_certificates' basic_info.slug%}" class="custom-button"> الشهادات غير الاكاديمية </a>
+
+    <a href="{% url 'hrhub:employee_thanks_list' basic_info.slug%}" class="custom-button"> كتب الشكر والتقدير   </a>
+
+    <a href="{% url 'hrhub:employee_punishments_list' basic_info.slug%}" class="custom-button"> كتب العقوبة    </a>
+
+    <a href="{% url 'hrhub:employee_leave_requests' basic_info.slug%}" class="custom-button"> الاجازات     </a>
+
+
+    <a href="{% url 'hrhub:all_placement_detail' basic_info.slug%}" class="custom-button"> التنسيبات     </a>
+
+    <a href="{% url 'hrhub:employee_offices_view' basic_info.slug%}" class="custom-button"> دوائر الموظف     </a>
+
+
+    <a href="{% url 'hrhub:list_employee_office_positions' basic_info.slug%}" class="custom-button"> المناصب      </a>
+
+    <a href="{% url 'hrhub:employee_absence_list' basic_info.slug%}" class="custom-button"> غيابات الموظف      </a>
+
+    <a href="{% url 'hrhub:employment_history_detail' basic_info.slug%}" class="custom-button"> التاريخ الوظيفي       </a>
+
+
+
+    
+    
+    <a href="{% url 'hrhub:employee_job_titles' basic_info.slug%}" class="custom-button"> العنوان الوظيفي   </a>
+
+
+    {% endif %}
+    
+</div>
+
+
+
+{% endblock %}
+
+
+
+{% block leftsidemenu %}
+{% if basic_info%}
+<div class="leftsidemenu-container">
+    {% if basic_info and basic_info.avatar %}
+        <div class="avatar-wrapper">
+            <img src="{{ basic_info.avatar.url }}" alt="{{ basic_info.get_full_name }}'s avatar" class="avatar-image">
+        </div>
+
+       
+    {% else %}
+        <p class="no-avatar">لا توجد صورة 
+          
+        </p>
+    {% endif %}
+</div>
+
+<label class="result-label"> 
+    نوع الملاك:
+    {% if latest_staff_type %}
+    {{ latest_staff_type.employee_staff_type.name_in_arabic }}
+    {% else %}
+       غير متوفر    
+    {% endif %}
+ </label>
+ <label class="result-label"> 
+ كتب الشكر والتقدير: {{ thanks_count }}
+ </label>
+
+ <label class="result-label"> 
+    عدد كــتب العقــوبة: {{ punishments_count }}
+</label>
+
+<label class="result-label"> 
+    عدد غيابات الموظف: {{ absences_count }}
+</label>
+
+ {% endif %}
+{% endblock %}
+

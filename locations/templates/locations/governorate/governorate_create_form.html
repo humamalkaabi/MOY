@@ -1,0 +1,37 @@
+{% extends 'core/base.html' %}
+
+{% block titlecontent %} {% endblock %} 
+
+{% block sidemenu %}
+
+
+  <a href="{% url 'locations:main_locations_dashboard' %}" class="button">الاماكن </a> 
+  <br>
+  <a href="{% url 'locations:governorate_statistics' %}" class="button">صفحة المحافظات   </a> 
+  <br>
+
+
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<h2>اضافة محافظة </h2>
+
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Save</button>
+</form>
+
+{% endblock %}
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+
+

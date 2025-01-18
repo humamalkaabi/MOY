@@ -1,0 +1,94 @@
+{% extends 'core/base.html' %}
+
+{% block title %}تفاصيل الغياب{% endblock %}
+{% block sidemenu %}
+
+<p><a href="{% url 'accounts:main_control_panel' %}" class="button">لوحة التحكم الإدارية</a></p>
+<p><a href="{% url 'hrhub:main_hrhub' %}" class="button">صفحة الموارد البشرية</a></p>
+<p> <a href="{% url 'hrhub:main_absence_type' %}" class="button">  انواع الغيابات المتوفرة      </a></p>
+
+<a href="{% url 'hrhub:main_absences_employee' %}" class="button">العودة إلى قائمة الموظفين</a>
+{% endblock %}
+
+
+{% block content %}
+<h2>تفاصيل الغياب</h2>
+
+<div class="details-container">
+    <table class="custom-table">
+        <tr>
+            <th>الموظف:</th>
+            <td>{{ absence.emp_id_absence.get_full_name }}</td>
+        </tr>
+        <tr>
+            <th>رقم سجل الغياب:</th>
+            <td>{{ absence.absence_number }}</td>
+        </tr>
+        <tr>
+            <th>نوع الغياب:</th>
+            <td>{{ absence.absence_type.absence_name }}</td>
+        </tr>
+        <tr>
+            <th>تاريخ الإصدار:</th>
+            <td>{{ absence.date_issued }}</td>
+        </tr>
+        <tr>
+            <th>تاريخ بداية الغياب:</th>
+            <td>{{ absence.start_date }}</td>
+        </tr>
+        <tr>
+            <th>تاريخ نهاية الغياب:</th>
+            <td>{{ absence.end_date }}</td>
+        </tr>
+        <tr>
+            <th>مدة الغياب (سنوات):</th>
+            <td>{{ absence.duration_years|default:"غير محدد" }}</td>
+        </tr>
+        <tr>
+            <th>مدة الغياب (شهور):</th>
+            <td>{{ absence.duration_months|default:"غير محدد" }}</td>
+        </tr>
+        <tr>
+            <th>مدة الغياب (أيام):</th>
+            <td>{{ absence.duration_days|default:"غير محدد" }}</td>
+        </tr>
+        <tr>
+            <th>ملف PDF:</th>
+            <td>
+                {% if absence.pdf_file %}
+                    <a href="{{ absence.pdf_file.url }}" target="_blank">تحميل الملف</a>
+                {% else %}
+                    لا يوجد ملف مرفق
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>ملاحظات:</th>
+            <td>{{ absence.comments|default:"لا توجد ملاحظات" }}</td>
+        </tr>
+        <tr>
+            <th>مدخل البيانات:</th>
+            <td>{{ absence.created_by.get_full_name }}</td>
+        </tr>
+        <tr>
+            <th>تمت الموافقة:</th>
+            <td>{{ absence.approved|yesno:"نعم,لا" }}</td>
+        </tr>
+        <tr>
+            <th>تاريخ الإنشاء:</th>
+            <td>{{ absence.created_at }}</td>
+        </tr>
+        <tr>
+            <th>تاريخ التحديث:</th>
+            <td>{{ absence.updated_at }}</td>
+        </tr>
+    </table>
+</div>
+<br> <br>
+<div class="actions">
+    <a href="{% url 'hrhub:update_absence' absence.slug %}" class="button">تعديل</a>
+    <a href="{% url 'hrhub:delete_absence' absence.slug %}" 
+       onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا السجل؟')" 
+       class="button">حذف</a>
+</div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'core/base.html' %}
+
+
+
+{% block titleleftsidemenu %}
+
+
+{% endblock %}
+
+
+{% block titlecontent %}
+
+{% endblock %}
+
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        {{ form.auto_grade_step_upgrade.label_tag }}
+        {{ form.auto_grade_step_upgrade }}
+    </div>
+    <div class="mb-3">
+        {{ form.future_auto_grade_step_upgrade.label_tag }}
+        {{ form.future_auto_grade_step_upgrade }}
+    </div>
+    <button type="submit" class="update_button">حفظ التعديلات</button>
+</form>
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">   محدث الاعدادات{{ request.user }}</label>
+{% endblock %}
+
+
+
+
+{% block titlesidemenu %}
+
+{% endblock %}
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:main_employee_grade_step' %}" class="custom-button">  العلاوات والترفيعات         </a> 
+
+    <a href="{% url 'hrhub:main_employee_grade' %}" class="custom-button">  الدرجات الوظيفية        </a> 
+    <a href="{% url 'hrhub:main_employee_step' %}" class="custom-button">  المراحل الوظيفية        </a> 
+
+   
+    
+    
+</div>
+{% endblock %}
+

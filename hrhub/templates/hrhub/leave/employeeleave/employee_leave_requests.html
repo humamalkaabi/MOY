@@ -1,0 +1,63 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+    <title>طلبات الإجازات للموظف</title>
+{% endblock %}
+
+{% block titlesidemenu %}
+{% endblock %}
+
+{% block titlecontent %}
+    <h2>طلبات الإجازات للموظف: {{ employee.firstname }} {{ employee.secondname }}</h2>
+{% endblock %}
+
+{% block content %}
+    <table class="custom-table">
+        <thead>
+            <tr>
+                <th>نوع الإجازة</th>
+                <th>تاريخ البداية</th>
+                <th>تاريخ النهاية</th>
+                <th>المدة الإجمالية (بالأيام)</th>
+                <th>الحالة</th>
+                <th>تفاصيل </th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for leave_request in leave_requests %}
+                <tr>
+                    <td>{{ leave_request.leave_type.name }}</td>
+                    <td>{{ leave_request.start_date }}</td>
+                    <td>{{ leave_request.end_date }}</td>
+                    <td>{{ leave_request.total_duration_days }}</td>
+                    <td>{{ leave_request.get_status_display_ar }}</td>
+                   
+                    <td>  <a href="{% url 'hrhub:leave_request_detail' leave_request.slug %}" class="update_button">عرض   </a> </td>
+                    
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="10">لا توجد طلبات إجازة لعرضها.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:main_leave_balance' %}" class="custom-button">  صفحة ارصدة الاجازات       </a>
+    <a href="{% url 'hrhub:main_leave_type' %}" class="custom-button">  صفحة انواع الاجازات       </a>
+
+</div>
+{% endblock %}
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

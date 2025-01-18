@@ -1,0 +1,45 @@
+{% extends 'core/base.html' %}
+
+
+
+
+{% block content %}
+
+
+<h2>إضافة معلومات أساسية للموظف: {{ employee.username }}</h2>
+<h2>تحميل ملف CSV للمعلومات الأساسية</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="update_button">تحميل</button>
+</form>
+
+
+{% endblock %}
+
+
+
+
+{% block sidemenu %}
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'personalinfo:main_personalinfo' %}" class="custom-button"> ادارة المعلومات الشخصية     </a>
+
+    
+    {% if perms.personalinfo.can_add_employee_basic_info %}
+    <a href="{% url 'personalinfo:upload_basic_info_csv' %}" class="custom-button"> رفع CSV          </a>
+
+    {% else%}
+    ليس لديك صلاحية الرفع
+    {% endif %}
+    <a href="{% url 'personalinfo:download_sample_basic_info_csv' %}" class="custom-button"> تحميل نموذج CSV          </a>
+
+    
+</div>
+{% endblock %}
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

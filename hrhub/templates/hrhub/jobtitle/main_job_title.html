@@ -1,0 +1,70 @@
+{% extends 'core/base.html' %}
+
+{% block title %}قائمة الموظفين{% endblock %}
+
+
+
+
+
+{% block content %}
+
+<table class="custom-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>اسم العنوان الوظيفي</th>
+                <th>اسم العنوان العام</th>
+                <th>مدخل العنوان</th>
+                <th>تفاصيل العنوان</th>
+                <th>تحديث العنوان</th>
+                <th>حذف العنوان</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for jobtitle in jobtitles %}
+            <tr>
+                <td>{{ jobtitle.counter }}</td>
+                <td>{{ jobtitle.title_in_arabic }}</td>
+                <td>{{ jobtitle.parent }}</td>
+                <td>{{ jobtitle.created_by }}</td>
+                <td><a href="{% url 'hrhub:sub_job_titles' parent_slug=jobtitle.slug %}" class="update_button" > التفاصيل</a></td>
+                <td><a href="{% url 'hrhub:update_job_title' jobtitle.slug %}"  class="update_button" >تحديث</a></td>
+                <td>
+                    <a href="{% url 'hrhub:delete_job_title' jobtitle.slug %}"  class="delete_button"
+                       onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا العنوان الوظيفي؟')">حذف</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">لا توجد عناوين وظيفية مسجلة حالياً.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:add_job_title' %}"  class="custom-button">  اضافة عنوان وظيفي   </a>
+
+    {% comment %} <a href="{% url 'hrhub:main_thanks_type' %}" class="custom-button">انواع كتب الشكر </a> {% endcomment %}
+
+    <a href="{% url 'hrhub:upload_job_titles_csv' %}" class="custom-button"> رفع CSV    </a>
+
+
+    
+    {% comment %} <a href="{% url 'hrhub:upload_employees_csv' %}" class="custom-button">رفع ملف CSV </a> {% endcomment %}
+    {% comment %} <a href="{% url 'hrhub:download_employee_offices_csv_template' %}" class="custom-button">تحميل نموذج CSV </a> {% endcomment %}
+</div>
+{% endblock %}
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

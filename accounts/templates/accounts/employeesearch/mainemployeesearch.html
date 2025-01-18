@@ -1,0 +1,320 @@
+{% extends 'core/base.html' %}
+
+{% block searchbar %}
+<form method="get" action="">
+    <div class="main_searchbar">
+        <div class="grid-container">
+            <!-- البحث حسب الرقم الوظيفي -->
+            <div class="grid-item input-container">
+                <input type="text" id="username" name="username" placeholder="ادخل الرقم الوظيفي" value="{{ request.GET.username }}">
+            </div>
+            <!-- البحث حسب الاسم الأول -->
+            <div class="grid-item input-container">
+                <input type="text" id="firstname" name="firstname" placeholder="ادخل الاسم الأول" value="{{ request.GET.firstname }}">
+            </div>
+            <!-- البحث حسب الاسم الثاني -->
+            <div class="grid-item input-container">
+                <input type="text" id="secondname" name="secondname" placeholder="ادخل الاسم الثاني" value="{{ request.GET.secondname }}">
+            </div>
+            <!-- البحث حسب الاسم الثالث -->
+            <div class="grid-item input-container">
+                <input type="text" id="thirdname" name="thirdname" placeholder="ادخل الاسم الثالث" value="{{ request.GET.thirdname }}">
+            </div>
+            <!-- التصفية حسب البيانات الأساسية -->
+            <div class="grid-item input-container">
+                <select name="has_basicinfo">
+                    <option value="">لديه بيانات أساسية</option>
+                    <option value="yes" {% if request.GET.has_basicinfo == "yes" %}selected{% endif %}>نعم</option>
+                    <option value="no" {% if request.GET.has_basicinfo == "no" %}selected{% endif %}>لا</option>
+                </select>
+            </div>
+            <!-- التصفية حسب الجنس -->
+            <div class="grid-item input-container">
+                <select name="gender">
+                    <option value="">اختر الجنس</option>
+                    <option value="M" {% if request.GET.gender == "M" %}selected{% endif %}>ذكر</option>
+                    <option value="F" {% if request.GET.gender == "F" %}selected{% endif %}>أنثى</option>
+                </select>
+            </div>
+            <!-- التصفية حسب رقم الهاتف -->
+           
+            <!-- التصفية حسب الدائرة -->
+            <div class="grid-item input-container">
+                <select name="office">
+                    <option value="">اختر الدائرة</option>
+                    {% for office in offices %}
+                        <option value="{{ office.id }}" {% if request.GET.office == office.id|stringformat:"d" %}selected{% endif %}>
+                            {{ office.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <!-- زر البحث -->
+            <div class="grid-item input-container">
+                <button type="submit">بحث</button>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block titleleftsidemenu %}
+{% endblock %}
+{% block leftsidemenu %}
+    <label class="result-label">نتائج البحث : {{ employee_count }}</label>
+
+    <div class="search-container">
+        <form method="get" action="">
+            <div class="grid-item input-container">
+                <select name="document_type">
+                    <option value="">اختر نوع الوثيقة</option>
+                    {% for document_type in document_types %}
+                        <option value="{{ document_type.id }}" {% if request.GET.document_type == document_type.id|stringformat:"s" %}selected{% endif %}>
+                            {{ document_type.name_in_arabic }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- تصفية حسب الدين -->
+            <div class="grid-item input-container">
+                <select name="religion">
+                    <option value="">اختر الدين</option>
+                    {% for religion in religions %}
+                        <option value="{{ religion.id }}" {% if request.GET.religion == religion.id|stringformat:"s" %}selected{% endif %}>
+                            {{ religion.name_in_arabic }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- تصفية حسب القومية -->
+            <div class="grid-item input-container">
+                <select name="nationalism">
+                    <option value="">اختر القومية</option>
+                    {% for nationalism in nationalisms %}
+                        <option value="{{ nationalism.id }}" {% if request.GET.nationalism == nationalism.id|stringformat:"s" %}selected{% endif %}>
+                            {{ nationalism.name_in_arabic }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- تصفية حسب نوع الشهادة العلمية -->
+<div class="grid-item input-container">
+    <select name="education_degree">
+        <option value="">اختر نوع الشهادة</option>
+        {% for degree in education_degrees %}
+            <option value="{{ degree.id }}" {% if request.GET.education_degree == degree.id|stringformat:"s" %}selected{% endif %}>
+                {{ degree.name_in_arabic }}
+            </option>
+        {% endfor %}
+    </select>
+</div>
+
+<!-- تصفية حسب نوع الكورس التدريبي -->
+<div class="grid-item input-container">
+    <select name="course_certificate">
+        <option value="">اختر نوع الدورة</option>
+        {% for certificate in course_certificates %}
+            <option value="{{ certificate.id }}" {% if request.GET.course_certificate == certificate.id|stringformat:"s" %}selected{% endif %}>
+                {{ certificate.name_in_arabic }}
+            </option>
+        {% endfor %}
+    </select>
+</div>
+
+<!-- تصفية حسب نوع المخصصات المركزية -->
+<div class="grid-item input-container">
+    <select name="central_financial_allocation">
+        <option value="">اختر نوع المخصصات</option>
+        {% for allocation in financial_allocations %}
+            <option value="{{ allocation.id }}" {% if request.GET.central_financial_allocation == allocation.id|stringformat:"s" %}selected{% endif %}>
+                {{ allocation.name_in_arabic }}
+            </option>
+        {% endfor %}
+    </select>
+</div>
+
+<div class="grid-item input-container">
+    <select name="employment_type">
+        <option value="">اختر نوع التوظيف</option>
+        {% for employment in employment_types %}
+            <option value="{{ employment.id }}" {% if request.GET.employment_type == employment.id|stringformat:"s" %}selected{% endif %}>
+                {{ employment.name }}
+            </option>
+        {% endfor %}
+    </select>
+</div>
+
+<div class="grid-item input-container">
+    <select name="position_type">
+        <option value="">اختر نوع المنصب</option>
+        <option value="primary" {% if request.GET.position_type == "primary" %}selected{% endif %}>أصالة</option>
+        <option value="acting" {% if request.GET.position_type == "acting" %}selected{% endif %}>وكالة</option>
+    </select>
+</div>
+
+<div class="grid-item input-container">
+    <select name="placement_type">
+        <option value="">اختر نوع التنسيب</option>
+        <option value="internal" {% if request.GET.placement_type == "internal" %}selected{% endif %}>تنسبيب داخلي (داخل الوزارة)</option>
+        <option value="external" {% if request.GET.placement_type == "external" %}selected{% endif %}>تنسبيب خارجي (خارج الوزارة)</option>
+    </select>
+</div>
+
+            <br>
+            <button type="submit" class="update_button">بحث</button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block titlecontent %}
+{% endblock %}
+
+{% block content %}
+<table>
+    <thead>
+        <tr>
+            <th>الرقم الوظيفي</th>
+            <th>الاسم الكامل</th>
+            <th>رقم الهاتف</th>
+            <th>صفحة الموظف </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for employee in employees %}
+        <tr>
+            <td>{{ employee.username }}</td>
+            <td>
+                {% if employee.basic_info %}
+                    {{ employee.basic_info.get_full_name }} - 
+                    
+
+                {% else %}
+                    لا توجد معلومات 
+                    
+                {% endif %}
+            </td>
+            <td>
+                {% if employee.basic_info and employee.basic_info.phone_number %}
+                    {{ employee.basic_info.phone_number }}
+                {% else %}
+                    لا يوجد
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'accounts:searchemployeedashboard' employee.slug %}">صفحة الموظف  </a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">لا توجد بيانات لعرضها.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+{% block pagination %}
+<div class="pagination-container">
+    <div class="pagination-info">
+        <span>عدد العناصر بالصفحة:</span>
+        <form method="get" action="" class="pagination-form">
+            <input type="number" id="results_per_page" name="results_per_page" placeholder="عدد النتائج لكل صفحة" value="{{ request.GET.results_per_page|default:10 }}" class="pagination-input">
+        </form>
+    </div>
+    <div class="pagination-controls">
+        {% if employees.has_previous %}
+            <a href="?{{ request.GET.urlencode }}&page=1" class="pagination-button">الأولى</a>
+            <a href="?{{ request.GET.urlencode }}&page={{ employees.previous_page_number }}" class="pagination-button">السابق</a>
+        {% endif %}
+        <span>صفحة {{ employees.number }} من {{ employees.paginator.num_pages }}</span>
+        {% if employees.has_next %}
+            <a href="?{{ request.GET.urlencode }}&page={{ employees.next_page_number }}" class="pagination-button">التالي</a>
+            <a href="?{{ request.GET.urlencode }}&page={{ employees.paginator.num_pages }}" class="pagination-button">الأخيرة</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block titlesidemenu %}
+{% endblock %}
+
+
+
+{% block sidemenu %}
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية</a>
+</div>
+
+<div class="search-container">
+    <form method="get" action="">
+        <div class="grid-item input-container">
+            <select name="staff_structure_type">
+                <option value="">اختر نوع الملاك</option>
+                {% for staff_type in staff_structure_types %}
+                    <option value="{{ staff_type.id }}" {% if request.GET.staff_structure_type == staff_type.id|stringformat:"s" %}selected{% endif %}>
+                        {{ staff_type.name_in_arabic }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="grid-item input-container">
+            <select name="payroll_budget_type">
+                <option value="">اختر نوع الموازنة</option>
+                {% for budget in payroll_budget_types %}
+                    <option value="{{ budget.id }}" {% if request.GET.payroll_budget_type == budget.id|stringformat:"s" %}selected{% endif %}>
+                        {{ budget.name_in_arabic }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+
+        <div class="grid-item input-container">
+            <select name="thanks_type">
+                <option value="">اختر نوع كتاب الشكر</option>
+                {% for thanks in thanks_types %}
+                    <option value="{{ thanks.id }}" {% if request.GET.thanks_type == thanks.id|stringformat:"s" %}selected{% endif %}>
+                        {{ thanks.thanks_name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="grid-item input-container">
+            <select name="punishment_type">
+                <option value="">اختر نوع العقوبة</option>
+                {% for punishment in punishment_types %}
+                    <option value="{{ punishment.id }}" {% if request.GET.punishment_type == punishment.id|stringformat:"s" %}selected{% endif %}>
+                        {{ punishment.punishment_name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="grid-item input-container">
+            <select name="absence_type">
+                <option value="">اختر نوع الغياب</option>
+                {% for absence in absence_types %}
+                    <option value="{{ absence.id }}" {% if request.GET.absence_type == absence.id|stringformat:"s" %}selected{% endif %}>
+                        {{ absence.absence_name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        
+
+
+        <button type="submit" class="update_button">بحث</button>
+    </form>
+</div>
+
+
+
+
+
+{% endblock %}

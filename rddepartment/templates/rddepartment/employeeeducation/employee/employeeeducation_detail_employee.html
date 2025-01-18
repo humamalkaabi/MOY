@@ -1,0 +1,86 @@
+{% extends 'core/base.html' %}
+
+{% block title %}الشهادات الاكاديمية للموظف    {% endblock %}
+
+{% block titlesidemenu %}
+{% endblock %}
+
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+
+
+
+{% block sidemenu %}
+
+
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+   
+    
+</div>
+
+
+
+{% endblock %}
+
+{% block content %}
+
+
+
+<h3>جميع الشهادات الخاصة بالموظف:</h3>
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th>نوع الشهادة</th>
+            <th>تاريخ الإصدار</th>
+            <th>الوزارة المانحة</th>
+            <th>اسم المؤسسة</th>
+            <th>رقم الشهادة</th>
+            <th>تاريخ الشهادة </th>
+            <th>تاريخ التخرج</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for cert in educations %}
+            <tr>
+                <td>{{ cert.education_degree_type.name_in_arabic }}</td>
+                <td>{{ cert.date_issued }}</td>
+                <td>
+                    {% if cert.certificat_minstery_type == 'education' %}
+                        التربية
+                    {% elif cert.certificat_minstery_type == 'higher_education' %}
+                        تعليم عالي
+                    {% else %}
+                        غير محددة
+                    {% endif %}
+                </td>
+                <td>
+                    {% if cert.iraqi_university %}
+                        {{ cert.iraqi_university.name_in_arabic }}
+                    {% elif cert.foreign_university %}
+                        {{ cert.foreign_university.name_in_english }}
+                    {% elif cert.institution_name %}
+                        {{ cert.institution_name }}
+                    {% else %}
+                        غير محددة
+                    {% endif %}
+                </td>
+                <td>{{ cert.duty_assignment_number }}</td>
+                <td>{{ cert.date_of_administrative_order }}</td>
+                <td>{{ cert.graduation_date }}</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="8">لا توجد شهادات للموظف.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}

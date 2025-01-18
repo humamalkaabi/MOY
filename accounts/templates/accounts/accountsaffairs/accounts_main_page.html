@@ -1,0 +1,108 @@
+{% extends 'core/base.html' %}
+
+{% block titlesidemenu %} <h2>{{ basic_info.get_full_name }} </h2> 
+
+
+
+
+
+{% endblock %}
+
+
+{% block titlecontent %} 
+
+
+ 
+{% endblock %} 
+
+
+{% block sidemenu %}
+
+ <a href="{% url 'accounts:view_profile'  %}"> الملف الشخصي  </a> 
+<br>
+{% endblock %}
+
+
+
+{% block content %}
+{% if messages %}
+<div>
+    {% for message in messages %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<main>
+
+    <section class="dashboard-cards">
+        {% if user.is_superuser %} 
+    <div class="container">
+        <div class="card blue">
+            <h3><a href="{% url 'accounts:employee_list' %}"> عرض الموظفين</a></h3> 
+            <p> هنا يتم عرض جميع الموظفين المسجلين بالنظام</p>
+        </div>
+    </div>
+
+    {% endif %}  
+    
+    {% if user.is_superuser %} 
+        <div class="container">
+            <div class="card blue">
+                {% comment %} <h3><a href="{% url 'accounts:login_activities_list' %}"> عرض جميع الانشطة</a></h3>  {% endcomment %}
+                <p> هنا يتم عرض جميع انشطة الدخول والخروج للموظفين المسجلين بالنظام</p>
+            </div>
+        </div>
+        {% endif %}  
+
+
+        {% if user.is_superuser %} 
+    
+        <div class="container">
+            <div class="card blue">
+                {% comment %} <h3><a href="{% url 'accounts:register_new_employee' %}"> انشاء حسابات جديدة   </a></h3>  {% endcomment %}
+                <p> هنا يتم انشاء حسابات (تسجيل موظفين) </p>
+            </div>
+        </div>
+        {% endif %}  
+
+        {% if user.is_superuser %} 
+        <div class="container">
+            <div class="card blue">
+                {% comment %} <h3><a href="{% url 'accounts:assign_permissions' %}">   ادارة الصلاحيات والاذونات   </a></h3>  {% endcomment %}
+                <p> هنا يتم انشاء حسابات (تسجيل موظفين) </p>
+            </div>
+        </div>
+
+        {% endif %}  
+
+        {% if user.is_superuser %} 
+        <div class="container">
+            <div class="card blue">
+                <h3> <a href="{% url 'accounts:employee_search_view' %}">    البحث عن موظف  </a></h3> 
+                <p> هنا يتم البحث عن موظف  </p>
+            </div>
+        </div>
+
+        {% endif %}  
+
+    
+
+    
+        
+   
+    <br>
+
+
+    
+    
+    </section>
+    
+</main> 
+
+
+
+{% endblock %}
+
+
+

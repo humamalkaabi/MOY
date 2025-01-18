@@ -1,0 +1,91 @@
+{% extends 'core/base.html' %}
+
+{% block title %}قائمة الموظفين{% endblock %}
+
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:central_alloc_employee_list' %}" class="custom-button">    المخصصات المركزية   </a>
+    <a href="{% url 'hrhub:add_central_financial_allocation' %}" class="custom-button">  اضافة اسم مخصصات   </a>
+
+
+    
+
+</div>
+{% endblock %}
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+
+
+
+{% block content %}
+{% if allocations %}
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th>نوع المخصص</th>
+            <th>المسمى الوظيفي الحالي</th>
+            <th>مكان العمل</th> <!-- عمود مكان العمل -->
+            <th>المنصب الوظيفي</th> <!-- عمود المنصب الوظيفي -->
+            <th>رقم الأمر</th>
+            <th>تاريخ الأمر</th>
+            <th>تاريخ التنفيذ</th>
+            <th>ملاحظات</th>
+            <th> تفاصيل</th>
+            <th> تحديث</th>
+            <th> حذف</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for allocation in allocations %}
+        <tr>
+            <td>{{ allocation.centralfinancialallocationstype }}</td>
+            <td>
+                {% if current_job_title %}
+                    {{ current_job_title.title_in_arabic }}
+                {% else %}
+                    غير محدد
+                {% endif %}
+            </td>
+            <td>
+                {% if current_office %}
+                    {{ current_office.name }}
+                {% else %}
+                    غير محدد
+                {% endif %}
+            </td>
+            <td>
+                {% if current_position %}
+                    {{ current_position.name }}
+                {% else %}
+                    غير محدد
+                {% endif %}
+            </td>
+            <td>{{ allocation.order_number }}</td>
+            <td>{{ allocation.order_time }}</td>
+            <td>{{ allocation.effective_time }}</td>
+            <td>{{ allocation.comments }}</td>
+            <td> <a href="{% url 'hrhub:central_financial_allocations_detail' allocation.slug %}" class="update_button">تفاصيل</a></td>
+            <td>
+                <a href="{% url 'hrhub:update_financial_allocation' allocation.slug %}" class="update_button">تحديث</a>  </td>
+                <td>
+                <a href="{% url 'hrhub:delete_financial_allocation' allocation.slug %}" class="delete_button" 
+                   onclick="return confirm('هل أنت متأكد من حذف هذا المخصص؟')">حذف</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>لا توجد مخصصات مالية لهذا الموظف.</p>
+{% endif %}
+{% endblock %}

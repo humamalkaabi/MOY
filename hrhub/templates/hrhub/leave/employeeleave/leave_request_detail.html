@@ -1,0 +1,50 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+    <title>طلبات الإجازات للموظف</title>
+{% endblock %}
+
+{% block titlesidemenu %}
+{% endblock %}
+
+{% block titlecontent %}
+    
+{% endblock %}
+
+{% block content %}
+   
+<h1>تفاصيل الإجازة</h1>
+<p><strong>اسم الموظف:</strong> {{ leave_request.employee.firstname }} {{ leave_request.employee.secondname }}</p>
+<p><strong>نوع الإجازة:</strong> {{ leave_request.leave_type.name }}</p>
+<p><strong>تاريخ البداية:</strong> {{ leave_request.start_date }}</p>
+<p><strong>تاريخ النهاية:</strong> {{ leave_request.end_date }}</p>
+<p><strong>المدة بالأيام:</strong> {{ leave_request.total_duration_days }}</p>
+<p><strong>المدة بالشهور:</strong> {{ leave_request.duration_months }}</p>
+<p><strong>المدة بالسنوات:</strong> {{ leave_request.duration_years }}</p>
+<p><strong>حالة الإجازة:</strong> {{ leave_request.get_status_display_ar }}</p>
+<p><strong>تاريخ الإنشاء:</strong> {{ leave_request.created_at }}</p>
+<p> <a href="{% url 'hrhub:update_leave_request' leave_request.slug %}" class="update_button">تحديث   </a>
+<a href="{% url 'hrhub:delete_leave_request' leave_request.slug %}" class="delete_button">حذف   </a></p>
+
+
+
+{% endblock %}
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:main_leave_request' %}" class="custom-button">  صفحة  الاجازات الرئيسية       </a>
+
+    <a href="{% url 'hrhub:main_leave_balance' %}" class="custom-button">  صفحة ارصدة الاجازات       </a>
+    <a href="{% url 'hrhub:main_leave_type' %}" class="custom-button">  صفحة انواع الاجازات       </a>
+    <a href="{% url 'hrhub:add_leave_type' %}" class="custom-button">  اضافة نوع اجازة    </a>    
+    <a href="{% url 'hrhub:upload_leave_requests_csv' %}" class="custom-button">رفع CSV   </a>
+
+</div>
+{% endblock %}
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+

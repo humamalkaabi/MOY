@@ -1,0 +1,35 @@
+{% extends 'core/base.html' %}
+
+
+{% block content %}
+<h2>تحديث درجة وظيفية</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">تحديث</button>
+</form>
+{% endblock %}
+
+
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:main_employee_grade_step' %}" class="custom-button">  الترفيعات والعلاوات        </a> 
+    <a href="{% url 'hrhub:main_employee_grade' %}" class="custom-button">  صفحة الدرجات الوظيفية      </a>
+
+    <a href="{% url 'hrhub:employee_grade_create' %}" class="custom-button">  اضافة درجة وظيفية    </a> 
+    <a href="{% url 'hrhub:upload_employee_grades_csv' %}" class="custom-button">   رفع CSV     </a>
+
+    
+</div>
+{% endblock %}
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

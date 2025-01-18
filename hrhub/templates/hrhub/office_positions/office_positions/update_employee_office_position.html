@@ -1,0 +1,41 @@
+{% extends 'core/base.html' %}
+
+{% block title %}تحديث  {% endblock %}
+
+{% block titlesidemenu %}
+{% endblock %}
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:main_position' %}" class="custom-button">  المناصب       </a>
+   
+    
+
+
+    
+</div>
+{% endblock %}
+
+
+{% block content %}
+
+
+<h2>   تعديل منصب {{position.position}} في {{position.office}} للموظف   {{position.basic_info.get_full_name}}  </h2>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">تحديث</button>
+      {% comment %} <a href="{% url 'hrhub:export_employee_office_positions_csv' position.basic_info.slug %}" class="btn btn-secondary">إلغاء</a> {% endcomment %}
+    </form>
+  
+
+
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+

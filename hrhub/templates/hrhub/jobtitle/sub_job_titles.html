@@ -1,0 +1,58 @@
+{% extends 'core/base.html' %}
+
+{% block title %}العناوين الوظيفية التابعة{% endblock %}
+
+{% block content %}
+<h1>الأب: {{ parent.title_in_arabic }}</h1>
+
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>اسم العنوان الوظيفي</th>
+            <th>تحديث الاسم  </th>
+            
+            <th>حذف </th>
+            <th>الأب الأعلى</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for sub_title in sub_titles %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ sub_title.title_in_arabic }}</td>
+            <td><a href="{% url 'hrhub:update_job_title' sub_title.slug %}" class="update_button">تحديث</a></td>
+            <td>
+                <a href="{% url 'hrhub:delete_job_title' sub_title.slug %}"  class="delete_button"
+                   onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا العنوان الوظيفي؟')">حذف</a>
+            </td>
+          
+            <td>
+                {% if sub_title.parent %}
+                    {{ sub_title.parent.title_in_arabic }}
+                {% else %}
+                    لا يوجد
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">لا توجد عناوين وظيفية تابعة مسجلة حالياً.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+
+{% block sidemenu %}
+
+<div class="button-container">
+   
+    <a href="{% url 'hrhub:add_job_title' %}"  class="custom-button">  اضافة عنوان وظيفي   </a>
+
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+    <title>طلبات الإجازات للموظف</title>
+{% endblock %}
+
+{% block titlesidemenu %}
+{% endblock %}
+
+
+{% block content %}
+    <table class="custom-table">
+        <thead>
+            <tr>
+                <th>نوع الإجازة</th>
+                <th>تاريخ البداية</th>
+                <th>تاريخ النهاية</th>
+                <th>المدة الإجمالية (بالأيام)</th>
+                <th>الحالة</th>
+              
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for leave_request in leave_requests %}
+                <tr>
+                    <td>{{ leave_request.leave_type.name }}</td>
+                    <td>{{ leave_request.start_date }}</td>
+                    <td>{{ leave_request.end_date }}</td>
+                    <td>{{ leave_request.total_duration_days }}</td>
+                    <td>{{ leave_request.get_status_display_ar }}</td>
+                   
+                    
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="10">لا توجد طلبات إجازة لعرضها.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">عدد طلبات الإجازة: {{ leave_requests_count }}</label>
+
+<div class="search-container">
+    <form method="get" action="">
+        <div class="grid-item input-container">
+            <select name="leave_type">
+                <option value="">اختر نوع الإجازة</option>
+                {% for leave_type in leave_types %}
+                    <option value="{{ leave_type.id }}" {% if request.GET.leave_type == leave_type.id|stringformat:"s" %}selected{% endif %}>
+                        {{ leave_type.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <br>
+        <button type="submit" class="leftsidemenu-button">بحث</button>
+    </form>
+</div>
+{% endblock %}
+
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    
+
+</div>
+{% endblock %}
+

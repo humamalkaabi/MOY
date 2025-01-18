@@ -1,0 +1,518 @@
+{% extends 'core/base.html' %}
+
+
+{% block searchbar %}
+
+
+{% endblock %}
+
+{% block titleleftsidemenu %}
+
+
+{% endblock %}
+
+{% block titlecontent %}
+
+{% endblock %}
+
+
+
+
+{% block content %}
+{% if basic_info %}
+
+<div class="personal-info-container">
+    <p><strong>الاسم الأول:</strong> {{ basic_info.firstname }} 
+        {% if perms.personalinfo.can_update_firstname %} 
+        - <a href="{% url 'personalinfo:update_firstname' slug=basic_info.slug %}"> تحديث الاسم الاول  </a> 
+        {% else %}
+         
+        {% endif %}
+</p>
+
+
+
+<p><strong>الاسم الثاني:</strong> {{ basic_info.secondname }} 
+    {% if perms.personalinfo.can_update_secondname %} 
+    - <a href="{% url 'personalinfo:update_secondname' slug=basic_info.slug %}"> تحديث الاسم الثاني  </a> 
+    {% else %}
+     
+    {% endif %}
+</p>
+
+
+
+
+<p><strong>الاسم الثالث:</strong> {{ basic_info.thirdname }} 
+    {% if perms.personalinfo.can_update_thirdname %} 
+    - <a href="{% url 'personalinfo:update_thirdname' slug=basic_info.slug %}"> تحديث الاسم الثالث  </a> 
+    {% else %}
+     
+    {% endif %}
+</p>
+
+
+
+<p><strong>الاسم الرابع:</strong> {{ basic_info.fourthname }} 
+    {% if perms.personalinfo.can_update_fourthname %} 
+    - <a href="{% url 'personalinfo:update_fourthname' slug=basic_info.slug %}"> تحديث الاسم الرابع  </a> 
+    {% else %}
+     
+    {% endif %}
+</p>
+
+
+
+
+<p><strong>اللقب :</strong> {{ basic_info.surname }} 
+    {% if perms.personalinfo.can_update_surname %} 
+    - <a href="{% url 'personalinfo:update_surname' slug=basic_info.slug %}"> تحديث  اللقب  </a> 
+    {% else %}
+     
+    {% endif %}
+</p>
+
+<p><strong>اسم الوالدة :</strong> {{ basic_info.mothername }} 
+    {% if perms.personalinfo.can_update_mothername %} 
+    - <a href="{% url 'personalinfo:update_mother_name' slug=basic_info.slug %}"> تحديث  اسم الوالدة  </a> 
+    {% else %}
+     
+    {% endif %}
+</p>
+
+<p><strong>رقم الهاتف  :</strong> {{ basic_info.phone_number }} 
+    {% if perms.personalinfo.can_update_mothername %} 
+    - <a href="{% url 'personalinfo:update_phone_number' slug=basic_info.slug %}"> تحديث  رقم الهاتف   </a> 
+    {% else %}
+     
+    {% endif %}
+</p>
+
+
+
+<p><strong>البريد الالكتروني   :</strong> {{ basic_info.email }} 
+    {% if perms.personalinfo.can_update_email %} 
+    - <a href="{% url 'personalinfo:update_email' slug=basic_info.slug %}"> تحديث   البريد الالكتروني   </a> 
+    {% else %}
+     
+    {% endif %}
+</p>
+
+
+
+<p><strong> تاريخ الميلاد   :</strong> {{ basic_info.date_of_birth }} 
+    {% if perms.personalinfo.can_update_date_of_birth %} 
+    - <a href="{% url 'personalinfo:update_date_of_birth' slug=basic_info.slug %}"> تحديث   تاريخ الميلاد    </a> 
+    {% else %}
+     
+    {% endif %}
+</p>
+
+
+
+<p><strong> عمر الموظف    :</strong> {{ basic_info.emplpyee_age }} 
+   
+</p>
+
+<p><strong> محل الميلاد   :</strong> {{ basic_info.place_of_birth.name_arabic }} 
+    {% if perms.personalinfo.can_update_place_of_birth %} 
+    - <a href="{% url 'personalinfo:update_place_of_birth' slug=basic_info.slug %}"> تحديث   محل الميلاد    </a> 
+    {% else %}
+     
+    {% endif %}
+</p>
+
+<p><strong>  الجنس   :</strong> {{ basic_info.get_gender_display }} 
+    {% if perms.personalinfo.can_update_gender %} 
+    - <a href="{% url 'personalinfo:update_gender' slug=basic_info.slug %}"> تحديث    الجنس    </a> 
+    {% else %}
+     
+    {% endif %}
+</p>
+
+
+<p><strong>  السيرة الذاتية   :</strong> {{ basic_info.bio }} 
+    {% if perms.personalinfo.can_update_bio %} 
+    - <a href="{% url 'personalinfo:update_bio' slug=basic_info.slug %}">      السيرة الذاتية   </a> 
+    {% else %}
+     
+    {% endif %}
+</p>
+
+</div>
+
+{% if additional_info %}
+<div class="personal-info-container">
+    <h3>المعلومات الإضافية:</h3>  
+
+    <p><strong>فصيلة الدم:</strong> {{ additional_info.blood_type }}
+         {% if perms.personalinfo.can_update_blood_type %} 
+           -  <a href="{% url 'personalinfo:update_blood_type' slug=additional_info.slug %}"> تحديث فصيلة الدم        </a> 
+           {% comment %} {% else %} {% endcomment %}
+         
+        {% endif %}
+    </p> 
+
+
+        <p><strong>الديانة:</strong> {{ additional_info.religion.name_in_arabic }}  
+            {% if perms.personalinfo.can_update_religion %}  
+             -  <a href="{% url 'personalinfo:update_employee_religion' slug=additional_info.slug %}"> تحديث الديانة </a> 
+             {% else %}
+         
+            {% endif %}</p> 
+        
+
+            <p><strong>القومية:</strong> {{ additional_info.nationalism.name_in_arabic }}  
+                 {% if perms.personalinfo.can_update_nationalism %}
+                 -  <a href="{% url 'personalinfo:update_nationalism' slug=additional_info.slug %}"> تحديث  القومية        </a> {% else %}
+         
+                {% endif %}</p> 
+        
+                <p><strong>الحالة الاجتماعية:</strong> {{ additional_info.get_marital_status_display }} 
+                     {% if perms.personalinfo.can_update_marital_status %}
+                     -  <a href="{% url 'personalinfo:update_marital_status' slug=additional_info.slug %}"> تحديث  الحالة الاجتماعية        </a> {% else %}
+         
+                    {% endif %}</p> 
+        
+     <p><strong>المحافظة:</strong> {{ additional_info.governorate_of_residence.name_arabic }}
+           {% if perms.personalinfo.can_update_governorate_of_residence %}-   <a href="{% url 'personalinfo:update_governorate_of_residence' slug=additional_info.slug %}"> تحديث  السكن         </a> {% else %}
+         
+                        {% endif %}</p> 
+    <p><strong>العنوان:</strong> {{ additional_info.address }}  
+         {% if perms.personalinfo.can_update_address %}-   <a href="{% url 'personalinfo:update_address' slug=additional_info.slug %}"> تحديث  العنوان         </a> {% else %}
+                     
+                        {% endif %}</p> 
+    <p><strong>اسم الطوارئ:</strong> {{ additional_info.emergency_contact_name }}
+         {% if perms.personalinfo.can_update_emergency_contact %} -  <a href="{% url 'personalinfo:update_emergency_contact' slug=additional_info.slug %}"> تحديث           </a> {% else %}
+                     
+                        {% endif %}</p> 
+    <p><strong>رقم الطوارئ:</strong> {{ additional_info.emergency_contact_number }}</p>
+                    
+
+</div>
+
+
+{% else %}
+     لا توجد معلومات اضافية - يرجى الاتصال بالقسم المختص
+{% endif %}
+
+<div class="personal-info-container">
+{% if latest_certificate %}
+<h3>أحدث شهادة أكاديمية</h3>
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>نوع الشهادة</th>
+            <th>الوزارة المانحة</th>
+            <th>نوع الجامعة</th>
+            <th>اسم المؤسسة التعليمية</th>
+            <th>الكلية</th>
+            <th>التخصص الدقيق</th>
+            <th>تاريخ الإصدار</th>
+            <th>تاريخ تنفيذ الأمر</th>
+            <th>ملف الشهادة</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>{{ latest_certificate.education_degree_type }}</td>
+            <td>{{ latest_certificate.get_certificat_minstery_type_display }}</td>
+            <td>{{ latest_certificate.get_university_Type_display }}</td>
+            <td>
+                {% if latest_certificate.iraqi_university %}
+                    {{ latest_certificate.iraqi_university.name_in_arabic }}
+                {% elif latest_certificate.foreign_university %}
+                    {{ latest_certificate.foreign_university.name_in_english }}
+                {% elif latest_certificate.institution_name %}
+                    {{ latest_certificate.institution_name }}
+                {% else %}
+                    غير محددة
+                {% endif %}
+            </td>
+
+            <td>{{ latest_certificate.college }}</td>
+            <td>{{ latest_certificate.Certificate_Type }}</td>
+            <td>{{ latest_certificate.date_issued }}</td>
+            <td>{{ latest_certificate.effective_time }}</td>
+            <td>
+                {% if latest_certificate.certificate_file %}
+                <a href="{{ latest_certificate.certificate_file.url }}" target="_blank" class="details-button">عرض الشهادة</a>
+                {% else %}
+                لا يوجد ملف
+                {% endif %}
+            </td>
+        </tr>
+    </tbody>
+</table>
+{% else %}
+<p>لا توجد معلومات عن اخر أكاديمية مسجلة لحضرتكم  .</p>
+{% endif %}
+
+</div>
+
+
+
+<div class="personal-info-container">
+    {% if latest_course_certificate %}
+    <h3>أحدث شهادة تدريبية أو ورشة عمل</h3>
+    <table class="custom-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>نوع الشهادة</th>
+                <th>المؤسسة المانحة</th>
+                <th>رقم كتاب الشهادة</th>
+                <th>تاريخ الإصدار</th>
+                <th>تاريخ البدء</th>
+                <th>تاريخ الانتهاء</th>
+                <th>مدة الدورة</th>
+                <th>ملف الشهادة</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>{{ latest_course_certificate.coursecertificatetype.name_in_arabic }}</td>
+                <td>{{ latest_course_certificate.name_of_the_institution.name_in_arabic }}</td>
+                <td>{{ latest_course_certificate.course_number }}</td>
+                <td>{{ latest_course_certificate.date_issued }}</td>
+                <td>{{ latest_course_certificate.start_date }}</td>
+                <td>{{ latest_course_certificate.end_date }}</td>
+                <td>{{ latest_course_certificate.course_duration }}</td>
+                <td>
+                    {% if latest_course_certificate.certificate_file %}
+                    <a href="{{ latest_course_certificate.certificate_file.url }}" target="_blank" class="details-button">عرض الشهادة</a>
+                    {% else %}
+                    لا يوجد ملف
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    {% else %}
+    <p>لا توجد شهادات تدريبية او ورش مسجلة لحضرتكم.</p>
+    {% endif %}
+    </div>
+
+
+    <div class="personal-info-container">
+        {% if latest_office_position %}
+        <h3>آخر دائرة يعمل بها الموظف</h3>
+        <table class="custom-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>اسم الدائرة</th>
+                    <th>تاريخ الانضمام</th>
+                    <th>تاريخ الانتهاء</th>
+                    <th>ملاحظات</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>{{ latest_office_position.office.name_in_arabic }}</td>
+                    <td>{{ latest_office_position.start_date }}</td>
+                    <td>{% if latest_office_position.end_date %}{{ latest_office_position.end_date }}{% else %}لا يزال يعمل{% endif %}</td>
+                    <td>{{ latest_office_position.comments }}</td>
+                </tr>
+            </tbody>
+        </table>
+        {% else %}
+        <p>لا توجد معلومات عن الدائرة الحالية للموظف.</p>
+        {% endif %}
+        </div>
+
+        <div class="personal-info-container">
+            {% if latest_staff_type %}
+            <h3>أحدث نوع ملاك للموظف</h3>
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>نوع الملاك</th>
+                        <th>نوع الموازنة</th>
+                        <th>رقم الأمر الإداري</th>
+                        <th>تاريخ صدور الأمر</th>
+                        <th>ملف الأمر</th>
+                        <th>ملاحظات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>{{ latest_staff_type.employee_staff_type.name_in_arabic }}</td>
+                        <td>{{ latest_staff_type.employee_staff_type.payroll_budget_type.name_in_arabic }}</td>
+                        <td>{{ latest_staff_type.employee_staff_type_number }}</td>
+                        <td>{{ latest_staff_type.employee_staff_type_number_date }}</td>
+                        <td>
+                            {% if latest_staff_type.pdf_file %}
+                            <a href="{{ latest_staff_type.pdf_file.url }}" target="_blank" class="details-button">عرض الأمر</a>
+                            {% else %}
+                            لا يوجد ملف
+                            {% endif %}
+                        </td>
+                        <td>{{ latest_staff_type.comments }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            {% else %}
+            <p>لا توجد معلومات عن نوع الملاك الحالي للموظف.</p>
+            {% endif %}
+            </div>
+            
+
+            <div class="personal-info-container">
+                {% if latest_financial_allocation %}
+                <h3>أحدث مخصصات مالية مركزية للموظف</h3>
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>نوع المخصصات</th>
+                            <th>نسبة المخصصات</th>
+                            <th>الرقم الإداري</th>
+                            <th>تاريخ صدور الأمر</th>
+                            <th>تاريخ التنفيذ</th>
+                           
+                            <th>ملاحظات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>{{ latest_financial_allocation.centralfinancialallocationstype.name_in_arabic }}</td>
+                            <td>
+                                {% if latest_financial_allocation.centralfinancialallocationstype.ratio %}
+                                    {{ latest_financial_allocation.centralfinancialallocationstype.ratio }}%
+                                {% else %}
+                                    غير محددة
+                                {% endif %}
+                            </td>
+                            <td>{{ latest_financial_allocation.order_number }}</td>
+                            <td>{{ latest_financial_allocation.order_time }}</td>
+                            <td>{{ latest_financial_allocation.effective_time }}</td>
+                            
+                            <td>{{ latest_financial_allocation.comments }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                {% else %}
+                <p>لا توجد معلومات عن المخصصات المالية المركزية حالياً  .</p>
+                {% endif %}
+                </div>
+                
+
+{% else %}
+لا يوجد معلومات اساسية - يرجى الاتصال بالقسم المختص
+{% endif %}
+
+{% endblock %}
+
+
+
+{% block pagination %}
+
+{% endblock %}
+
+{% block leftsidemenu %}
+<div class="leftsidemenu-container">
+
+    {% if basic_info and basic_info.avatar %}
+        <div class="avatar-wrapper">
+            <img src="{{ basic_info.avatar.url }}" alt="{{ basic_info.get_full_name }}'s avatar" class="avatar-image">
+        </div>
+
+        {% if perms.personalinfo.can_update_avatar %}
+        <a href="{% url 'personalinfo:update_avatar' slug=basic_info.slug %}" class="update_button">تحديث الصورة</a>
+        {% endif %}
+    {% else %}
+        <p class="no-avatar">لا توجد صورة 
+            {% if perms.personalinfo.can_update_avatar %}
+            <a href="{% url 'personalinfo:update_avatar' slug=basic_info.slug %}" class="update_button">إضافة الصورة</a>
+            {% endif %}
+        </p>
+    {% endif %}
+</div>
+
+
+ <label class="result-label">  الرقم الوظيفي: {{ user.username }}</label>
+
+{% endblock %}
+
+
+
+
+
+
+{% block titlesidemenu %}
+
+{% endblock %}
+
+{% block sidemenu %}
+
+<div class="button-container">
+    
+
+    {% if perms.personalinfo.can_access_control_panel %} 
+
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">لوحة التحكم</a>
+    {% else %}
+    {% endif %}
+   
+    {% if basic_info %}
+    <a href="{% url 'requests_app:create_employee_request' slug=basic_info.slug %}" class="custom-button">
+        مشروع الخدمة الالكترونية
+    </a>
+    
+    {% if perms.personalinfo.can_quick_search %} 
+    
+    <a href="{% url 'accounts:mainemployeesearch' %}" class="custom-button"> بحث عن الموظفين    </a>
+    {% else %}
+{% endif %}
+
+    
+
+    <a href="{% url 'personalinfo:employee_documents_employee' basic_info.slug%}" class="custom-button"> الوثائق الرسمية   </a>
+
+    <a href="{% url 'rddepartment:employeeeducation_detail_employee' basic_info.slug%}" class="custom-button"> الشهادات الاكاديمية </a>
+    <a href="{% url 'rddepartment:all_employee_certificates_employee' basic_info.slug%}" class="custom-button"> الشهادات غير الاكاديمية </a>
+
+    <a href="{% url 'hrhub:employee_thanks_listemployee' basic_info.slug%}" class="custom-button"> كتب الشكر والتقدير   </a>
+
+    <a href="{% url 'hrhub:employee_punishments_listemployee' basic_info.slug%}" class="custom-button"> كتب العقوبة    </a>
+
+    <a href="{% url 'hrhub:employee_leave_requestsemployee' basic_info.slug%}" class="custom-button"> الاجازات     </a>
+
+
+    <a href="{% url 'hrhub:all_placement_detailemployee' basic_info.slug%}" class="custom-button"> التنسيبات     </a>
+
+    <a href="{% url 'hrhub:employee_offices_viewemployee' basic_info.slug%}" class="custom-button"> دوائر الموظف     </a>
+
+
+    <a href="{% url 'hrhub:list_employee_office_positionsemployee' basic_info.slug%}" class="custom-button"> المناصب      </a>
+
+    <a href="{% url 'hrhub:employee_absence_listemployee' basic_info.slug%}" class="custom-button"> غيابات الموظف      </a>
+
+    <a href="{% url 'hrhub:employment_history_detail' basic_info.slug%}" class="custom-button"> التاريخ الوظيفي       </a>
+
+    <a href="{% url 'hrhub:employment_history_detailemployee' basic_info.slug%}" class="custom-button"> التاريخ الوظيفي       </a>
+
+
+    
+    
+    <a href="{% url 'hrhub:employee_job_titlesemployee' basic_info.slug%}" class="custom-button"> العنوان الوظيفي   </a>
+
+    
+
+    
+    
+
+    {% endif %}
+</div>
+
+
+{% endblock %}
+

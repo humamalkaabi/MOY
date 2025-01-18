@@ -1,0 +1,105 @@
+{% extends 'core/base.html' %}
+
+{% block searchbar %}
+<!-- يمكن إضافة مربع بحث هنا إن لزم -->
+{% endblock %}
+
+{% block titleleftsidemenu %}
+<!-- يمكن تركه فارغاً أو وضع عنوان مناسب -->
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">عدد الدول: {{ total_countries }}</label>
+{% endblock %}
+
+{% block titlecontent %}إحصائيات الدول{% endblock %}
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'locations:main_locations_dashboard' %}" class="custom-button">الأماكن</a>
+    {% if perms.locations.can_create_country %}
+    <a href="{% url 'locations:create_country' %}" class="custom-button">إدخال دولة جديدة</a>
+    {% endif %}
+    <a href="{% url 'locations:export_countries_csv' %}?continent={{ selected_continent }}" class="custom-button">تصدير CSV</a>
+
+    <a href="{% url 'locations:download_sample_countries_csv' %}" class="custom-button">نموذج CSV</a>
+
+    <a href="{% url 'locations:upload_countries_csv' %}" class="custom-button">رفع CSV</a>
+
+    
+</div>
+{% endblock %}
+
+{% block content %}
+<h2>إحصائيات الدول</h2>
+<div class="table-container">
+    <table class="creative-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>اسم القارة بالعربي</th>
+                <th>اسم الدولة بالعربي</th>
+                <th>اسم الدولة بالإنجليزي</th>
+                <th>مدخل الدولة</th>
+                <th>ملاحظات</th>
+                <th>عرض التفاصيل</th>
+                <th>تحديث</th>
+                <th>حذف</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for country in countries %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ country.continent.name_arabic }}</td>
+                <td>{{ country.name_arabic }}</td>
+                <td>{{ country.name_english }}</td>
+                <td>{{ country.created_by }}</td>
+                <td>{{ country.description }}</td>
+                <td>
+                    {% if perms.locations.can_view_country_details %}
+                    <a href="{% url 'locations:country_detail' country.slug %}" class="update_button">عرض</a>
+                    {% else %}ليس لديك صلاحية{% endif %}
+                </td>
+                <td>
+                    {% if perms.locations.can_update_country %}
+                    <a href="{% url 'locations:update_country' country.slug %}" class="update_button">تحديث</a>
+                    {% else %}ليس لديك صلاحية{% endif %}
+                </td>
+                <td>
+                    {% if perms.locations.can_delete_country %}
+                    <a href="{% url 'locations:delete_country' country.slug %}" class="delete_button" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه الدولة؟')">حذف</a>
+                    {% else %}ليس لديك صلاحية{% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="9">لا توجد دول مسجلة حالياً.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block pagination %}
+<div class="pagination-container">
+    <div class="pagination-info">
+        <span>عدد العناصر بالصفحة:</span>
+        <form method="get" action="" class="pagination-form">
+            <input type="number" id="results_per_page" name="results_per_page" placeholder="عدد النتائج لكل صفحة" value="{{ results_per_page }}" class="pagination-input">
+        </form>
+    </div>
+    <div class="pagination-controls">
+        {% if countries.has_previous %}
+            <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page=1" class="pagination-button">الأولى</a>
+            <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ countries.previous_page_number }}" class="pagination-button">السابق</a>
+        {% endif %}
+        <span>صفحة {{ countries.number }} من {{ countries.paginator.num_pages }}</span>
+        {% if countries.has_next %}
+            <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ countries.next_page_number }}" class="pagination-button">التالي</a>
+            <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ countries.paginator.num_pages }}" class="pagination-button">الأخيرة</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

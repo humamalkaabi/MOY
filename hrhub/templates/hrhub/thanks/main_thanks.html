@@ -1,0 +1,196 @@
+{% extends 'core/base.html' %}
+
+{% block title %}قائمة الموظفين{% endblock %}
+
+{% block titlesidemenu %}
+{% endblock %}
+
+{% block searchbar %}
+
+<div class="search-bar">
+    <form class="form-horizontal" method="get" action="{% url 'personalinfo:main_additionalinfo' %}">
+        <!-- الصف الأول -->
+        <div class="form-group">
+            <label for="search">بحث برقم الوظيفة:</label>
+            <input type="text" name="search" id="search" value="{{ query }}" placeholder="أدخل رقم الوظيفة" />
+        </div>
+        <div class="form-group">
+            <label for="firstname">الاسم الأول:</label>
+            <input type="text" name="firstname" id="firstname" value="{{ request.GET.firstname }}" placeholder="أدخل الاسم الأول" />
+        </div>
+     <div class="form-group">
+            <label for="secondname">الاسم الثاني:</label>
+            <input type="text" name="secondname" id="secondname" value="{{ request.GET.secondname }}" placeholder="أدخل الاسم الثاني" />
+     </div>
+     <div class="form-group">
+            <label for="thirdname">الاسم الثالث:</label>
+            <input type="text" name="thirdname" id="thirdname" value="{{ request.GET.thirdname }}" placeholder="أدخل الاسم الثالث" />
+        </div>
+    
+        <!-- الصف الثاني -->
+        <div class="form-group">
+            <label for="basic_info_filter">المعلومات الأساسية:</label>
+            <select name="basic_info_filter" id="basic_info_filter">
+                <option value="" {% if basic_info_filter == "" %}selected{% endif %}>الكل</option>
+                <option value="has_info" {% if basic_info_filter == "has_info" %}selected{% endif %}>لديه معلومات أساسية</option>
+                <option value="no_info" {% if basic_info_filter == "no_info" %}selected{% endif %}>ليس لديه معلومات أساسية</option>
+            </select>
+        </div>
+       
+        <div class="form-group">
+            <!-- حقل اختيار عدد العناصر في الصفحة -->
+            <label for="per_page">عدد العناصر في الصفحة:</label>
+            <select name="per_page" id="per_page">
+                <option value="10" {% if per_page == "10" %}selected{% endif %}>10</option>
+                <option value="1" {% if per_page == "1" %}selected{% endif %}>1</option>
+                <option value="5" {% if per_page == "5" %}selected{% endif %}>5</option>
+                
+                <option value="20" {% if per_page == "20" %}selected{% endif %}>20</option>
+                <option value="50" {% if per_page == "50" %}selected{% endif %}>50</option>
+                <option value="100" {% if per_page == "100" %}selected{% endif %}>100</option>
+            </select>
+        </div>
+            <button type="submit">بحث</button>
+        </div>
+    </form>
+    </div>
+
+
+
+{% endblock%}
+
+{% block content %}
+
+<h2>قائمة الموظفين</h2>
+
+<form method="POST" action="">
+    {% csrf_token %}
+    
+
+
+    <table class="custom-table">
+                <thead>
+            <tr>
+                <th>الرقم الوظيفي</th>
+               
+                <th>الاسمم الكامل  </th>
+               
+
+                <th>عرض كتب الشكر   </th>
+
+                <th>اضافة كتاب شكر      </th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for employee in employees %}
+            <tr>
+                <td>{{ employee.username }}</td>
+              
+               
+                
+                <td>
+                    {% if employee.basic_info %}
+                        نعم -  {{ employee.basic_info.get_full_name }} -  <a href="{% url 'personalinfo:employee_detail' employee.basic_info.slug %}">عرض معلومات أساسية</a>
+                       
+                
+                    {% else %}
+                        كلا - يجب اضافة البيانات الاساسية اولا   <a href="{% url 'personalinfo:add_basic_info' employee.slug %}">إضافة معلومات أساسية</a>                  
+                    {% endif %}
+
+                   
+                </td>
+                
+
+               
+
+                 <td>
+                    {% if employee.basic_info %}
+                    <a href="{% url 'hrhub:employee_thanks_view' slug=employee.basic_info.slug %}"> عرض    </a>
+                    {% else %}
+                    {% endif %}
+                </td> 
+
+                <td>
+                    {% if employee.basic_info %}
+                    <a href="{% url 'hrhub:create_one_thanks' slug=employee.basic_info.slug %}"> اضافة     </a>
+                    {% else %}
+                    {% endif %}
+                </td> 
+
+
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">لا توجد نتائج.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div>
+        {{ form.as_p }}
+    </div>
+
+    <button type="submit">إضافة كتاب شكر</button>
+</form>
+
+
+<!-- التنقل بين الصفحات -->
+<div class="pagination">
+    <span class="step-links">
+        {% if employees.has_previous %}
+            <!-- رابط الصفحة الأولى -->
+            <a href="?page=1&search={{ query }}&basic_info_filter={{ basic_info_filter }}&additional_info_filter={{ additional_info_filter }}&per_page={{ per_page }}">أولاً</a>
+            <!-- رابط الصفحة السابقة -->
+            <a href="?page={{ employees.previous_page_number }}&search={{ query }}&basic_info_filter={{ basic_info_filter }}&additional_info_filter={{ additional_info_filter }}&per_page={{ per_page }}">السابق</a>
+        {% endif %}
+
+        <span class="current">
+            الصفحة {{ employees.number }} من {{ employees.paginator.num_pages }}.
+        </span>
+
+        {% if employees.has_next %}
+            <!-- رابط الصفحة التالية -->
+            <a href="?page={{ employees.next_page_number }}&search={{ query }}&basic_info_filter={{ basic_info_filter }}&additional_info_filter={{ additional_info_filter }}&per_page={{ per_page }}">التالي</a>
+            <!-- رابط الصفحة الأخيرة -->
+            <a href="?page={{ employees.paginator.num_pages }}&search={{ query }}&basic_info_filter={{ basic_info_filter }}&additional_info_filter={{ additional_info_filter }}&per_page={{ per_page }}">أخيراً</a>
+        {% endif %}
+    </span>
+</div>
+
+
+{% endblock %}
+
+{% block leftsidemenu %}
+
+<div class="results-container">
+    <h2 class="results-title"> </h2>
+    <div class="result-item">
+        <p><strong>نتائج البحث   :</strong> {{ employees_accounts }}</p>
+       
+        
+    </div>
+    <!-- يمكنك تكرار result-item لكل نتيجة -->
+</div>
+
+{% endblock %}
+{% block sidemenu %}
+
+
+<p><a href="{% url 'accounts:view_profile' %}" class="button">الصفحة الشخصية   </a></p>
+<p><a href="{% url 'hrhub:main_thanks_type' %}" class="button">صفحة   الشكر       </a></p>
+
+<p><a href="{% url 'hrhub:main_thanks_type' %}" class="button">صفحة انواع كتب الشكر       </a></p>
+
+<p><a href="{% url 'hrhub:create_thanks' %}" class="button">اعطاء  كتب شكر للموظفين        </a></p>
+
+
+
+
+    {% comment %} <a href="{% url 'personalinfo:export_additional_info_csv' %}?search={{ query }}&firstname={{ firstname }}&secondname={{ secondname }}&thirdname={{ thirdname }}&basic_info_filter={{ basic_info_filter }}&additional_info_filter={{ additional_info_filter }}" class="button">تصدير إلى CSV</a>
+    <br>   <br>
+    <a href="{% url 'personalinfo:download_sample_additional_info_csv' %}" class="button">تحميل نموذج CSV</a>
+    <br>   <br>  
+    <a href="{% url 'personalinfo:upload_additionalinfo_csv' %}" class="button">ادخال بواسطة csv</a>
+    <br>   <br> {% endcomment %}
+{% endblock %}

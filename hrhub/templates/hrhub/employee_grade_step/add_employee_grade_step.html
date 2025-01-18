@@ -1,0 +1,17 @@
+{% extends "core/base.html" %}
+
+{% block title %}إضافة بيانات الدرجة الوظيفية{% endblock %}
+
+{% block content %}
+<h2>إضافة بيانات الدرجة الوظيفية للموظف: {{ employee.basic_info.get_full_name }}</h2>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+    </table>
+    <button type="submit">حفظ</button>
+</form>
+
+<a href="{% url 'hrhub:main_employee_grade_step' %}">العودة إلى القائمة</a>
+{% endblock %}

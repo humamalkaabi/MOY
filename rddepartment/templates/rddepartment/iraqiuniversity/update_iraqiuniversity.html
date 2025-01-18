@@ -1,0 +1,66 @@
+
+{% extends 'core/base.html' %}
+
+{% block title %}الصفحة الرئيسية للدراسات والبحث والتطوير   {% endblock %}
+
+{% block titlesidemenu %}
+{% endblock %}
+
+
+
+{% block sidemenu %}
+
+
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'rddepartment:main_rddepartment' %}" class="custom-button">   الشهادات والتطوير     </a>
+    <a href="{% url 'rddepartment:main_iraqiuniversity' %}" class="custom-button">   الجامعات العراقية      </a>
+
+    {% if perms.rddepartment.can_add_iraqi_university %}
+    <a href="{% url 'rddepartment:add_iraqiuniversity' %}" class="custom-button">  اضافة  جامعة عراقية    </a>
+    {% else %}
+    ليس  لديك صلاحية ادخال جامعة 
+    {% endif %}
+
+    <a href="{% url 'rddepartment:download_sample_iraqi_university_csv' %}" class="custom-button">   نموذج CSV      </a>
+    
+    {% if perms.rddepartment.can_add_iraqi_university %}
+    <a href="{% url 'rddepartment:upload_iraqi_university_csv' %}" class="custom-button">  رفع ملف CSV       </a>
+    {% else %}
+    ليس  لديك صلاحية ادخال جامعة 
+    {% endif %}
+
+
+    
+</div>
+
+
+
+{% endblock %}
+
+
+
+
+{% block content %}
+
+
+
+
+
+        <!-- نموذج الإضافة -->
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="update_button">تحديث</button>
+        </form>
+
+
+{% endblock %}
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

@@ -1,0 +1,156 @@
+{% extends 'core/base.html' %}
+
+{% block titlecontent %}احصائيات الاماكن{% endblock %}
+
+
+{% block sidemenu %}
+
+
+<h3>  </h3>
+
+<div class="button-container">
+   
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم الادارية     </a>
+
+
+   
+    <a href="{% url 'locations:export_governorates_csv' %}" class="custom-button">تصدير اسماء المحافظات </a>
+    <a href="{% url 'locations:export_all_countries_csv' %}" class="custom-button">تصدير اسماء الدول </a>
+
+    <a href="{% url 'rddepartment:export_iraqi_university_to_csv' %}" class="custom-button">تصدير اسماء الجامعات العراقية </a>
+
+    <a href="{% url 'rddepartment:export_education_degree_type_to_csv' %}" class="custom-button">تصدير اسماء الشهادات الاكاديمية </a>
+
+
+    
+
+
+
+    
+
+
+
+</div>
+
+
+
+
+
+{% endblock %}
+
+{% block content %}
+<div class="cards-container">
+
+    {% comment %} {% if perms.locations.can_view_governorate_details %} {% endcomment %}
+    <div class="card">
+        <h3 class="card-title">صفحة  الوحدات الادارية</h3>
+        <p class="card-description">يهتم هذا الجزء بالوحدات الادارية في الوزارة من دوائر ومديرات واقسام وشعب وعلاقة كل موظف في تلك الدوائرة.</p>
+        <a href="{% url 'hrhub:mainemployeeoffice' %}" class="button">اضغط هنا  </a>
+    </div>
+    {% comment %} {% endif %} {% endcomment %}
+
+   
+    <div class="card">
+        <h3 class="card-title">صفحة   كتب الشكر</h3>
+        <p class="card-description">يهتم هذا الجزء بكتب الشكر للموظفين وانواعها واضافتها .</p>
+        <a href="{% url 'hrhub:main_employeethanks' %}" class="button">اضغط هنا  </a>
+    </div>
+
+
+    <div class="card">
+        <h3 class="card-title">صفحة   كتب العقوبات</h3>
+        <p class="card-description">يهتم هذا الجزء بعقوبات  الموظفين وانواعها واضافتها .</p>
+        <a href="{% url 'hrhub:main_employee_punishments' %}" class="button">اضغط هنا  </a>
+    </div>
+
+
+    <div class="card">
+        <h3 class="card-title">صفحة   كتب الغياب</h3>
+        <p class="card-description">يهتم هذا الجزء مع غيابات  الموظفين وانواعها واضافتها .</p>
+        <a href="{% url 'hrhub:main_absences_employee' %}" class="button">اضغط هنا  </a>
+    </div>
+
+
+    <div class="card">
+        <h3 class="card-title">صفحة    العناوين الوظيفية</h3>
+        <p class="card-description">يهتم هذا الجزء مع العناوين الوظيفية  للموظفين وانواعها واضافتها .</p>
+        <a href="{% url 'hrhub:main_employee_job_title' %}" class="button">اضغط هنا  </a>
+    </div>  
+
+
+
+    <div class="card">
+        <h3 class="card-title">صفحة اجازات الموظفين </h3>
+        <p class="card-description">يهتم هذا الجزء مع بالاجازات  للموظفين وانواعها واضافتها .</p>
+        <a href="{% url 'hrhub:main_leave_request' %}" class="button">اضغط هنا  </a>
+    </div>
+
+
+
+    <div class="card">
+        <h3 class="card-title">صفحة تنسيب الموظفين </h3>
+        <p class="card-description">يهتم هذا الجزء مع تنسيب   الموظفين وانواعها واضافتها .</p>
+        <a href="{% url 'hrhub:main_placement' %}" class="button">اضغط هنا  </a>
+    </div>
+
+    <div class="card">
+        <h3 class="card-title">صفحة المناصب  </h3>
+        <p class="card-description">يهتم هذا الجزء بالمناصب الادارية للموظفين وانواعها واضافتها .</p>
+        <a href="{% url 'hrhub:main_office_positions' %}" class="button">اضغط هنا  </a>
+    </div>
+
+
+    <div class="card">
+        <h3 class="card-title">صفحة الملاك  </h3>
+        <p class="card-description">يهتم هذا الجزء بملاك الموظفين وانواعه واضافته .</p>
+        <a href="{% url 'hrhub:main_staff_employee_list' %}" class="button">اضغط هنا  </a>
+    </div>
+
+
+
+
+    <div class="card">
+        <h3 class="card-title">المخصصات المركزية   </h3>
+        <p class="card-description">يهتم هذا الجزء بالمخصصات المركزية للموظفين وانواعها واضافتها .</p>
+        <a href="{% url 'hrhub:central_alloc_employee_list' %}" class="button">اضغط هنا  </a>
+    </div>
+
+
+
+    <div class="card">
+        <h3 class="card-title">الخدمة الوظيفية      </h3>
+        <p class="card-description">يهتم هذا الجزء الخدمة الوظيفية للموظفين وانواعها واضافتها .</p>
+        <a href="{% url 'hrhub:employee_employment_history' %}" class="button">اضغط هنا  </a>
+    </div>
+
+
+    <div class="card">
+        <h3 class="card-title">الاوامر الادارية        </h3>
+        <p class="card-description">يهتم هذا الجزء     بانواع الاوامر .</p>
+        <a href="{% url 'hrhub:main_duty_assignment_order' %}" class="button">اضغط هنا  </a>
+    </div>
+
+
+
+    
+
+    <div class="card">
+        <h3 class="card-title">الترفيعات والعلاوات       </h3>
+        <p class="card-description">يهتم هذا الجزء بالدرجات والمراحل الوظيفية للموظفين من حيث الاضافة والتعديل والحذف .</p>
+        <a href="{% url 'hrhub:main_employee_grade_step' %}" class="button">اضغط هنا  </a>
+    </div>
+
+
+</div>
+
+
+
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">عدد المحافظات  : </label>
+<label class="result-label">عـدد الـمــناطـق  : </label>
+<label class="result-label">عـــدد الـــــدول  : </label>
+<label class="result-label">عــــدد الــقــارات  : </label>
+{% endblock %}

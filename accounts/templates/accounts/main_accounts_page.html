@@ -1,0 +1,79 @@
+{% extends 'core/base.html' %}
+
+
+{% block searchbar %}
+
+    
+{% endblock %}
+
+
+{% block titlecontent %}
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="cards-container">
+    
+
+    <div class="card">
+     
+        <div class="card-content">
+            <h3 class="card-title">صفحة الحسابات </h3>
+            <p class="card-description"> يهتم هذا الجزء  باعداد الحسابات للموظفين من انشاء الحسابات</p>
+            <a href="{% url 'accounts:register_new_employee' %}" class="button">اضغط هنا    </a>
+        </div>
+    </div>
+
+
+    <div class="card">
+     
+        <div class="card-content">
+            <h3 class="card-title">صفحة ادارة الحسابات </h3>
+            <p class="card-description"> يهتم هذا الجزء  باعداد الحسابات للموظفين من  تغير  باسوورد وتعطيل الحسابات</p>
+            <a href="{% url 'accounts:accounts_main_affiars' %}" class="button">حسابات الموظفين   </a>
+        </div>
+    </div>
+
+    
+
+    <div class="card">
+     
+        <div class="card-content">
+            <h3 class="card-title">صفحة الانشطة </h3>
+            <p class="card-description"> يهتم هذا الجزء   بانشطة الموظفين        </p>
+            <a href="{% url 'accounts:employee_activity_view' %}" class="button">صفحة عرض الانشطة    </a>
+        </div>
+    </div>
+
+    <div class="card">
+     
+        <div class="card-content">
+            <h3 class="card-title">صفحة الصلاحيات </h3>
+            <p class="card-description"> يهتم هذا الجزء    بصلاحيات  الموظفين        </p>
+            <a href="{% url 'accounts:mainlistpermissions' %}" class="button">صفحة عرض الانشطة    </a>
+        </div>
+    </div>
+
+
+
+
+    
+</div>
+
+{% endblock %}
+
+
+
+{% block titlesidemenu %}
+
+{% endblock %}
+
+{% block sidemenu %}
+<a href="{% url 'accounts:main_control_panel' %}" class="button">لوحة التحكم الادارية    </a>
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

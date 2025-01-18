@@ -1,0 +1,126 @@
+{% extends 'core/base.html' %}
+
+{% block title %}تفاصيل الشهادة{% endblock %}
+
+{% block content %}
+<h2>تفاصيل الشهادة</h2>
+<table class="custom-table">
+    <tr>
+        <th>نوع الشهادة:</th>
+        <td>{{ education.education_degree_type.name_in_arabic }}</td>
+    </tr>
+    <tr>
+        <th>تاريخ الإصدار:</th>
+        <td>{{ education.date_issued }}</td>
+    </tr>
+    <tr>
+        <th>الوزارة المانحة:</th>
+        <td>
+            {% if education.certificat_minstery_type == 'education' %}
+                التربية
+            {% elif education.certificat_minstery_type == 'higher_education' %}
+                تعليم عالي
+            {% else %}
+                غير محددة
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <th>اسم المؤسسة:</th>
+        <td>
+            {% if education.iraqi_university %}
+                {{ education.iraqi_university.name_arabic }}
+            {% elif education.foreign_university %}
+                {{ education.foreign_university.name_english }}
+            {% elif education.institution_name %}
+                {{ education.institution_name }}
+            {% else %}
+                غير محددة
+            {% endif %}
+        </td>
+    </tr>
+   
+    <tr>
+        <th>تاريخ التخرج:</th>
+        <td>{{ education.graduation_date }}</td>
+    </tr>
+    <tr>
+        <th>تاريخ المباشرة بالدراسة:</th>
+        <td>{{ education.date_of_enrollment }}</td>
+    </tr>
+    <tr>
+        <th>تاريخ تنفيذ الأمر:</th>
+        <td>{{ education.effective_time }}</td>
+    </tr>
+    <tr>
+        <th>توثيق قسم الدراسات:</th>
+        <td>{{ education.first_approved|yesno:"موثق,غير موثق" }}</td>
+    </tr>
+    <tr>
+        <th>توثيق الإدارية:</th>
+        <td>{{ education.second_approved|yesno:"موثق,غير موثق" }}</td>
+    </tr>
+    <tr>
+        <th>نوع الأمر:</th>
+        <td>{{ education.duty_assignment_order.name }}</td>
+    </tr>
+    <tr>
+        <th>رقم الأمر:</th>
+        <td>{{ education.duty_assignment_number }}</td>
+    </tr>
+    <tr>
+        <th>تاريخ الأمر الإداري:</th>
+        <td>{{ education.date_of_administrative_order }}</td>
+    </tr>
+    <tr>
+        <th>ملف الشهادة:</th>
+        <td>
+            {% if education.certificate_file %}
+                <a href="{{ education.certificate_file.url }}">تحميل الشهادة</a>
+            {% else %}
+                غير متوفر
+            {% endif %}
+        </td>
+    </tr>
+</table>
+
+<br> <br>
+{% if perms.personalinfo.can_update_employee_education %} 
+<a href="{% url 'rddepartment:update_employeeeducation' education.slug %}" class= "update_button">تحديث   </a>
+{% else %}
+ليس لديك صلاحية التحديث
+{% endif %}
+
+{% if perms.personalinfo.can_delete_employee_education %} 
+<a href="{% url 'rddepartment:delete_employee_education' education.slug %}" class="delete_button" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا النوع من الشهادة؟')">حذف</a> 
+{% else %}
+ليس لديك صلاحية التحديث
+{% endif %}
+
+{% endblock %}
+
+{% block sidemenu %}
+
+
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'rddepartment:main_rddepartment' %}" class="custom-button">   الشهادات والتطوير     </a>
+    <a href="{% url 'rddepartment:main_employeeeducation' %}" class="custom-button">   شهادات الموظفين      </a>
+    <a href="{% url 'rddepartment:download_employee_education_sample_csv' %}" class="custom-button">   نموذج CSV      </a>
+
+    {% if perms.personalinfo.can_add_employee_education %} 
+    <a href="{% url 'rddepartment:upload_employee_education_csv' %}" class="custom-button">   رفع CSV      </a>
+    {% else %}
+    ليس لديك صلاحية الرفع
+    {% endif %}
+    
+    
+</div>
+
+
+
+{% endblock %}
+
+

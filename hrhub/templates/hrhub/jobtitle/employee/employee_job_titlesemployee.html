@@ -1,0 +1,69 @@
+{% extends 'core/base.html' %}
+
+{% block searchbar %}
+
+{% endblock %}
+
+
+{% block titleleftsidemenu %}
+<!-- أي محتوى خاص بالقائمة الجانبية هنا -->
+{% endblock %}
+
+
+
+{% block titlecontent %}
+{% endblock %}
+
+{% block content %}
+
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th>العنوان الوظيفي عند التعيين</th>
+            
+            <th>العنوان الوظيفي الحالي</th>
+            <th>تاريخ العنوان الوظيفي الحالي</th>
+            <th>العنوان الوظيفي القادم</th>
+            <th>تاريخ العنوان الوظيفي القادم</th>
+           
+        </tr>
+    </thead>
+    <tbody>
+        {% for job_title in employee_job_titles %}
+            <tr>
+                <td>{{ job_title.start_employee_job_title.title_in_arabic }}</td>
+               
+                <td>{{ job_title.employee_job_title.title_in_arabic }}</td>
+                <td>{{ job_title.employee_job_title_date }}</td>
+                <td>{{ job_title.next_employee_job_title.title_in_arabic }}</td>
+                <td>{{ job_title.next_employee_job_title_date }}</td>
+                
+                
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="6">لا توجد عناوين وظيفية لهذا الموظف.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+{% endblock %}
+
+
+{% block titlesidemenu %}
+<!-- أي محتوى خاص بالقائمة الجانبية هنا -->
+{% endblock %}
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+   
+</div>
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

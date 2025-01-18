@@ -1,0 +1,62 @@
+{% extends 'core/base.html' %}
+
+
+
+
+{% block content %}
+
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>الاسم بالعربية</th>
+        <th>الاسم بالإنجليزية</th>
+        <th>النسبة رقما</th>
+        <th>النسبة كتابة</th>
+        <th>تعديل</th>
+        <th>حذف</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for allocation in allocations %}
+    <tr>
+        <td>{{ forloop.counter  }}</td>
+        <td>{{ allocation.name_in_arabic }}</td>
+        <td>{{ allocation.name_in_english }}</td>
+        <td>{{ allocation.ratio }}</td>
+        <td>{{ allocation.word_ratio }}</td>
+        <td>
+            <a href="{% url 'hrhub:update_central_financial_allocation' allocation.slug%}" class="update_button">  تعديل     </a>
+        </td>
+        <td>
+            <a href="{% url 'hrhub:delete_central_financial_allocation' allocation.slug%}" class="delete_button">  حذف     </a> 
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
+
+
+{% block leftsidemenu %}
+<label class="result-label"> عدد انواع المخصصات  {{ allocations_count}}</label>
+{% endblock %}
+
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:central_alloc_employee_list' %}" class="custom-button">    المخصصات المركزية   </a>
+    <a href="{% url 'hrhub:add_central_financial_allocation' %}" class="custom-button">  اضافة اسم مخصصات   </a>
+
+
+    
+
+</div>
+{% endblock %}
+

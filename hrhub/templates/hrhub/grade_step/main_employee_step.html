@@ -1,0 +1,66 @@
+<!-- templates/app_name/main_employee_grade.html -->
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h2>الدرجات الوظيفية</h2>
+
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>رقم المرحلة</th>
+            <th>اسم  المرحلة</th>
+            <th>رقم الدرجة</th>
+            <th>اسم  الدرجة</th>
+            {% comment %} <th>مدخل البيانات</th> {% endcomment %}
+            {% comment %} <th>التفاصيل</th> {% endcomment %}
+            <th>تحديث</th>
+            <th>حذف</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for step in employee_steps %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ step.step_number }}</td>
+            <td>{{ step.name_in_words }}</td>
+            <td>{{ step.grade_number.grade_number }}</td>
+            <td>{{ step.grade_number.name_in_words }}</td>
+            {% comment %} <td>{{ step.created_by.username }}</td> {% endcomment %}
+            {% comment %} <td><a href="{% url 'hrhub:step_detail' step.slug %}" class="update_button">عرض </a></td> {% endcomment %}
+            <td><a href="{% url 'hrhub:update_employee_step' step.slug %}" class="update_button">تحديث</a></td>
+            <td><a href="{% url 'hrhub:delete_employee_step' step.slug %}" class="delete_button" onclick="return confirm('هل أنت متأكد؟')">حذف</a></td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="10">لا توجد درجات وظيفية مسجلة حالياً.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+
+{% block leftsidemenu %}
+<label class="result-label">    {{ request.user }}</label>
+{% endblock %}
+
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:main_employee_grade_step' %}" class="custom-button">   العلاوات والترفيعات        </a> 
+    <a href="{% url 'hrhub:main_employee_grade' %}" class="custom-button">  الدرجات الوظيفية        </a> 
+    <a href="{% url 'hrhub:main_employee_step' %}" class="custom-button">  المراحل الوظيفية        </a> 
+
+    <a href="{% url 'hrhub:employee_step_create' %}" class="custom-button">  اضافة مرحلة وظيفية    </a>
+    {% comment %} <a href="{% url 'hrhub:upload_employee_steps_csv' %}" class="custom-button">  رفع CSV       </a> {% endcomment %}
+
+   
+    
+    
+</div>
+{% endblock %}

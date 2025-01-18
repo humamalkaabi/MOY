@@ -1,0 +1,61 @@
+{% extends 'core/base.html' %}
+
+
+
+{% block content %}
+<h1 class="section-header">أنشطة الموظف: {{ employee.basic_info.get_full_name }}</h1>
+
+{% if activity_logs %}
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th>الحدث</th>
+            <th>التاريخ</th>
+            
+            <th>المتصفح</th>
+            <th>نظام التشغيل</th>
+            <th>الجهاز</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for log in activity_logs %}
+        <tr>
+            <td>{{ log.action }}</td>
+            <td>{{ log.timestamp }}</td>
+           
+            <td>{{ log.browser }}</td>
+            <td>{{ log.operating_system }}</td>
+            <td>{{ log.device }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <div class="alert alert-error">
+        لا توجد أنشطة للعرض.
+    </div>
+{% endif %}
+{% endblock %}
+
+
+
+{% block sidemenu %}
+
+
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+   
+
+    
+
+</div>
+
+
+
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+

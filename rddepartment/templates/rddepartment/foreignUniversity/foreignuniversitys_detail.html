@@ -1,0 +1,82 @@
+{% extends 'core/base.html' %}
+
+{% block title %}  تفاصيل {{ degree_type.name_in_arabic }}      {% endblock %}
+
+{% block titlesidemenu %}
+{% endblock %}
+
+
+{% block content %}
+<h1>اسم الجامعة: {{ foreignuniversity.name_in_arabic }}</h1>
+<p><strong>الاسم بالإنجليزية:</strong> {{ foreignuniversity.name_in_english }}</p>
+<p><strong>مختصر الاسم:</strong> {{ foreignuniversity.university_name_abbreviation }}</p>
+<p><strong>الرابط الإلكتروني:</strong> 
+    {% if foreignuniversity.university_link %}
+        <a href="{{ foreignuniversity.university_link }}" target="_blank">{{ foreignuniversity.university_link }}</a>
+    {% else %}
+        <em>لا يوجد رابط</em>
+    {% endif %}
+</p>
+<p><strong>بلد الجامعة:</strong> 
+    {% if foreignuniversity.country %}
+        {{ foreignuniversity.country.name_arabic }}
+    {% else %}
+        غير محدد
+    {% endif %}
+</p>
+<p> <strong> اسم مدخل البيانات: </strong>  {{ foreignuniversity.created_by }} </p>
+<p><strong>تم الإنشاء بواسطة:</strong> {{ foreignuniversity.created_by }}</p>
+<p><strong>تاريخ الإنشاء:</strong> {{ foreignuniversity.created_at|date:"d/m/Y H:i" }}</p>
+<p><strong>آخر تحديث:</strong> {{ foreignuniversity.updated_at|date:"d/m/Y H:i" }}</p>
+
+{% if perms.rddepartment.can_update_foreign_university %}
+<a href="{% url 'rddepartment:update_foreignuniversitys' slug=foreignuniversity.slug %}"  class="update_button"> تحديث  </a> 
+{% else %}
+ليس لديك صلاحية التحديث 
+{% endif %}  
+{% if perms.rddepartment.can_delete_foreign_university %}
+<a href="{% url 'rddepartment:delete_foreignuniversity' foreignuniversity.slug %}" 
+   class="delete_button"
+   onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه الجامعة؟')">
+   حذف
+</a> 
+{% else %}
+ليس لديك صلاحية الحذف 
+{% endif %}  
+{% endblock %}
+
+
+
+{% block sidemenu %}
+
+
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'rddepartment:main_rddepartment' %}" class="custom-button">   الشهادات والتطوير     </a>
+    <a href="{% url 'rddepartment:main_foreignuniversity' %}" class="custom-button">   الجامعات الاجنبية      </a>
+
+
+    {% if perms.rddepartment.can_add_foreign_university %}
+    <a href="{% url 'rddepartment:add_foreignuniversity' %}" class="custom-button">  اضافة  جامعة اجنبية    </a>
+    {% else %}
+    ليس  لديك صلاحية ادخال جامعة 
+    {% endif %}
+
+    {% if perms.rddepartment.can_add_foreign_university %}
+    <a href="{% url 'rddepartment:upload_foreign_university_csv' %}" class="custom-button">   رفع ملف CSV      </a>
+   
+    {% endif %}
+
+</div>
+
+
+
+{% endblock %}
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

@@ -1,0 +1,174 @@
+{% extends 'core/base.html' %}
+
+
+{% block searchbar %}
+
+<form method="get" action=""><div class="main_searchbar">
+
+    <div class="grid-container">
+        <div class="grid-item input-container">
+            <input type="text" id="username" name="username" placeholder="ادخل الرقم الوظيفي" value="{{ request.GET.username }}">
+        </div>
+        <div class="grid-item input-container">
+            <input type="text" id="firstname" name="firstname" placeholder="ادخل الاسم الأول" value="{{ request.GET.firstname }}">
+        </div>
+        <div class="grid-item input-container">
+            <input type="text" id="secondname" name="secondname" placeholder="ادخل الاسم الثاني" value="{{ request.GET.secondname }}">
+        </div>
+        <div class="grid-item input-container">
+            <input type="text" id="thirdname" name="thirdname" placeholder="ادخل الاسم الثالث" value="{{ request.GET.thirdname }}">
+        </div>
+        
+
+        <div class="grid-item input-container">
+            <select name="gender">
+                <option value="">اختر الجنس</option>
+                <option value="M" {% if request.GET.gender == "M" %}selected{% endif %}>ذكر</option>
+                <option value="F" {% if request.GET.gender == "F" %}selected{% endif %}>أنثى</option>
+            </select>
+        </div>
+        
+        
+
+            <div class="grid-item input-container">
+                <button type="submit">بحث</button>
+            </div>
+           
+    </div>
+</div>
+</form>
+
+
+{% endblock %}
+
+{% block titleleftsidemenu %}
+
+
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">عدد نتائج البحث : {{ employee_count }}</label>
+{% endblock %}
+
+
+{% block titlecontent %}
+
+{% endblock %}
+
+
+{% block content %}
+<table>
+    <thead>
+        <tr>
+            <th>الرقم الوظيفي </th>
+            <th>الاسم الكامل</th>
+            <th>رقم هاتف الموظف </th>
+            <th>هل لديه عنوان وظيفي؟</th>
+            <th>لوحة تحكم الموظف </th>
+          
+        </tr>
+    </thead>
+    <tbody>
+        {% for employee in employees %}
+        <tr>
+            <td>{{ employee.username }}</td>
+            <td>
+                {% if employee.basic_info %}
+                {{ employee.basic_info.get_full_name }}  
+              
+            {% else %}
+            لا توجد معلومات -  
+            {% endif %}
+            </td>
+            <td>
+                {% if employee.basic_info and employee.basic_info.phone_number %}
+                    {{ employee.basic_info.phone_number }}
+                {% else %}
+                    لا يوجد
+                {% endif %}
+            </td>
+
+          
+
+                <td>
+                    {% if employee.basic_info%} 
+                        {% if employee.basic_info.job_title_employee.exists %}
+                            نعم -  <a href="{% url 'hrhub:employee_job_titles' employee.basic_info.slug %}">عرض</a>
+                        {% else %}
+                            لا-   <a href="{% url 'hrhub:create_employee_job_title' employee.basic_info.slug %}">إعطاء عنوان</a>
+                            {% endif %}
+
+                            {% else %}
+                    {% endif %}
+                </td>
+
+             
+ <td>
+    {% if perms.personalinfo.can_access_employee_dashboard %}
+    <a href="{% url 'accounts:employeedashboard' employee.slug %}">عرض لوحة التحكم</a>
+    {% else%}
+    ليس لديك صلاحية الوصول
+    {% endif %}
+</td>
+
+         
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">لا توجد بيانات لعرضها.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+{% block pagination %}
+<div class="pagination-container">
+    <div class="pagination-info">
+        <span>عدد العناصر بالصفحة:</span>
+        <form method="get" action="" class="pagination-form">
+            <input type="number" id="results_per_page" name="results_per_page" placeholder="عدد النتائج لكل صفحة" value="{{ request.GET.results_per_page|default:10 }}" class="pagination-input">
+        </form>
+    </div>
+    <div class="pagination-controls">
+        {% if employees.has_previous %}
+            <a href="?{{ request.GET.urlencode }}&page=1" class="pagination-button">الأولى</a>
+            <a href="?{{ request.GET.urlencode }}&page={{ employees.previous_page_number }}" class="pagination-button">السابق</a>
+        {% endif %}
+        <span>صفحة {{ employees.number }} من {{ employees.paginator.num_pages }}</span>
+        {% if employees.has_next %}
+            <a href="?{{ request.GET.urlencode }}&page={{ employees.next_page_number }}" class="pagination-button">التالي</a>
+            <a href="?{{ request.GET.urlencode }}&page={{ employees.paginator.num_pages }}" class="pagination-button">الأخيرة</a>
+        {% endif %}
+    </div>
+    
+    
+    
+</div>
+{% endblock %}
+
+
+
+{% block titlesidemenu %}
+
+{% endblock %}
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+   
+    {% comment %} <a href="{% url 'hrhub:main_thanks_type' %}" class="custom-button">انواع كتب الشكر </a> {% endcomment %}
+
+    <a href="{% url 'hrhub:main_job_title' %}" class="custom-button"> العناوين الوظيفية   </a>
+    <a href="{% url 'hrhub:upload_employee_job_titles_csv' %}" class="custom-button"> رفع CSV    </a>
+    <a href="{% url 'hrhub:update_employee_job_title_settings' %}" class="custom-button">  اعدادات احتساب    </a>
+
+
+    
+    
+    {% comment %} <a href="{% url 'hrhub:upload_employees_csv' %}" class="custom-button">رفع ملف CSV </a> {% endcomment %}
+    {% comment %} <a href="{% url 'hrhub:download_employee_offices_csv_template' %}" class="custom-button">تحميل نموذج CSV </a> {% endcomment %}
+</div>
+{% endblock %}

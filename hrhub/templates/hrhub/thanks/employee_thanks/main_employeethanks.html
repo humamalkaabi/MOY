@@ -1,0 +1,200 @@
+{% extends 'core/base.html' %}
+
+
+{% block searchbar %}
+
+<form method="get" action=""><div class="main_searchbar">
+
+    <div class="grid-container">
+        <div class="grid-item input-container">
+            <input type="text" id="username" name="username" placeholder="ادخل الرقم الوظيفي" value="{{ request.GET.username }}">
+        </div>
+        <div class="grid-item input-container">
+            <input type="text" id="firstname" name="firstname" placeholder="ادخل الاسم الأول" value="{{ request.GET.firstname }}">
+        </div>
+        <div class="grid-item input-container">
+            <input type="text" id="secondname" name="secondname" placeholder="ادخل الاسم الثاني" value="{{ request.GET.secondname }}">
+        </div>
+        <div class="grid-item input-container">
+            <input type="text" id="thirdname" name="thirdname" placeholder="ادخل الاسم الثالث" value="{{ request.GET.thirdname }}">
+        </div>
+        <div class="grid-item input-container">
+            <select name="office">
+                <option value="">اختر الدائرة</option>
+                {% for office in offices %}
+                    <option value="{{ office.id }}" {% if request.GET.office == office.id|stringformat:"s" %}selected{% endif %}>
+                        {{ office.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        
+
+        <div class="grid-item input-container">
+            <select name="gender">
+                <option value="">اختر الجنس</option>
+                <option value="M" {% if request.GET.gender == "M" %}selected{% endif %}>ذكر</option>
+                <option value="F" {% if request.GET.gender == "F" %}selected{% endif %}>أنثى</option>
+            </select>
+        </div>
+        
+        
+       
+        <div class="grid-item input-container">
+            <select name="thanks_type">
+                <option value="">اختر نوع كتاب الشكر</option>
+                {% for thanks_type in thanks_types %}
+                    <option value="{{ thanks_type.id }}" {% if request.GET.thanks_type == thanks_type.id|stringformat:"s" %}selected{% endif %}>
+                        {{ thanks_type.thanks_name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        
+            <div class="grid-item input-container">
+                <button type="submit">بحث</button>
+            </div>
+           
+    </div>
+</div>
+</form>
+
+
+{% endblock %}
+
+{% block titleleftsidemenu %}
+
+
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">عدد نتائج البحث : {{ employee_count }}</label>
+{% endblock %}
+
+
+{% block titlecontent %}
+
+{% endblock %}
+
+
+{% block content %}
+<form method="post" action="{% url 'hrhub:add_thanks_to_employees' %}">
+    {% csrf_token %}
+    <div class="button-container">
+        <button type="submit" class="result-label">إضافة كتاب شكر</button>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                
+                <th>الرقم الوظيفي</th>
+                <th>الاسم الكامل</th>
+                <th>رقم هاتف الموظف </th>
+                <th>لديه كتب شكر   </th>
+                <th>لوحة تحكم</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for employee in employees %}
+            <tr>
+               
+                <td>{{ employee.username }}</td>
+                <td>
+                    {% if employee.basic_info %}
+                        <input type="checkbox" name="selected_employees" value="{{ employee.basic_info.slug }}">
+                        {{ employee.basic_info.get_full_name }}
+                    {% else %}
+                        لا توجد معلومات
+                        {% comment %}<a href="{% url 'personalinfo:addbasicinfo' employee.slug %}">إضافة معلومات أساسية</a>{% endcomment %}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if employee.basic_info and employee.basic_info.phone_number %}
+                        {{ employee.basic_info.phone_number }}
+                    {% else %}
+                        لا يوجد
+                    {% endif %}
+                </td>
+                <td>
+                    {% if employee.basic_info and employee.basic_info.thanks_letters.exists %}
+                        نعم -  
+                        <a href="{% url 'hrhub:employee_thanks_list' employee.basic_info.slug %}">عرض  </a>
+                    {% else %}
+                        لا
+                    {% endif %}
+                </td>
+               
+                <td>
+                    {% if perms.personalinfo.can_access_employee_dashboard %}
+                    <a href="{% url 'accounts:employeedashboard' employee.slug %}">عرض لوحة التحكم</a>
+                    {% else%}
+                    ليس لديك صلاحية الوصول
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">لا توجد بيانات لعرضها.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</form>
+
+
+
+{% endblock %}
+
+{% block pagination %}
+<div class="pagination-container">
+    <div class="pagination-info">
+        <span>عدد العناصر بالصفحة:</span>
+        <form method="get" action="" class="pagination-form">
+            <input type="number" id="results_per_page" name="results_per_page" placeholder="عدد النتائج لكل صفحة" value="{{ request.GET.results_per_page|default:10 }}" class="pagination-input">
+        </form>
+    </div>
+    <div class="pagination-controls">
+        {% if employees.has_previous %}
+            <a href="?{{ request.GET.urlencode }}&page=1" class="pagination-button">الأولى</a>
+            <a href="?{{ request.GET.urlencode }}&page={{ employees.previous_page_number }}" class="pagination-button">السابق</a>
+        {% endif %}
+        <span>صفحة {{ employees.number }} من {{ employees.paginator.num_pages }}</span>
+        {% if employees.has_next %}
+            <a href="?{{ request.GET.urlencode }}&page={{ employees.next_page_number }}" class="pagination-button">التالي</a>
+            <a href="?{{ request.GET.urlencode }}&page={{ employees.paginator.num_pages }}" class="pagination-button">الأخيرة</a>
+        {% endif %}
+    </div>
+    
+    
+    
+</div>
+{% endblock %}
+
+
+
+{% block titlesidemenu %}
+
+{% endblock %}
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+   
+    <a href="{% url 'hrhub:main_thanks_type' %}" class="custom-button">انواع كتب الشكر </a>
+    
+
+    {% if perms.hrhub.can_add_employee_thanks %}
+    <a href="{% url 'hrhub:upload_employee_thanks_csv' %}" class="custom-button">رفع CSV   </a>
+    {% endif %}
+    
+    <a href="{% url 'hrhub:download_thanks_csv_template' %}" class="custom-button">نموذج CSV   </a>
+    
+    
+    
+
+
+</div>
+{% endblock %}

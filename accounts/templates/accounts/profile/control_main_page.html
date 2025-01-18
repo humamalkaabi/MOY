@@ -1,0 +1,115 @@
+{% extends 'core/base.html' %}
+
+
+
+    {% block titlesidemenu %}
+   
+    {% endblock %}
+
+    
+    {% block titlecontent %}
+   
+
+
+
+    {% endblock %}
+
+    {% block sidemenu %}
+
+    <a href="{% url 'accounts:view_profile'  %}"> الملف الشخصي</a> 
+    
+    {% endblock %}
+
+    {% block content %}
+    {% if messages %}
+    <div>
+        {% for message in messages %}
+            <div class="alert alert-danger">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+    
+    <section class="dashboard-cards">
+      
+     {% if user.is_superuser %} 
+        <div class="container">
+            <div class="card blue">
+                <a href="{% url 'accounts:accounts_main_page'  %}"> لوحة تحكم الموظفين    </a> 
+                <p> هنا يتم التحكم بحسابات جميع الموظفين المسجلين بالنظام</p>
+            </div>
+        </div>
+      {% endif %}  
+        
+
+
+      {% if perms.basicinfo %}
+        <div class="container">
+            <div class="card blue">
+                <a href="{% url 'basicinfo:main_basic_page'  %}"> لوحة تحكم المعلومات الاساسية والاضافة    </a> 
+                <p> هنا يتم التحكم بالمعلومات الاساسية والاضافية</p>
+            </div>
+        </div>
+      {% endif %}  
+        
+
+         
+      {% if perms.certificates %}
+        <div class="container">
+            <div class="card blue">
+                <a href="{% url 'certificates:certificate_main_page'  %}"> لوحة تحكم الشهادات      </a> 
+                <p> هنا يتم التحكم بالشهادات سواء الاكاديمية او التدريبية</p>
+            </div>
+        </div>
+      {% endif %}  
+        
+         
+    
+            
+        
+
+      {% if perms.humanresources %}
+      <div class="container">
+        <div class="card blue">
+             <a href="{% url 'humanresources:main_human_resources'  %}">  لوحة التحكم بالموارد البشرية      </a> 
+            <p> هنا يتم التحكم بالموارد البشرية </p>
+        </div>
+    </div>      
+          {% endif %}
+    
+    
+
+
+
+          {% if perms.locations %}
+          <div class="container">
+            <div class="card blue">
+                 <a href="{% url 'locations:main_locations_dashboard'  %}">  لوحة التحكم بالاماكن       </a> 
+                <p> هنا يتم التحكم بالموارد البشرية </p>
+            </div>
+        </div>
+    
+          
+          
+              {% endif %}
+
+        
+              {% if perms.financialaffairs %}
+          <div class="container">
+            <div class="card blue">
+                 <a href="{% url 'financialaffairs:main_financial_affairs'  %}">  لوحة التحكم بالشؤون المالية       </a> 
+                <p> هنا يتم التحكم بالشؤون المالية  </p>
+            </div>
+        </div>
+    
+          
+          
+              {% endif %}
+        
+        
+        </section>
+        
+    </main> 
+
+    {% endblock %}
+    
+  

@@ -1,0 +1,75 @@
+{% extends 'core/base.html' %}
+
+
+{% block searchbar %}
+
+    
+{% endblock %}
+
+{% block titleleftsidemenu %}
+
+
+{% endblock %}
+
+{% block leftsidemenu %}
+
+{% endblock %}
+
+
+{% block titlecontent %}
+
+{% endblock %}
+
+
+{% block content %}
+
+<h1>الشهادات  للموظف: {{ basic_info.get_full_name }}</h1>
+
+    
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>نوع الشهادة</th>
+            <th>اسم المؤسسة المانحة</th>
+            <th>رقم كتاب اصدار الشهادة</th>
+            <th>تاريخ الإصدار</th>
+            <th>تاريخ المباشرة بالدورة</th>
+            <th>تاريخ انتهاء الدورة</th>
+            <th>التفاصيل</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for certificate in certificates %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ certificate.coursecertificatetype }}</td>
+                <td>{{ certificate.name_of_the_institution }}</td>
+                <td>{{ certificate.course_number }}</td>
+                <td>{{ certificate.date_issued }}</td>
+                <td>{{ certificate.start_date }}</td>
+                <td>{{ certificate.end_date }}</td>
+                <td>
+                    <a href="{% url 'course_certificate_detail' certificate.slug %}">عرض التفاصيل</a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="8">لا توجد شهادات تدريبية مسجلة لهذا الموظف.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
+
+
+
+{% block titlesidemenu %}
+
+{% endblock %}
+
+{% block sidemenu %}
+
+<a href="{% url 'accounts:view_profile' %}" class="button">الصفحة الشخصية  </a>
+{% endblock %}

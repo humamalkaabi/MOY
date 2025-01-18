@@ -1,0 +1,22 @@
+{% extends 'core/base.html' %}
+
+
+{% block content %}
+<h2>تفاصيل الدرجة</h2>
+
+<p><strong>رقم الدرجة:</strong> {{ grade.grade_number }}</p>
+<p><strong>اسم الدرجة:</strong> {{ grade.name_in_words }}</p>
+<p><strong>أنشأ بواسطة:</strong> {{ grade.created_by.username }}</p>
+{% endblock %}
+
+
+
+
+{% block sidemenu %}
+<p> <a href="{% url 'hrhub:main_employee_step' %}" class="button">  صفحة المراحل  الوظيفية      </a>
+    
+</p>
+
+
+
+{% endblock %}

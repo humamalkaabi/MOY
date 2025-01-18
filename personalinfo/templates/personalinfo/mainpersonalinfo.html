@@ -1,0 +1,117 @@
+{% extends 'core/base.html' %}
+
+{% block titlecontent %}احصائيات الاماكن{% endblock %}
+
+
+{% block sidemenu %}
+
+
+<h3>  </h3>
+
+<div class="button-container">
+   
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم الادارية     </a>
+
+
+   
+    <a href="{% url 'locations:export_governorates_csv' %}" class="custom-button">تصدير اسماء المحافظات </a>
+
+    <a href="{% url 'personalinfo:export_religions_csv' %}" class="custom-button">تصدير اسماء الديانات </a>
+    <a href="{% url 'personalinfo:export_nationalism_csv' %}" class="custom-button">تصدير اسماء القوميات </a>
+
+
+
+    
+
+
+
+</div>
+
+
+
+
+
+{% endblock %}
+
+{% block content %}
+<div class="cards-container">
+
+    {% comment %} {% if perms.locations.can_view_governorate_details %} {% endcomment %}
+    <div class="card">
+        <h3 class="card-title">صفحة البيانات الاساسية</h3>
+        <p class="card-description">يهتم هذا الجزء بالبيانات الاساسية للموظفين من الاسم الاول والثاني والثالث والرابع واللقب واسم الوالدة وغيرها.</p>
+        <a href="{% url 'personalinfo:mainbasicinfo' %}" class="button">اضغط هنا</a>
+    </div>
+    {% comment %} {% endif %} {% endcomment %}
+
+     {% comment %} {% if perms.locations.can_view_governorate_details %} {% endcomment %}
+     <div class="card">
+        <h3 class="card-title">صفحة  الديانات </h3>
+        <p class="card-description">يهتم هذا الجزء بالديانات الموجود بالنظام من حيث الاضافة والتعديل والحذف .</p>
+        <a href="{% url 'personalinfo:mainreligion' %}" class="button">اضغط هنا</a>
+    </div>
+    {% comment %} {% endif %} {% endcomment %}
+
+
+     {% comment %} {% if perms.locations.can_view_governorate_details %} {% endcomment %}
+     <div class="card">
+        <h3 class="card-title">صفحة  القوميات </h3>
+        <p class="card-description">يهتم هذا الجزء مع القوميات الموجود بالنظام من حيث الاضافة والتعديل والحذف .</p>
+        <a href="{% url 'personalinfo:main_nationalism' %}" class="button">اضغط هنا</a>
+    </div>
+    {% comment %} {% endif %} {% endcomment %}
+
+
+    {% comment %} {% if perms.locations.can_view_governorate_details %} {% endcomment %}
+    <div class="card">
+        <h3 class="card-title">صفحة  الوئاق الرسمية </h3>
+        <p class="card-description">يهتم هذا الجزء مع الوثائق الرسمية للموظفين     الاضافة والتعديل والحذف .</p>
+        <a href="{% url 'personalinfo:mainemployeeofficialdocuments' %}" class="button">اضغط هنا</a>
+    </div>
+    {% comment %} {% endif %} {% endcomment %}
+
+
+     {% comment %} {% if perms.locations.can_view_governorate_details %} {% endcomment %}
+     <div class="card">
+        <h3 class="card-title">صفحة  المعلومات الاضافية  </h3>
+        <p class="card-description">يهتم هذا الجزء مع المعلومات الاضافية للموظفين مثل فصيلة الدم والدين والقومية ورقم الطوارئ من حيث الاضافة والتعديل والحذف .</p>
+        <a href="{% url 'personalinfo:main_additionainfo' %}" class="button">اضغط هنا</a>
+    </div>
+    {% comment %} {% endif %} {% endcomment %}
+
+</div>
+
+
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">عدد الموظفين معلومات أساسية: {{ employees_with_basic_info_count }}</label>
+{% if most_common_document_type %}
+
+    <label class="result-label">
+         اكثر وثيقة     : {{ most_common_document_type.official_documents_type__name_in_arabic }} - عدد الموظفين: {{ most_common_document_type.employee_count }}
+    </label>
+{% else %}
+    <label class="result-label">لا توجد وثائق رسمية مسجلة.</label>
+{% endif %}
+
+
+{% if most_common_blood_type and most_common_blood_type.blood_type %}
+    <label class="result-label">
+        أكثر فصيلة دم شيوعًا: {{ most_common_blood_type.blood_type }} - عدد الموظفين: {{ most_common_blood_type.count }}
+    </label>
+{% else %}
+    <label class="result-label">لا توجد بيانات لفصائل الدم.</label>
+{% endif %}
+
+
+{% if most_common_birth_place and most_common_birth_place.place_of_birth__name_arabic %}
+    <label class="result-label">
+        أكثر محافظة ولد فيها الموظفون: {{ most_common_birth_place.place_of_birth__name_arabic }} - عدد الموظفين: {{ most_common_birth_place.count }}
+    </label>
+{% else %}
+    <label class="result-label">لا توجد بيانات لمكان الولادة.</label>
+{% endif %}
+
+{% endblock %}

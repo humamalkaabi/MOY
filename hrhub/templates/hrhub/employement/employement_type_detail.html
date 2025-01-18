@@ -1,0 +1,47 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+تفاصيل نوع التوظيف
+{% endblock %}
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:employee_employment_history' %}" class="custom-button">   الخدمات الوظيفية       </a>
+
+    <a href="{% url 'hrhub:main_employement' %}" class="custom-button">  انواع الخدمات الوظيفية       </a>
+    <a href="{% url 'hrhub:employement_type_create' %}" class="custom-button">  اضافة نوع خدمة     </a>
+
+</div>
+{% endblock %}
+
+
+{% block titlecontent %}
+<h2>تفاصيل نوع التوظيف</h2>
+{% endblock %}
+
+{% block content %}
+<p><strong>اسم نوع التوظيف:</strong> {{ employement_type.name }}</p>
+<p><strong>حساب نوع التوظيف:</strong> {{ employement_type.is_employement_type_counted|yesno:"نعم,لا" }}</p>
+<p><strong>ملف PDF متعلق بنوع التوظيف:</strong> 
+    {% if employement_type.pdf_file %}
+        <a href="{{ employement_type.pdf_file.url }}" target="_blank">تحميل PDF</a>
+    {% else %}
+        لا يوجد
+    {% endif %}
+</p>
+<p><strong>الملاحظات:</strong> {{ employement_type.comments|default:"لا توجد ملاحظات" }}</p>
+<p><strong>تاريخ الإنشاء:</strong> {{ employement_type.created_at }}</p>
+<p><strong>تاريخ آخر تحديث:</strong> {{ employement_type.updated_at }}</p>
+<p><strong>أنشأ بواسطة:</strong> {{ employement_type.created_by }}</p>
+
+<a href="{% url 'hrhub:employement_type_update' employement_type.slug %}" class="update_button">تحديث</a>
+<a href="{% url 'hrhub:employement_type_delete' employement_type.slug %}" class="delete_button" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا النوع؟')">حذف</a>
+{% endblock %}

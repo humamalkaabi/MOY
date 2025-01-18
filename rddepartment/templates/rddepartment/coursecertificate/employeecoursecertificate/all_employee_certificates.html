@@ -1,0 +1,84 @@
+{% extends 'core/base.html' %}
+
+{% block title %}الشهادات التدريبية الخاصة بـ {{ employee.get_full_name }}{% endblock %}
+
+{% block content %}
+<h2>الشهادات التدريبية الخاصة بـ {{ employee.get_full_name }}</h2>
+
+{% if certificates %}
+<table class="custom-table">
+
+        <thead>
+            <tr>
+                <th>نوع الشهادة</th>
+                <th>اسم المؤسسة المانحة</th>
+                <th>تاريخ الإصدار</th>
+                <th>مدة الدورة</th>
+                <th>ملف الشهادة</th>
+                <th>تفاصيل</th>
+                <th>حذف</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for certificate in certificates %}
+            <tr>
+                <td>{{ certificate.coursecertificatetype.name_in_arabic }}</td>
+                <td>{{ certificate.name_of_the_institution.name_in_arabic }}</td>
+                <td>{{ certificate.date_issued }}</td>
+                <td>{{ certificate.course_duration }}</td>
+                <td>
+                    {% if certificate.certificate_file %}
+                        <a href="{{ certificate.certificate_file.url }}" target="_blank">عرض</a>
+                    {% else %}
+                        لا يوجد
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'rddepartment:update_employeecoursecertificate' certificate.slug %}" class ="update_button">تحديث</a>
+                </td>
+                <td> 
+                    <a href="{% url 'rddepartment:delete_employeecoursecertificate' certificate.slug %}" 
+                       class="delete_button"
+                       onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه البيانات')">
+                       حذف
+                    </a>   
+                </td>                
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>لا توجد شهادات تدريبية لهذا الموظف.</p>
+{% endif %}
+
+<br>
+<a href="{% url 'rddepartment:add_employeecoursecertificate' employee.slug %}" class="update_button">اضافة شهادة  </a>
+{% endblock %}
+
+
+{% block sidemenu %}
+
+
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'rddepartment:main_rddepartment' %}" class="custom-button">   الشهادات والتطوير     </a>
+    <a href="{% url 'rddepartment:main_coursecertificatetype' %}" class="custom-button">   انواع الشهادات       </a>
+    <a href="{% url 'rddepartment:main_coursecertificateinstitutions' %}" class="custom-button">   اسماء المراكز        </a>
+    <a href="{% url 'rddepartment:mainemployeecoursecertificate' %}" class="custom-button">   الشهادات غير الاكاديمية         </a>
+   
+    
+    
+</div>
+
+
+
+{% endblock %}
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+
+

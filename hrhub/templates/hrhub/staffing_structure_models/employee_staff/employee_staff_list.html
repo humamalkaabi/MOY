@@ -1,0 +1,71 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+    <title>أنواع الملاك للموظف</title>
+{% endblock %}
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+
+
+{% block content %}
+    <table class="custom-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>نوع الملاك</th>
+                <th>الرقم الإداري</th>
+                <th>تاريخ الأمر</th>
+                <th>ملاحظات</th>
+                <th>تفاصيل</th>
+                <th>تحديث</th>
+                <th>حذف</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for staff in staff_kinds %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ staff.employee_staff_type }}</td>
+                    <td>{{ staff.employee_staff_type_number }}</td>
+                    <td>{{ staff.employee_staff_type_number_date|date:"Y-m-d" }}</td>
+                    <td>{{ staff.comments }}</td>
+                    <td>
+                        <a href="{% url 'hrhub:employee_staff_detail' slug=staff.slug %}" class="update_button">تفاصيل</a>
+                    </td>
+
+                    <td>
+                        <a href="{% url 'hrhub:update_employee_staff_kind' slug=staff.slug %}" class="update_button">تحديث</a>
+                    </td>
+                   
+                    <td>
+                        <a href="{% url 'hrhub:delete_employee_staff_kind' slug=staff.slug %}" class="delete_button" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا السجل؟')">حذف</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="١٠">لا توجد أنواع ملاك مسجلة حالياً.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+   
+    {% comment %} <a href="{% url 'hrhub:main_thanks_type' %}" class="custom-button">انواع كتب الشكر </a> {% endcomment %}
+
+    <a href="{% url 'hrhub:upload_employee_staff_kind_csv' %}" class="custom-button"> رفع ملف    </a>
+
+    
+    
+    {% comment %} <a href="{% url 'hrhub:upload_employees_csv' %}" class="custom-button">رفع ملف CSV </a> {% endcomment %}
+    {% comment %} <a href="{% url 'hrhub:download_employee_offices_csv_template' %}" class="custom-button">تحميل نموذج CSV </a> {% endcomment %}
+</div>
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends 'core/base.html' %}
+
+
+{% block searchbar %}
+
+    
+{% endblock %}
+{% block leftsidemenu %}
+<label class="result-label">عدد نتائج  : {{ education_degree_types_counts }}</label>
+
+
+
+{% endblock %}
+
+
+{% block titlecontent %}
+
+{% endblock %}
+
+
+{% block content %}
+
+        <table class="custom-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>نوع الشهادة</th>
+                <th>الاسم بالإنجليزية</th>
+            <th>الدرجة الوظيفية الوظيفية</th>
+            <th>المرحلة الوظيفية الوظيفية</th>
+            <th> سنوات الترفيع </th>
+            <th>مستوى الشهادة</th>
+            <th> سنوات  التسريع </th>
+                <th>مدخل البيانات </th>
+                <th>تفاصيل البيانات </th>
+                
+               
+            </tr>
+        </thead>
+        <tbody>
+            {% for education_degree_type in education_degree_types %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ education_degree_type.name_in_arabic }}</td>
+                <td>{{ education_degree_type.name_in_english }}</td>
+                <td>{{ education_degree_type.grade_number }}</td>
+                <td>{{ education_degree_type.step_number }}</td>
+                <td> {{education_degree_type.years_effects}} </td>
+                <td>{{ education_degree_type.education_degree_number }}</td>
+                <td>
+                    {% if education_degree_type.has_effect %}
+                        نعم- {{education_degree_type.addtion_years_effects}}
+                    {% else %}
+                        كلا
+                    {% endif %}
+                </td>
+                <td>{{ education_degree_type.created_by.basic_info.get_full_name }}
+                </td>
+              
+                 <td> 
+                     <a href="{% url 'rddepartment:education_degree_type_detail' slug=education_degree_type.slug %}" class="update_button"> التفاصيل </a>  
+                
+                </td>
+    
+                
+            {% comment %} <td> <a href="{% url 'rddepartment:update_education_degree_type' education_degree_type.slug %}">تحديث</a>
+                </td>  {% endcomment %}
+               
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="10">لا توجد بيانات مسجلة حالياً.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+
+
+{% block titlesidemenu %}
+
+{% endblock %}
+
+{% block sidemenu %}
+
+
+
+<div class="button-container">
+
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'rddepartment:main_rddepartment' %}" class="custom-button">   الشهادات والتطوير     </a>
+
+    {% if perms.rddepartment.can_add_education_degree_type %}
+    <a href="{% url 'rddepartment:add_education_degree_type' %}" class="custom-button">  اضافة نوع الشهادة   </a>
+    {% endif %}
+    <a href="{% url 'rddepartment:export_education_degree_type_to_csv' %}" class="custom-button">
+        تصدير  CSV
+    </a>
+
+
+</div>
+
+
+
+{% endblock %}
+

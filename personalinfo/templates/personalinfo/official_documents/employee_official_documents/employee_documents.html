@@ -1,0 +1,113 @@
+{% extends 'core/base.html' %}
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+
+
+{% block content %}
+
+<h2>الوثائق الرسمية الخاصة بالموظف: {{ basic_info.get_full_name }}</h2>
+  
+  {% if documents %}
+  <table class="custom-table">
+      <thead>
+        <tr>
+          <th>نوع الوثيقة</th>
+          <th>رقم الوثيقة</th>
+          <th>المحافظة</th>
+          <th>تاريخ الإصدار</th>
+          <th>تاريخ الانتهاء</th>
+          <th>الواجهة الأمامية</th>
+          <th>الواجهة الخلفية</th>
+          <th>تعديل </th>
+          <th>حذف الوثيقة </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for document in documents %}
+          <tr>
+            <td>{{ document.official_documents_type }}</td>
+            <td>{{ document.official_documents_id_number }}</td>
+            <td>{{ document.issuer }}</td>
+            <td>{{ document.personal_id_issuance_date }}</td>
+            <td>{{ document.personal_id_expire_date }}</td>
+            <td>
+              {% if document.personal_id_front_page %}
+                <img src="{{ document.personal_id_front_page.url }}" alt="الواجهة الأمامية" width="100">
+              {% else %}
+                لا توجد صورة
+              {% endif %}
+            </td>
+            <td>
+              {% if document.personal_id_back_page %}
+                <img src="{{ document.personal_id_back_page.url }}" alt="الواجهة الخلفية" width="100">
+              {% else %}
+                لا توجد صورة
+              {% endif %}
+            </td>
+          <td> 
+            {% if perms.personalinfo.can_update_official_documents %}
+           <a href="{% url 'personalinfo:edit_official_document' slug=document.slug %}" class="update_button">تعديل</a> 
+           {% else%}
+           ليس لديك صلاحية الاضافة
+           {% endif %}
+           </td> 
+<td>       
+  {% if perms.personalinfo.can_delete_official_documents %}
+
+    <a href="{% url 'personalinfo:delete_official_document' slug=document.slug %}"  class="delete_button" onclick="return confirm('هل أنت متأكد من أنك تريد حذف هذه الوثيقة؟')">حذف</a>
+    {% else%}
+    ليس لديك صلاحية الاضافة
+    {% endif %}
+</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+      
+    </table>
+  {% else %}
+    <p>لا توجد وثائق للموظف.</p>
+  {% endif %}
+<br>
+
+  <a href="{% url 'personalinfo:add_official_document' slug=basic_info.slug %}"  class="update_button">اضافة</a>
+  
+ 
+{% endblock %}
+
+
+
+{% block titlesidemenu %}
+
+{% endblock %}
+
+
+
+
+{% block sidemenu %}
+
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'personalinfo:main_personalinfo' %}" class="custom-button"> ادارة المعلومات الشخصية     </a>
+  
+    <a href="{% url 'personalinfo:main_official_documents_type' %}" class="custom-button"> صفحة انواع الوثائق       </a>
+    <a href="{% url 'personalinfo:mainemployeeofficialdocuments' %}" class="custom-button"> صفحة وثائق الموظفين        </a>
+    
+
+    {% comment %} {% if perms.personalinfo.can_create_nationalism %} {% endcomment %}
+    {% comment %} {%  else %}
+    لا تمتلك الصلاحية
+    {% endif %} {% endcomment %}
+    {% comment %} <a href="{% url 'personalinfo:export_nationalism_csv' %}" class="custom-button"> تصدير CSV       </a> {% endcomment %}
+
+
+    
+
+</div>
+
+
+
+{% endblock %}

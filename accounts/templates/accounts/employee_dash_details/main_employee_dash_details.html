@@ -1,0 +1,334 @@
+{% extends 'core/base.html' %}
+
+{% block title %}صفحة الموارد البشرية  {% endblock %}
+
+{% block titlesidemenu %}
+<h2 style="color: #fff;">
+    
+    {% if basic_info %}
+    <h1> {{ basic_info.get_full_name}} </h1>
+
+    {% else %}
+
+    {% endif %}
+</h2>
+{% endblock %}
+
+{% block titlecontent %}  {% endblock %}  
+
+{% block sidemenu %}
+{% if  basic_info %}
+<a href="{% url 'personalinfo:update_basic_info_dash_board' basic_info_slug %}">تحديث سجل المعلومات الاساسية   </a>
+{% else %}
+    <a href="{% url 'personalinfo:add_basic_info' employee_slug %}" class="button">ادخل المعلومات الاساسية</a><br>
+{% endif %}
+
+
+
+
+{% endblock %}
+
+
+{% block content %}
+
+{% if basic_info %}
+
+
+<p class="avatar-image left">
+    {% if basic_info.avatar %}
+        <img src="{{ basic_info.avatar.url }}" alt="{{ basic_info.get_full_name }}'s avatar" class="avatar-image left" > <a href="{% url 'personalinfo:update_avatar' slug=basic_info.slug %}"> تحديث  الصورة  </a>
+        {% else %}
+        
+        <a href="{% url 'personalinfo:update_avatar' slug=basic_info.slug %}"> اضافة  الصورة  </a>
+            
+            
+        {% endif %} 
+    </p> 
+
+    
+
+        
+        <p><strong>الاسم الأول:</strong> {{ basic_info.firstname }}</p>
+        <p><strong>الاسم الثاني:</strong> {{ basic_info.secondname }}</p>
+        <p><strong>الاسم الثالث:</strong> {{ basic_info.thirdname }}</p>
+        <p><strong>الاسم الرابع:</strong> {{ basic_info.fourthname }}</p>
+        <p><strong>لقب العائلة:</strong> {{ basic_info.surname }}</p>
+        <p><strong>اسم الأم:</strong> {{ basic_info.mothername }}</p>
+        <p><strong>رقم الهاتف:</strong> {{ basic_info.phone_number }}</p>
+        <p><strong>البريد الإلكتروني:</strong> {{ basic_info.email }}</p>
+        <p><strong>تاريخ الميلاد:</strong> {{ basic_info.date_of_birth }}</p>
+        <p><strong>مكان الميلاد:</strong> {{ basic_info.place_of_birth.name }}</p>
+        <p><strong>الجنس:</strong> {{ basic_info.get_gender_display }}</p>
+        <p><strong>سيرة:</strong> {{ basic_info.bio }}</p>
+    
+        {% if additional_info %}
+        <h3>المعلومات الإضافية:</h3>
+        <p><strong>فصيلة الدم:</strong> {{ additional_info.blood_type }}</p>
+        <p><strong>الديانة:</strong> {{ additional_info.religion.name }}</p>
+        <p><strong>القومية:</strong> {{ additional_info.nationalism.name }}</p>
+        <p><strong>رقم الهوية الوطنية:</strong> {{ additional_info.personal_id_number }}</p>
+        <p><strong>تاريخ الإصدار:</strong> {{ additional_info.personal_id_issuance_date }}</p>
+        <p><strong>تاريخ انتهاء الصلاحية:</strong> {{ additional_info.personal_id_expire_date }}</p>
+        <p><strong>الجهة المصدرة:</strong> {{ additional_info.issuer.name }}</p>
+        <p><strong>الحالة الاجتماعية:</strong> {{ additional_info.get_marital_status_display }}</p>
+        <p><strong>المحافظة:</strong> {{ additional_info.governorate_of_residence.name }}</p>
+        <p><strong>العنوان:</strong> {{ additional_info.address }}</p>
+        <p><strong>اسم الطوارئ:</strong> {{ additional_info.emergency_contact_name }}</p>
+        <p><strong>رقم الطوارئ:</strong> {{ additional_info.emergency_contact_number }}</p>
+    
+        {% if additional_info.personal_id_front_page %}
+            <p><strong>صورة الوجه الأمامي للهوية:</strong></p>
+            <img src="{{ additional_info.personal_id_front_page.url }}" alt="الوجه الأمامي للهوية">
+        {% endif %}
+    
+        {% if additional_info.personal_id_back_page %}
+            <p><strong>صورة الوجه الخلفي للهوية:</strong></p>
+            <img src="{{ additional_info.personal_id_back_page.url }}" alt="الوجه الخلفي للهوية">
+        {% endif %}
+    {% else %}
+        <p>لا توجد معلومات إضافية للموظف. -  <a href="{% url 'personalinfo:create_additional_info' basic_info_slug %}" >ادخل المعلومات الاضافية</a> </p>
+    {% endif %}
+    <h3>أحدث شهادة تعليمية:</h3>
+    {% if latest_certificate %}
+        <div class="table-container">
+            <table class="creative-table">
+                <thead>
+                    <tr>
+                        <th>نوع الشهادة</th>
+                        <th>الوزارة المانحة</th>
+                        <th>اسم المؤسسة</th>
+                        <th>تاريخ الإصدار</th>
+                        <th>نوع الأمر</th>
+                        <th>رقم الأمر</th>
+                        <th>تاريخ المباشرة بالدراسة</th>
+                        <th>تاريخ التخرج</th>
+                        <th>ملف الشهادة</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ latest_certificate.education_degree_type }}</td>
+                        <td>{{ latest_certificate.get_certificat_minstery_type_display }}</td>
+                        <td>{{ latest_certificate.institution_name }}</td>
+                        <td>{{ latest_certificate.date_issued }}</td>
+                        <td>{{ latest_certificate.duty_assignment_order }}</td>
+                        <td>{{ latest_certificate.duty_assignment_number }}</td>
+                        <td>{{ latest_certificate.date_of_enrollment }}</td>
+                        <td>{{ latest_certificate.graduation_date }}</td>
+                        <td>
+                            {% if latest_certificate.certificate_file %}
+                                <a href="{{ latest_certificate.certificate_file.url }}" target="_blank">تحميل</a>
+                            {% else %}
+                                غير متوفر
+                            {% endif %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>لا توجد شهادات مضافة. <a href="{% url 'rddepartment:add_employeeeducation' basic_info_slug %}">ادخل شهادة اكاديمية </a></p>
+    {% endif %}
+    
+
+
+    <h3>أحدث شهادة تدريبية أو ورشة عمل:</h3>
+{% if latest_course_certificate %}
+    <div class="table-container">
+        <table class="creative-table">
+            <thead>
+                <tr>
+                    <th>نوع الشهادة</th>
+                    <th>اسم المؤسسة</th>
+                    <th>رقم كتاب الإصدار</th>
+                    <th>تاريخ الإصدار</th>
+                    <th>تاريخ بدء الدورة</th>
+                    <th>تاريخ انتهاء الدورة</th>
+                    <th>مدة الدورة</th>
+                    <th>ملف الشهادة</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ latest_course_certificate.coursecertificatetype }}</td>
+                    <td>{{ latest_course_certificate.name_of_the_institution }}</td>
+                    <td>{{ latest_course_certificate.course_number }}</td>
+                    <td>{{ latest_course_certificate.date_issued }}</td>
+                    <td>{{ latest_course_certificate.start_date }}</td>
+                    <td>{{ latest_course_certificate.end_date }}</td>
+                    <td>{{ latest_course_certificate.course_duration }}</td>
+                    <td>
+                        {% if latest_course_certificate.certificate_file %}
+                            <a href="{{ latest_course_certificate.certificate_file.url }}" target="_blank">تحميل</a>
+                        {% else %}
+                            غير متوفر
+                        {% endif %}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <p>لا توجد شهادات تدريبية مضافة. <a href="{% url 'rddepartment:add_employeecoursecertificate' basic_info_slug %}">ادخل شهادة تدريبية جديدة</a></p>
+{% endif %}
+
+
+<h3>العنوان الوظيفي الحالي   :</h3>
+{% if last_employee_job_title %}
+    <div class="table-container">
+        <table class="creative-table">
+            <thead>
+                <tr>
+                    <th>العنوان الوظيفي الحالي</th>
+                    <th>تاريخ الحصول على العنوان الوظيفي</th>
+                    <th>رقم العنوان الوظيفي</th>
+                    <th>كتاب العنوان الوظيفي</th>
+                    <th>العنوان الوظيفي القادم</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ last_employee_job_title.employee_job_title.title_in_arabic }}</td>
+                    <td>{{ last_employee_job_title.employee_job_title_date }}</td>
+                    <td>{{ last_employee_job_title.job_title_number }}</td>
+                    <td>
+                        {% if last_employee_job_title.job_title_file %}
+                            <a href="{{ last_employee_job_title.job_title_file.url }}" target="_blank">تحميل</a>
+                        {% else %}
+                            غير متوفر
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if last_employee_job_title.next_employee_job_title %}
+                            {{ last_employee_job_title.next_employee_job_title.title_in_arabic }}
+                        {% else %}
+                            غير محدد
+                        {% endif %}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <p>لا توجد معلومات عن العنوان الوظيفي للموظف.</p>
+{% endif %}
+
+
+
+<h3>الوظيفة الحالية:</h3>
+{% if latest_office_position %}
+    <div class="table-container">
+        <table class="creative-table">
+            <thead>
+                <tr>
+                    <th>المكتب</th>
+                    <th>الوظيفة</th>
+                    <th>تاريخ البدء</th>
+                    <th>تاريخ الانتهاء</th>
+                    <th>مكتب أساسي</th>
+                    <th>الوظيفة القادمة</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ latest_office_position.office.name }}</td>
+                    <td>{{ latest_office_position.position.name }}</td>
+                    <td>{{ latest_office_position.start_date }}</td>
+                    <td>{{ latest_office_position.end_date }}</td>
+                    <td>{{ latest_office_position.is_primary|yesno:"نعم,لا" }}</td>
+                    <td>
+                        {% if latest_office_position.position.next_employee_job_title %}
+                            {{ latest_office_position.position.next_employee_job_title.title_in_arabic }}
+                        {% else %}
+                            غير محدد
+                        {% endif %}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <p>لا توجد معلومات عن الوظيفة الحالية للموظف.</p>
+{% endif %}
+
+
+<h3>آخر كتاب شكر:</h3>
+{% if latest_employee_thanks %}
+    <div class="table-container">
+        <table class="creative-table">
+            <thead>
+                <tr>
+                    <th>نوع الشكر</th>
+                    <th>رقم كتاب الشكر</th>
+                    <th>تاريخ الإصدار</th>
+                    <th>ملف PDF</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ latest_employee_thanks.thanks_type }}</td>
+                    <td>{{ latest_employee_thanks.thanks_number }}</td>
+                    <td>{{ latest_employee_thanks.date_issued }}</td>
+                    <td>
+                        {% if latest_employee_thanks.pdf_file %}
+                            <a href="{{ latest_employee_thanks.pdf_file.url }}">تحميل الملف</a>
+                        {% else %}
+                            لا يوجد ملف مرفق
+                        {% endif %}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <p>لا يوجد كتب شكر مسجلة لهذا الموظف.</p>
+{% endif %}
+
+
+<h3>آخر عقوبة مسجلة:</h3>
+{% if latest_punishment %}
+    <div class="table-container">
+        <table class="creative-table">
+            <thead>
+                <tr>
+                    <th>نوع العقوبة</th>
+                    <th>رقم كتاب العقوبة</th>
+                    <th>تاريخ الإصدار</th>
+                    <th>موظف العقوبة</th>
+                    <th>ملف PDF</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ latest_punishment.punishment_type }}</td>
+                    <td>{{ latest_punishment.punishment_number }}</td>
+                    <td>{{ latest_punishment.date_issued }}</td>
+                    <td>
+                        {% for employee in latest_punishment.emp_id_punishment.all %}
+                            {{ employee.get_full_name }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% if latest_punishment.pdf_file %}
+                            <a href="{{ latest_punishment.pdf_file.url }}" target="_blank">تحميل</a>
+                        {% else %}
+                            غير متوفر
+                        {% endif %}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <p>لا توجد عقوبات مسجلة لهذا الموظف.</p>
+{% endif %}
+
+
+
+{% else %}
+    <p>لا توجد معلومات أساسية للموظف. - <a href="{% url 'personalinfo:add_basic_info' employee_slug %}">ادخل   المعلومات الاساسية</a></p>
+{% endif %}
+
+
+{% endblock %}
+

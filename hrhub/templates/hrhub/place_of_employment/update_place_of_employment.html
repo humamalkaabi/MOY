@@ -1,0 +1,20 @@
+{% extends 'core/base.html' %}
+
+{% block title %}تحديث مكان العمل{% endblock %}
+
+{% block titlesidemenu %}
+<h2 style="color: #fff;">مرحبا، {{ user.username }}</h2>
+{% endblock %}
+
+{% block sidemenu %}
+<p><a href="{% url 'hrhub:list_places_of_employment' %}" class="button">عودة إلى قائمة الأماكن</a></p>
+{% endblock %}
+
+{% block content %}
+<h2>تحديث مكان العمل: {{ place_of_employment.title_in_arabic }}</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">تحديث</button>
+</form>
+{% endblock %}

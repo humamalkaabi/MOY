@@ -1,0 +1,69 @@
+{% extends 'core/base.html' %}
+
+{% block title %}قائمة أنواع العقوبات{% endblock %}
+
+{% block titlesidemenu %}
+{% endblock %}
+
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:add_punishment_type' %}" class="custom-button">إضافة نوع عقوبة جديد</a>
+    <a href="{% url 'hrhub:main_employee_punishments' %}" class="custom-button">   عقوبات الموظفين</a>
+
+
+
+
+    
+   
+</div>
+{% endblock %}
+
+
+{% block content %}
+
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>اسم نوع العقوبة</th>
+            <th>تأثير العقوبة</th>
+            <th>ملاحظات</th>
+            <th>مدخل البيانات</th>
+            <th>تفاصيل البيانات</th>
+            <th>تحديث البيانات</th>
+            <th>حذف البيانات</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for punishment_type in punishment_types %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ punishment_type.punishment_name }}</td>
+            <td>{{ punishment_type.punishment_impact }}</td>
+            <td>{{ punishment_type.comments }}</td>
+            <td>{{ punishment_type.created_by }}</td>
+            <td>
+                <a href="{% url 'hrhub:punishment_type_detail' punishment_type.slug %}" class="update_button">عرض</a>
+            </td>
+            <td>
+                <a href="{% url 'hrhub:update_punishment_type' punishment_type.slug %}" class="update_button">تحديث</a>
+            </td>
+            <td>
+                <a href="{% url 'hrhub:delete_punishment_type' punishment_type.slug %}" 
+                   onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه البيانات؟')" class="delete_button">حذف</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="8">لا توجد أنواع عقوبات مسجلة حالياً.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

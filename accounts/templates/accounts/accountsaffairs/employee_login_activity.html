@@ -1,0 +1,114 @@
+{% extends 'core/base.html' %}
+
+
+
+
+{% if user.is_superuser %}
+
+{% block titlesidemenu %}
+<h2> الأدوات </h2>
+{% endblock %}
+
+{% block sidemenu %}
+<p>اجمالي النتائج: {{ total_count }}</p>
+
+<form method="get" action="{% url 'accounts:login_activities_list' %}" class="export-form">
+    <input type="hidden" name="export" value="csv">
+    <button type="submit" class="btn export-btn">تصدير إلى CSV</button>
+    <input type="hidden" name="start_date" value="{{ start_date }}">
+    <input type="hidden" name="end_date" value="{{ end_date }}">
+    <input type="hidden" name="username" value="{{ username_filter }}">
+</form>
+
+
+
+{% endblock %}
+
+
+
+{% block titlecontent %} انشطة الدخول والخروج {{employee.username}}  {% endblock %}
+
+
+
+{% block content %}
+
+{% if messages %}
+    <div>
+        {% for message in messages %}
+            <div class="alert alert-danger">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<div class="form-container">
+    <!-- Filter Form -->
+    <form method="get" action="{% url 'accounts:login_activity_list' %}" class="filter-form">
+        <label for="start_date">تاريخ بداية البحث:</label>
+        <input type="date" id="start_date" name="start_date" value="{{ start_date }}">
+    
+        <label for="end_date">تاريخ انتهاء البحث:</label>
+        <input type="date" id="end_date" name="end_date" value="{{ end_date }}">
+    
+        <label for="username">اسم المستخدم:</label>
+        <input type="text" id="username" name="username" value="{{ username_filter }}">
+    
+        <button type="submit">تصفية</button>
+    </form>
+
+    <!-- Page Size Form -->
+   
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>الموظف</th>
+            <th>التوقيت</th>
+            <th>عنوان IP</th>
+            <th>المتصفح</th>
+            <th>نظام التشغيل</th>
+            {% comment %} <th> عرض انشطة الدخول</th> {% endcomment %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for activity in page_obj %}
+            <tr>
+                <td>{{ activity.employee.get_full_name }} ({{ activity.employee.username }})</td>
+                <td>{{ activity.timestamp }}</td>
+                <td>{{ activity.ip_address }}</td>
+                <td>{{ activity.user_agent }}</td>
+                <td>{{ activity.os_info }}</td>
+                {% comment %} <td>
+           {% comment %} <a href="{% url 'accounts:employee_login_activity' activity.employee.username %}">عرض نشاطات الدخول</a> <!-- Link to login activities -->  {% endcomment %}
+                </td> 
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1&page_size={{ page_size }}{% if start_date %}&start_date={{ start_date }}{% endif %}{% if end_date %}&end_date={{ end_date }}{% endif %}">&laquo; الأولى</a>
+            <a href="?page={{ page_obj.previous_page_number }}&page_size={{ page_size }}{% if start_date %}&start_date={{ start_date }}{% endif %}{% if end_date %}&end_date={{ end_date }}{% endif %}">السابق</a>
+        {% endif %}
+
+        <span class="current">
+            الصفحة {{ page_obj.number }} من {{ page_obj.paginator.num_pages }}.
+        </span>
+        <form method="get" action="" class="page-size-form">
+            <label for="page_size">عدد العناصر في الصفحة:</label>
+            <input type="number" id="page_size" name="page_size" value="{{ page_size }}" min="1" step="1">
+            <input type="hidden" name="page" value="{{ page_obj.number }}">
+            <button type="submit">تحديث</button>
+        </form>
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}&page_size={{ page_size }}{% if start_date %}&start_date={{ start_date }}{% endif %}{% if end_date %}&end_date={{ end_date }}{% endif %}">التالي</a>
+        
+            <a href="?page={{ page_obj.paginator.num_pages }}&page_size={{ page_size }}{% if start_date %}&start_date={{ start_date }}{% endif %}{% if end_date %}&end_date={{ end_date }}{% endif %}">الأخيرة &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock %}
+
+{% endif %}

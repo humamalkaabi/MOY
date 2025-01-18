@@ -1,0 +1,49 @@
+{% extends 'core/base.html' %}
+
+
+{% block title %}
+
+{% endblock %}
+
+
+
+{% block titlesidemenu %}
+
+{% endblock %}
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:main_office_positions' %}" class="custom-button">   مناصب الموظفين    </a>
+    <a href="{% url 'hrhub:main_position' %}" class="custom-button">    عناوين المناصب    </a>
+    <a href="{% url 'hrhub:add_position' %}" class="custom-button">  اضافة منصب ادارية   </a>
+    <a href="{% url 'hrhub:upload_positions_csv' %}" class="custom-button">رفع CSV   </a>
+
+
+    
+</div>
+{% endblock %} 
+
+
+{% block titlecontent %}
+
+{% endblock %} 
+
+{% block content %}
+
+
+<h2> تفاصيل الوحدة الادارية </h2>
+<p><strong>اسم العنوان الوظيفي :</strong> {{ position.name }}   {% if position.parent %} {% else %}
+    عنوان رئيسي
+{% endif %}</p>
+
+<p><strong>محل العمل     :</strong> {{ position.office }}</p>
+<p><strong>اسم مدخل البيانات  :</strong> {{ position.created_by }}</p>
+<p><strong>تاريخ الادخال    :</strong> {{ position.created_at }}</p>
+<p><strong>تاريخ اخر تحديث    :</strong> {{ position.updated_at }}</p>
+<a href="{% url 'hrhub:update_position' position.slug %}" class="button">تحديث</a>  
+ <a href="{% url 'hrhub:delete_position' position.slug %}" class="deletebutton red-button" onclick="return confirm('هل أنت متأكد أنك تريد حذف  هذا العنوان الوظيفي ؟')">حذف</a>  
+
+{% endblock %}

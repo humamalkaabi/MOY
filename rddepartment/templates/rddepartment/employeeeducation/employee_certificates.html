@@ -1,0 +1,87 @@
+{% extends 'core/base.html' %}
+
+
+{% block searchbar %}
+
+    
+{% endblock %}
+
+{% block titleleftsidemenu %}
+
+
+{% endblock %}
+
+{% block leftsidemenu %}
+
+{% endblock %}
+
+
+{% block titlecontent %}
+
+{% endblock %}
+
+
+{% block content %}
+
+<h1>الشهادات الأكاديمية للموظف: {{ basic_info.get_full_name }}</h1>
+
+    <h2>الشهادات الحاصل عليها:</h2>
+    <table class="custom-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>نوع الشهادة</th>
+                <th>الكلية</th>
+                <th>اسم المؤسسة</th>
+                <th>تاريخ الإصدار</th>
+              
+            </tr>
+        </thead>
+        <tbody>
+            {% for certificate in certificates %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ certificate.education_degree_type }}</td>
+                    <td>{{ certificate.college }}</td>
+                    <td>{{ certificate.institution_name }}</td>
+                    <td>{{ certificate.date_issued }}</td>
+                    
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6">لا توجد شهادات مسجلة لهذا الموظف.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+
+
+{% block titlesidemenu %}
+
+{% endblock %}
+
+{% block sidemenu %}
+
+
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'rddepartment:main_rddepartment' %}" class="custom-button">   الشهادات والتطوير     </a>
+    <a href="{% url 'rddepartment:main_employeeeducation' %}" class="custom-button">   شهادات الموظفين      </a>
+    <a href="{% url 'rddepartment:download_employee_education_sample_csv' %}" class="custom-button">   نموذج CSV      </a>
+
+    {% if perms.personalinfo.can_add_employee_education %} 
+    <a href="{% url 'rddepartment:upload_employee_education_csv' %}" class="custom-button">   رفع CSV      </a>
+    {% else %}
+    ليس لديك صلاحية الرفع
+    {% endif %}
+    
+    
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,69 @@
+
+{% extends 'core/base.html' %}
+
+{% block title %} الرئيسية      {% endblock %}
+
+{% block titlesidemenu %}
+{% endblock %}
+
+
+{% block sidemenu %}
+
+
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'rddepartment:main_rddepartment' %}" class="custom-button">   الشهادات والتطوير     </a>
+    <a href="{% url 'rddepartment:main_iraqiuniversity' %}" class="custom-button">   الجامعات العراقية      </a>
+
+    {% if perms.rddepartment.can_add_iraqi_university %}
+    <a href="{% url 'rddepartment:add_iraqiuniversity' %}" class="custom-button">  اضافة  جامعة عراقية    </a>
+    {% else %}
+    ليس  لديك صلاحية ادخال جامعة 
+    {% endif %}
+
+    <a href="{% url 'rddepartment:download_sample_iraqi_university_csv' %}" class="custom-button">   نموذج CSV      </a>
+    
+    {% if perms.rddepartment.can_add_iraqi_university %}
+    <a href="{% url 'rddepartment:upload_iraqi_university_csv' %}" class="custom-button">  رفع ملف CSV       </a>
+    {% else %}
+    ليس  لديك صلاحية ادخال جامعة 
+    {% endif %}
+
+
+    
+</div>
+
+
+
+{% endblock %}
+
+
+
+
+{% block content %}
+<div class="form-container">
+    <h2 class="form-title">إضافة   جامعة عراقية: {{ employee.username }}</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}
+            <small class="help-text">{{ field.help_text }}</small>
+            {% endif %}
+            {% for error in field.errors %}
+            <small class="error-text">{{ error }}</small>
+            {% endfor %}
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn-submit">حفظ</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block leftsidemenu %}
+             
+{% endblock %}

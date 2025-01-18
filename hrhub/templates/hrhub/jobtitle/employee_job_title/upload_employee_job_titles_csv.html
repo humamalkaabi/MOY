@@ -1,0 +1,47 @@
+
+
+
+    {% extends 'core/base.html' %}
+
+    {% block title %}العنوان الوظيفي  {% endblock %}
+    
+    {% block content %}
+    
+    <form method="post" enctype="multipart/form-data" class="border p-4 rounded">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            <label for="csv_file" class="form-label">تحميل ملف CSV:</label>
+            {{ form.csv_file }}
+        </div>
+    
+        <button type="submit" class="btn btn-primary">رفع الملف</button>
+    </form>
+    {% endblock %}
+    
+    
+    
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+   
+    {% comment %} <a href="{% url 'hrhub:main_thanks_type' %}" class="custom-button">انواع كتب الشكر </a> {% endcomment %}
+
+    <a href="{% url 'hrhub:main_job_title' %}" class="custom-button"> العناوين الوظيفية   </a>
+    <a href="{% url 'hrhub:upload_employee_job_titles_csv' %}" class="custom-button"> رفع CSV    </a>
+
+    
+    
+    {% comment %} <a href="{% url 'hrhub:upload_employees_csv' %}" class="custom-button">رفع ملف CSV </a> {% endcomment %}
+    {% comment %} <a href="{% url 'hrhub:download_employee_offices_csv_template' %}" class="custom-button">تحميل نموذج CSV </a> {% endcomment %}
+</div>
+{% endblock %}
+
+    
+    {% block leftsidemenu %}
+    <label class="result-label">   {{ request.user }}</label>
+    {% endblock %}
+    

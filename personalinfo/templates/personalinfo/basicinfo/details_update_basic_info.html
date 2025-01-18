@@ -1,0 +1,62 @@
+{% extends 'core/base.html' %}
+
+
+{% block searchbar %}
+
+    
+{% endblock %}
+
+{% block titleleftsidemenu %}
+
+
+{% endblock %}
+
+{% block leftsidemenu %}
+
+{% endblock %}
+
+
+{% block titlecontent %}
+
+{% endblock %}
+
+
+{% block content %}
+<h3>تحديث البيانات الشخصية للموظف {{ employee.get_full_name }}</h3>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="button">حفظ التغييرات</button>
+</form>
+
+
+
+{% endblock %}
+
+
+
+{% block titlesidemenu %}
+
+{% endblock %}
+
+
+
+{% block sidemenu %}
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'personalinfo:main_personalinfo' %}" class="custom-button"> ادارة المعلومات الشخصية     </a>
+    <a href="{% url 'personalinfo:employee_detail' slug=employee.slug %}" class ="button">تفاصيل البيانات الاساسية   </a>
+
+    
+    {% if perms.personalinfo.can_add_employee_basic_info %}
+    <a href="{% url 'personalinfo:upload_basic_info_csv' %}" class="custom-button"> رفع CSV          </a>
+
+    {% else%}
+    ليس لديك صلاحية الرفع
+    {% endif %}
+    <a href="{% url 'personalinfo:download_sample_basic_info_csv' %}" class="custom-button"> تحميل نموذج CSV          </a>
+
+    
+</div>
+{% endblock %}

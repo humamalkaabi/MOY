@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مشروع الموارد البشرية</title>
+    <link rel="stylesheet" href="{% static 'css/base_style.css' %}">
+    
+</head>
+<body>
+    <header>
+        <div class="header-logo">
+            {% if logo and logo.image %}
+                <img src="{{ logo.image.url }}" alt="Logo">
+            {% else %}
+                <img src="{% static 'images/default_logo.png' %}" alt="Logo"> <!-- شعار افتراضي -->
+            {% endif %}
+        </div>
+    
+        
+        <div class="project-name">وزارة الشباب والرياضة</div>
+        <div class="bento-button">
+            <p>
+                <a href="{% url 'core:view_main_about_us'%}" class="contact-link">اتصل بنا</a> | 
+                
+                {% if user.is_authenticated %}
+                <a href="{% url 'accounts:logout'%}" class="login-link">تسجيل خروج</a>
+               
+                {% else %}
+                <a href="{% url 'accounts:login_view'%}" class="login-link">تسجيل الدخول</a>
+
+              
+                {% endif %}
+            </p>
+        </div>
+        
+    </header>
+    {% block searchbar %}
+    
+    {% endblock %}
+    <main>
+        <div class="sections">
+           
+            <div class="section">
+                {% block titlesidemenu %}{% endblock %}
+
+              
+              
+                {% block sidemenu %}{% endblock %}
+
+            </div>
+            
+            <div class="section">
+
+                {% block titlemaincontent %}{% endblock %}
+
+
+                {% block content %}
+                {% endblock %}
+
+
+            </div>
+           
+            <div class="section">
+                {% block search_result %}
+              
+                {% endblock %}
+                
+                {% block leftsidemenu %}
+              
+                {% endblock %}
+            </div>
+           
+
+           
+
+            
+        </div>
+    </main>
+    {% block pagination %}
+              
+    {% endblock %}
+
+ <!-- القسم الجديد -->
+
+
+ <footer>
+    <p>© <span id="year"></span> وزارة الشباب والرياضة العراقية. جميع الحقوق محفوظة.</p>
+</footer>
+
+
+<script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

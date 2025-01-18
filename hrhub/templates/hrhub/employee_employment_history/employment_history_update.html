@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %}
+
+{% block title %}تحديث سجل العمل للموظفين{% endblock %}
+
+{% block content %}
+<!-- في ملف employment_history_update.html -->
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    
+    {% if form.errors %}
+        <div style="color: red;">
+            <ul>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    
+    <button type="submit" class="update_button">تحديث</button>
+</form>
+
+{% endblock %}
+
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:employee_employment_history' %}"  class="custom-button">الخدمات الوظيفية   </a>
+    <a href="{% url 'hrhub:main_employement' %}" class="custom-button">  انواع الخدمة       </a>
+   
+
+    <a href="{% url 'hrhub:upload_employment_history_csv' %}" class="custom-button">رفع CSV   </a>
+
+</div>
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">  {{ request.user }}</label>
+{% endblock %}
+

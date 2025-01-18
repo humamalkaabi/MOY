@@ -1,0 +1,95 @@
+{% extends 'core/base.html' %}
+
+
+
+
+{% block content %}
+
+<h2>الوثائق الرسمية الخاصة بالموظف: {{ basic_info.get_full_name }}</h2>
+  
+  {% if documents %}
+  <table class="custom-table">
+      <thead>
+        <tr>
+          <th>نوع الوثيقة</th>
+          <th>رقم الوثيقة</th>
+          <th>المحافظة</th>
+          <th>تاريخ الإصدار</th>
+          <th>تاريخ الانتهاء</th>
+          <th>الواجهة الأمامية</th>
+          <th>الواجهة الخلفية</th>
+         
+        </tr>
+      </thead>
+      <tbody>
+        {% for document in documents %}
+          <tr>
+            <td>{{ document.official_documents_type }}</td>
+            <td>{{ document.official_documents_id_number }}</td>
+            <td>{{ document.issuer }}</td>
+            <td>{{ document.personal_id_issuance_date }}</td>
+            <td>{{ document.personal_id_expire_date }}</td>
+            <td>
+              {% if document.personal_id_front_page %}
+                <img src="{{ document.personal_id_front_page.url }}" alt="الواجهة الأمامية" width="100">
+              {% else %}
+                لا توجد صورة
+              {% endif %}
+            </td>
+            <td>
+              {% if document.personal_id_back_page %}
+                <img src="{{ document.personal_id_back_page.url }}" alt="الواجهة الخلفية" width="100">
+              {% else %}
+                لا توجد صورة
+              {% endif %}
+            </td>
+         
+          </tr>
+        {% endfor %}
+      </tbody>
+      
+    </table>
+  {% else %}
+    <p>لا توجد وثائق للموظف.</p>
+  {% endif %}
+
+{% endblock %}
+
+
+{% block leftsidemenu %}
+<label class="result-label">عدد الوثائق: {{ documents_count }}</label>
+
+<div class="search-container">
+    <form method="get" action="">
+        <div class="grid-item input-container">
+            <select name="document_type">
+                <option value="">اختر نوع الوثيقة</option>
+                {% for document_type in document_types %}
+                    <option value="{{ document_type.id }}" {% if request.GET.document_type == document_type.id|stringformat:"s" %}selected{% endif %}>
+                        {{ document_type.name_in_arabic }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <br>
+        <button type="submit" class="leftsidemenu-button">بحث</button>
+    </form>
+</div>
+{% endblock %}
+
+
+{% block sidemenu %}
+
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    
+
+    
+
+</div>
+
+
+
+{% endblock %}

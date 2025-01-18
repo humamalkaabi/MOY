@@ -1,0 +1,52 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>طلبات الموظف: {{ employee.user.username }}</h2>
+    
+    {% if requests %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>العنوان</th>
+                    <th>نوع الطلب</th>
+                    <th>الحالة</th>
+                    <th>تاريخ الإنشاء</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for request in requests %}
+                    <tr>
+                        <td>{{ request.title }}</td>
+                        <td>{{ request.request_type.name }}</td>
+                        <td>{{ request.get_status_display }}</td>
+                        <td>{{ request.created_at|date:"Y-m-d H:i" }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>لا توجد طلبات لهذا الموظف.</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+
+
+{% block sidemenu %}
+
+
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    
+</div>
+
+
+
+{% endblock %}
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+
+

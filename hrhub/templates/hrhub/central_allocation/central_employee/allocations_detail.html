@@ -1,0 +1,95 @@
+{% extends 'core/base.html' %}
+
+{% block title %} {% endblock %}
+
+
+
+{% block content %}
+    <h2>تفاصيل المخصصات المركزية</h2>
+    
+    <table>
+        <tr>
+            <th>رقم الأمر الصادر</th>
+            <td>{{ allocation.order_number }}</td>
+        </tr>
+        <tr>
+            <th>تاريخ صدور الأمر</th>
+            <td>{{ allocation.order_time }}</td>
+        </tr>
+        <tr>
+            <th>تاريخ تنفيذ الأمر</th>
+            <td>{{ allocation.effective_time }}</td>
+        </tr>
+        <tr>
+            <th>الموظف</th>
+            <td>{{ allocation.basic_info.firstname }} {{ allocation.basic_info.lastname }}</td>
+        </tr>
+        <tr>
+            <th>نوع المخصصات</th>
+            <td>{{ allocation.centralfinancialallocationstype }}</td>
+        </tr>
+        <tr>
+            <th>رقم السيريال</th>
+            <td>{{ allocation.serial_namber }}</td>
+        </tr>
+        <tr>
+            <th>رقم MAC</th>
+            <td>{{ allocation.mac_namber }}</td>
+        </tr>
+        <tr>
+            <th>المحافظة</th>
+            <td>{{ allocation.residency }}</td>
+        </tr>
+        <tr>
+            <th>عنوان السكن</th>
+            <td>{{ allocation.address }}</td>
+        </tr>
+        <tr>
+            <th>اسم العجلة</th>
+            <td>{{ allocation.vechile_name }}</td>
+        </tr>
+        <tr>
+            <th>رقم العجلة</th>
+            <td>{{ allocation.vechile_number }}</td>
+        </tr>
+        <tr>
+            <th>صفة الخطورة ومكان الخط</th>
+            <td>{{ allocation.vechile_line }}</td>
+        </tr>
+        <tr>
+            <th>نوع المخصصات الصحية</th>
+            <td>{{ allocation.healthy_cen }}</td>
+        </tr>
+        <tr>
+            <th>اسم البديل السابق</th>
+            <td>{{ allocation.name_prevois }}</td>
+        </tr>
+        <tr>
+            <th>ملاحظات</th>
+            <td>{{ allocation.comments }}</td>
+        </tr>
+    </table>
+    {% endblock %}
+
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:central_alloc_employee_list' %}" class="custom-button">    المخصصات المركزية   </a>
+    <a href="{% url 'hrhub:add_central_financial_allocation' %}" class="custom-button">  اضافة اسم مخصصات   </a>
+
+
+    
+
+</div>
+{% endblock %}
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

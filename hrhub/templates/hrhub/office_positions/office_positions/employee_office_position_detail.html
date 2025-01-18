@@ -1,0 +1,119 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+    <title>تفاصيل المنصب</title>
+{% endblock %}
+
+{% block titlesidemenu %}
+    <h2>تفاصيل المنصب</h2>
+{% endblock %}
+
+{% block titlecontent %}
+    <h2>تفاصيل المنصب: {{ position.position.name }} في {{ position.office.name }}</h2>
+{% endblock %}
+
+{% block content %}
+    <table class="custom-table">
+        <tr>
+            <th>الموظف</th>
+            <td>{{ position.basic_info.firstname }} {{ position.basic_info.surname }}</td>
+        </tr>
+        <tr>
+            <th>المكتب</th>
+            <td>{{ position.office.name }}</td>
+        </tr>
+        <tr>
+            <th>الوظيفة</th>
+            <td>{{ position.position.name }}</td>
+        </tr>
+        <tr>
+            <th>نوع الأمر الصادر</th>
+            <td>{{ position.duty_assignment_order.name }}</td>
+        </tr>
+        <tr>
+            <th>رقم الأمر الصادر</th>
+            <td>{{ position.duty_assignment_order_number|default:"غير متوفر" }}</td>
+        </tr>
+        <tr>
+            <th>تاريخ الأمر الصادر</th>
+            <td>{{ position.duty_assignment_order_date|date:"d/m/Y"|default:"غير متوفر" }}</td>
+        </tr>
+        <tr>
+            <th>الحالة</th>
+            <td>{{ position.get_status_display }}</td>
+        </tr>
+        <tr>
+            <th>نوع التكليف</th>
+            <td>{% if position.is_primary %}اصالة{% else %}وكالة{% endif %}</td>
+        </tr>
+        <tr>
+            <th>تاريخ البدء</th>
+            <td>{{ position.start_date|date:"d/m/Y" }}</td>
+        </tr>
+        <tr>
+            <th>تاريخ الانتهاء</th>
+            <td>{{ position.end_date|date:"d/m/Y"|default:"مستمر" }}</td>
+        </tr>
+        <tr>
+            <th>المدة</th>
+            <td>
+                {% with position.get_duration as duration %}
+                    {{ duration.0 }} سنة، {{ duration.1 }} شهر، {{ duration.2 }} يوم
+                {% endwith %}
+            </td>
+        </tr>
+        <tr>
+            <th>وثيقة الأمر</th>
+            <td>
+                {% if position.user_employeeofficeposition %}
+                    <a href="{{ position.user_employeeofficeposition.url }}" class="details-button">تحميل الوثيقة</a>
+                {% else %}
+                    غير متوفرة
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>ملاحظات</th>
+            <td>{{ position.comments|default:"لا توجد ملاحظات" }}</td>
+        </tr>
+
+        <tr>
+            <th>ملاحظات</th>
+            <td>{{ position.comments|default:"لا توجد ملاحظات" }}</td>
+        </tr>
+
+        <tr>
+            <th>تحديث</th>
+            <td> <a href="{% url 'hrhub:update_employee_office_position' position.slug %}" class="update_button"> تحديث  </a>  </td>
+        </tr>
+        <tr>
+            <th>تحديث</th>
+            <td> <a href="{% url 'hrhub:delete_employee_office_position' position.slug %}" class="delete_button"> حذف  </a>  </td>
+        </tr>
+
+        
+        
+    </table>
+{% endblock %}
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:main_position' %}" class="custom-button">  المناصب       </a>
+   
+    
+
+
+    
+</div>
+{% endblock %}
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+
+
+

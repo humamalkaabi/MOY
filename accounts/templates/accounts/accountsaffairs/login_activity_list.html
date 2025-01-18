@@ -1,0 +1,91 @@
+{% extends 'core/base.html' %}
+
+{% if user.is_superuser %}
+
+{% block titlesidemenu %}
+{% endblock %}
+
+{% block sidemenu %}
+    <h2> اجمالي النتائج: {{ total_count }} </h2>
+
+    <a href="{% url 'accounts:accounts_main_page' %}">الصفحة الرئيسية لادارة حسابات الموظفين</a><br>
+    <a href="{% url 'accounts:employee_list' %}">عرض صفحة جميع الموظفين</a><br>
+    <a href="?export=csv&start_date={{ start_date }}&end_date={{ end_date }}">تصدير إلى CSV</a>
+{% endblock %}
+
+{% block titlecontent %} سجل أنشطة تسجيل الدخول والخروج {% endblock %}
+
+{% block content %}
+
+<form method="GET" action="">
+
+    <label for="employee_id">الرقم الوظيفي:</label>
+    <input type="text" name="employee_id" id="employee_id" value="{{ employee_id }}" placeholder="رقم الموظف">
+
+
+    
+    <label for="start_date">من تاريخ:</label>
+    <input type="date" name="start_date" id="start_date" value="{{ start_date }}">
+
+    <label for="end_date">إلى تاريخ:</label>
+    <input type="date" name="end_date" id="end_date" value="{{ end_date }}">
+
+    <label for="page_size">عدد العناصر في الصفحة:</label>
+    <select id="page_size" name="page_size">
+        <option value="5" {% if page_size == 5 %}selected{% endif %}>5</option>
+        <option value="10" {% if page_size == 10 %}selected{% endif %}>10</option>
+        <option value="20" {% if page_size == 20 %}selected{% endif %}>20</option>
+        <option value="50" {% if page_size == 50 %}selected{% endif %}>50</option>
+        <option value="100" {% if page_size == 100 %}selected{% endif %}>100</option>
+        <option value="150" {% if page_size == 150 %}selected{% endif %}>150</option>
+        <option value="200" {% if page_size == 200 %}selected{% endif %}>200</option>
+    </select>
+
+    <button type="submit">بحث</button>
+</form>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>الرقم الوظيفي</th>
+            <th>تاريخ ووقت الدخول</th>
+            <th>المتصفح</th>
+            <th>نظام التشغيل</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for activity in activities %}
+        <tr>
+            <td>{{ activity.employee.username }}</td>
+            <td>{{ activity.timestamp }}</td>
+            <td>{{ activity.user_agent|default:"غير متوفر" }}</td>
+            <td>{{ activity.os_info|default:"غير متوفر" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">لا توجد سجلات تسجيل دخول</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Pagination links -->
+<div>
+    <span>الصفحة {{ activities.number }} من {{ activities.paginator.num_pages }}</span>
+    <div>
+        {% if activities.has_previous %}
+            <a href="?page=1&page_size={{ page_size }}&start_date={{ start_date }}&end_date={{ end_date }}">« أولى</a>
+            <a href="?page={{ activities.previous_page_number }}&page_size={{ page_size }}&start_date={{ start_date }}&end_date={{ end_date }}">السابق</a>
+        {% endif %}
+
+        <span>صفحة {{ activities.number }} من {{ activities.paginator.num_pages }}</span>
+
+        {% if activities.has_next %}
+            <a href="?page={{ activities.next_page_number }}&page_size={{ page_size }}&start_date={{ start_date }}&end_date={{ end_date }}">التالي</a>
+            <a href="?page={{ activities.paginator.num_pages }}&page_size={{ page_size }}&start_date={{ start_date }}&end_date={{ end_date }}">أخيرة »</a>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
+{% endif %}

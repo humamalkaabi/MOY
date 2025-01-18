@@ -1,0 +1,54 @@
+{% extends 'core/base.html' %}
+
+{% block searchbar %}
+    <!-- محتوى شريط البحث إذا كان مطلوبًا -->
+{% endblock %}
+
+{% block titleleftsidemenu %}
+    <!-- العنوان الجانبي -->
+{% endblock %}
+
+{% block leftsidemenu %}
+    <!-- القائمة الجانبية -->
+{% endblock %}
+
+{% block titlecontent %}
+    <!-- عنوان المحتوى داخل الصفحة -->
+{% endblock %}
+
+{% block content %}
+<div class="statistics-container">
+    <h2>إحصائيات الموظفين والشهادات</h2>
+
+    <table class="custom-table">
+        <thead>
+            <tr>
+                <th>الوصف</th>
+                <th>العدد</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>عدد الموظفين الذين لديهم شهادة واحدة</td>
+                <td>{{employees_with_one_certificate }}</td>
+            </tr>
+            <tr>
+                <td>عدد الموظفين الذين لديهم أكثر من شهادة</td>
+                <td>{{ employees_with_multiple_certificates }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block titlesidemenu %}
+    <!-- عنوان القائمة الجانبية -->
+{% endblock %}
+
+
+{% block sidemenu %}
+<p><a href="{% url 'accounts:view_profile' %}" class="button">الصفحة الشخصية</a></p>
+<p>  <a href="{% url 'accounts:main_control_panel' %}" class="button">لوحة التحكم الادارية</a></p>
+<p><a href="{% url 'rddepartment:main_rddepartment' %}" class="button">صفحة الشهادات والتطوير</a></p>
+<p><a href="{% url 'rddepartment:main_employeeeducation' %}" class="button">صفحة الشهادات الأكاديمية</a></p>
+{% endblock %}

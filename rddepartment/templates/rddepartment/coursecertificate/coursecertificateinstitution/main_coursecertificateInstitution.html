@@ -1,0 +1,85 @@
+{% extends 'core/base.html' %}
+
+{% block title %}الصفحة الرئيسية   للمراكز المعتمدة   {% endblock %}
+
+
+
+{% block sidemenu %}
+
+
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'rddepartment:main_rddepartment' %}" class="custom-button">   الشهادات والتطوير     </a>
+    <a href="{% url 'rddepartment:mainemployeecoursecertificate' %}" class="custom-button">   شهادات الموظفين        </a>
+    <a href="{% url 'rddepartment:main_coursecertificatetype' %}" class="custom-button">   انواع الشهادات       </a>
+   
+    <a href="{% url 'rddepartment:add_coursecertificateinstitutions' %}" class="custom-button">  اضافة اسم مؤسسة    </a>
+
+
+</div>
+
+
+{% endblock %}
+
+{% block content %}
+
+
+<h2>قائمة اسماء المراكز المعتمدة للشهادات   </h2>
+
+
+<table class="custom-table">
+
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>اسم المؤسسة باللغة العربية </th>
+            <th>اسم المؤسسة باللغة الانكليزية </th>
+            <th>تابعة الى  </th>
+            <th>مدخل البيانات </th>
+            <th>تفاصيل  </th>
+            <th>تحديث  </th>
+            <th>حذف  </th>
+            
+           
+        </tr>
+    </thead>
+    <tbody>
+        {% for coursecertificateinstitution in coursecertificateinstitutions %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ coursecertificateinstitution.name_in_arabic }}</td>
+            <td>{{ coursecertificateinstitution.name_in_english }}</td>
+            <td>{{ coursecertificateinstitution.parent }}</td>
+            <td>{{ coursecertificateinstitution.created_by }}</td>
+            
+      
+             <td> 
+                <a href="{% url 'rddepartment:coursecertificateinstitution_detail' slug=coursecertificateinstitution.slug %}" class="update_button">  التفاصيل </a>  
+            
+            </td> 
+
+           
+            <td> <a href="{% url 'rddepartment:update_coursecertificateinstitution' coursecertificateinstitution.slug %}" class="update_button">تحديث</a>
+            </td>  
+
+         <td> <a href="{% url 'rddepartment:delete_coursecertificateinstitution' coursecertificateinstitution.slug %}" class = "delete_button" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا النوع من الشهادة؟')">حذف</a>
+            </td> 
+        </tr> 
+        {% empty %}
+        <tr>
+            <td colspan="10">لا توجد بيانات مسجلة حالياً.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

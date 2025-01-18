@@ -1,0 +1,95 @@
+{% extends 'core/base.html' %}
+
+
+{% block title %}
+
+{% endblock %}
+
+
+
+{% block titlesidemenu %}
+
+{% endblock %}
+{% block leftsidemenu %}
+<label class="result-label">  عدد النتائج: {{ positions_count}}</label>
+{% endblock %}
+
+
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:main_office_positions' %}" class="custom-button">   مناصب الموظفين    </a>
+    <a href="{% url 'hrhub:add_position' %}" class="custom-button">  اضافة منصب ادارية   </a>
+    <a href="{% url 'hrhub:upload_positions_csv' %}" class="custom-button">رفع CSV   </a>
+
+
+    
+</div>
+
+
+
+
+{% endblock %}
+
+
+{% block titlecontent %}
+
+{% endblock %} 
+
+{% block content %}
+
+
+<h2>قائمة المناصب الادارية المتوفرة بالنظام</h2>
+
+
+<div class="table-container">
+    <table class="custom-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>اسم المنصب</th>
+            <th>اسم المنصب الاعلى منها</th>
+            <th>مدخل المنصب </th>
+            <th>تفاصيل المنصب </th>
+            <th>تحديث المنصب </th>
+            <th>حذف المنصب </th>
+           
+        </tr>
+    </thead>
+    <tbody>
+        {% for position in positions %}
+        <tr>
+            <td>{{ position.counter }}</td>
+            <td>{{ position.name }}</td>
+            <td>{{ position.parent }}</td>
+            <td>{{ position.created_by }}
+            </td>
+            <td>
+           <a href="{% url 'hrhub:position_detail' slug=position.slug %}" class="update_button"> عرض  </a>  
+            
+            </td>
+            <td> 
+        <a href="{% url 'hrhub:update_position' position.slug %}" class="update_button">تحديث</a>  
+            </td>
+
+            <td> <a href="{% url 'hrhub:delete_position' position.slug %}" class="delete_button" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذا المنصب ')">حذف</a>
+            </td>  
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="10">لا توجد ديانات مسجلة حالياً.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+{% endblock %}
+
+
+
+

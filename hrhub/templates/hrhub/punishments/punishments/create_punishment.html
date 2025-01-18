@@ -1,0 +1,66 @@
+{% extends 'core/base.html' %}
+
+{% block title %}إدخال كتاب عقوبة{% endblock %}
+
+{% block content %}
+<h2>إدخال كتاب العقوبة للموظفين</h2>
+
+<!-- نموذج البحث -->
+<form method="get">
+  <label for="filter_keyword">بحث عن الموظفين:</label>
+  <input type="text" name="filter_keyword" id="filter_keyword" value="{{ request.GET.filter_keyword }}" placeholder="أدخل اسم الموظف">
+
+  <label for="gender_filter">تصفية حسب الجنس:</label>
+  <select name="gender_filter" id="gender_filter">
+    <option value="">اختر الجنس</option>
+    <option value="M" {% if request.GET.gender_filter == 'M' %}selected{% endif %}>ذكور</option>
+    <option value="F" {% if request.GET.gender_filter == 'F' %}selected{% endif %}>إناث</option>
+  </select>
+
+  <!-- الاحتفاظ بالموظفين المختارين -->
+  {% for employee_id in selected_employees %}
+      <input type="hidden" name="selected_employees" value="{{ employee_id }}">
+  {% endfor %}
+
+  <button type="submit">تصفية</button>
+</form>
+
+<!-- نموذج الإدخال -->
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.as_p }}
+
+  <label for="select-all">تحديد الكل</label>
+  <input type="checkbox" id="select-all">
+
+  <button type="submit" class="button">إرسال</button>
+</form>
+
+<script>
+  // تحديد/إلغاء تحديد جميع الخيارات
+  document.getElementById('select-all').addEventListener('change', function () {
+      var checkboxes = document.querySelectorAll('input[name="emp_id_punishment"]');
+      checkboxes.forEach(function (checkbox) {
+          checkbox.checked = document.getElementById('select-all').checked;
+      });
+  });
+
+  // تحديث الحقول المخفية عند التغيير
+  document.querySelectorAll('input[name="emp_id_punishment"]').forEach(function (checkbox) {
+      checkbox.addEventListener('change', function () {
+          if (checkbox.checked) {
+              let hiddenInput = document.createElement('input');
+              hiddenInput.type = 'hidden';
+              hiddenInput.name = 'selected_employees';
+              hiddenInput.value = checkbox.value;
+              document.forms[0].appendChild(hiddenInput);
+          } else {
+              let hiddenInputs = document.querySelectorAll(`input[name="selected_employees"][value="${checkbox.value}"]`);
+              hiddenInputs.forEach(function (input) {
+                  input.remove();
+              });
+          }
+      });
+  });
+</script>
+{% endblock %}

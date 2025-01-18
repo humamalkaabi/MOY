@@ -1,0 +1,55 @@
+{% extends 'core/base.html' %}
+
+
+{% block searchbar %}
+
+    
+{% endblock %}
+
+{% block titleleftsidemenu %}
+
+
+{% endblock %}
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+
+
+
+{% block titlecontent %}
+
+{% endblock %}
+
+
+{% block content %}
+
+<h2>اضافة نوع موازنة    </h2>
+
+<form method="post" novalidate>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="update_button">حفظ</button>
+</form>
+{% endblock %}
+
+
+
+{% block titlesidemenu %}
+
+{% endblock %}
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:upload_employee_staff_kind_csv' %}" class="custom-button"> رفع ملف    </a>
+    <a href="{% url 'hrhub:main_payroll_budget' %}" class="custom-button"> صفحة انواع الموازنات     </a>
+    <a href="{% url 'hrhub:main_staff_structer_type' %}" class="custom-button"> صفحة انواع الملاك     </a>
+
+
+    
+</div>
+{% endblock %}

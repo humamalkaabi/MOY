@@ -1,0 +1,69 @@
+{% extends 'core/base.html' %}
+
+{% block titlecontent %}
+<h2>تفاصيل الموظف</h2>
+{% endblock %}
+
+{% block content %}
+
+
+<p class="avatar-image left">
+    {% if basic_info.avatar %}
+        <img src="{{ basic_info.avatar.url }}" alt="{{ basic_info.get_full_name }}'s avatar" class="avatar-image left" > 
+        {% else %}
+        
+       لا توجد صورة
+            
+            
+        {% endif %} 
+    </p> 
+    <div class="personal-info-container">
+        <p><strong>الاسم الأول:</strong> {{ basic_info.firstname }} 
+    </p>
+        <p><strong>الاسم الثاني:</strong> {{ basic_info.secondname }} </p>
+        <p><strong>الاسم الثالث:</strong> {{ basic_info.thirdname }} </p>
+        <p><strong>الاسم الرابع:</strong> {{ basic_info.fourthname }} </p>
+        <p><strong>لقب العائلة:</strong> {{ basic_info.surname }} </p>
+        <p><strong>اسم الأم:</strong> {{ basic_info.mothername }} </p>
+        <p>
+            <strong>التفعيل:</strong>
+            {% if basic_info.is_approved %}
+                مفعل (<a href="{% url 'personalinfo:toggle_approval' basic_info.slug %}">إلغاء التفعيل</a>)
+            {% else %}
+                غير مفعل (<a href="{% url 'personalinfo:toggle_approval' basic_info.slug %}">تفعيل</a>)
+            {% endif %}
+        </p>
+                <p><strong>رقم الهاتف:</strong> {{ basic_info.phone_number }} </p>
+        <p><strong>البريد الإلكتروني:</strong> {{ basic_info.email }} </p>
+        <p><strong>تاريخ الميلاد:</strong> {{ basic_info.date_of_birth }} </p>
+        <p><strong>مكان الميلاد:</strong> {{ basic_info.place_of_birth.name }}  </p>
+        <p><strong>الجنس:</strong> {{ basic_info.get_gender_display }} </p>
+        <p><strong>سيرة:</strong> {{ basic_info.bio }} </p>
+    </div>
+{% endblock %}
+
+
+
+
+{% block sidemenu %}
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'personalinfo:main_personalinfo' %}" class="custom-button"> ادارة المعلومات الشخصية     </a>
+
+    
+    {% if perms.personalinfo.can_add_employee_basic_info %}
+    <a href="{% url 'personalinfo:upload_basic_info_csv' %}" class="custom-button"> رفع CSV          </a>
+
+    {% else%}
+    ليس لديك صلاحية الرفع
+    {% endif %}
+    <a href="{% url 'personalinfo:download_sample_basic_info_csv' %}" class="custom-button"> تحميل نموذج CSV          </a>
+
+    
+</div>
+{% endblock %}
+
+
+
+

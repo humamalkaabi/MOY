@@ -1,0 +1,80 @@
+{% extends 'core/base.html' %}
+
+
+{% block title %}
+
+{% endblock %}
+
+
+
+{% block titlesidemenu %}
+
+{% endblock %}
+{% block sidemenu %}
+
+<h3>  </h3>
+<div class="button-container">
+
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+   
+
+   
+    <a href="{% url 'hrhub:main_offices' %}" class="custom-button">الوحدات الادارية  </a>
+
+    <a href="{% url 'hrhub:mainemployeeoffice' %}" class="custom-button"> صفحة دوائر الموظفين  </a>
+
+    {% if perms.hrhub.can_add_office %}
+    <a href="{% url 'hrhub:add_office' %}" class="custom-button">  اضافة وحدة ادارية   </a>
+    {% endif %}
+    <a href="{% url 'hrhub:download_offices_csv_template' %}" class="custom-button">  نموذج CSV       </a>
+    {% if perms.hrhub.can_add_office %}
+        <a href="{% url 'hrhub:upload_offices_csv' %}" class="custom-button">  رفع ملف CSV     </a>
+        {% endif %}
+
+
+</div>
+
+
+
+
+
+{% endblock %}
+
+
+{% block titlecontent %}
+
+{% endblock %} 
+
+{% block content %}
+
+
+<h2> تفاصيل الوحدة الادارية </h2>
+<p><strong>اسم العنوان الوظيفي :</strong> {{ office.name }}   {% if office.parent %} {% else %}
+    عنوان رئيسي
+{% endif %}</p>
+<p><strong>اسم مدخل البيانات  :</strong> {{ office.created_by.basic_info.get_full_name }}</p>
+<p><strong>تاريخ الادخال    :</strong> {{ office.created_at }}</p>
+<p><strong>تاريخ اخر تحديث    :</strong> {{ office.updated_at }}</p>
+
+{% if perms.hrhub.can_update_office %}
+<a href="{% url 'hrhub:update_office' office.slug %}" class="update_button">تحديث</a> 
+{% endif %}
+{% if perms.hrhub.can_delete_office %}
+<a href="{% url 'hrhub:delete_office' office.slug %}" class="delete_button" onclick="return confirm('هل أنت متأكد أنك تريد حذف  هذا العنوان الوظيفي ؟')">حذف</a> 
+{% endif %}
+{% endblock %}
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">
+    <strong>المنصب الأعلى:</strong>
+    {% if office.parent %}
+        {{ office.parent.name }}
+    {% else %}
+        <em>لا يوجد منصب أعلى</em>
+    {% endif %}
+</label>
+
+
+{% endblock %}

@@ -1,0 +1,159 @@
+{% extends 'core/base.html' %}
+
+
+{% block searchbar %}
+
+
+{% endblock %}
+
+{% block titleleftsidemenu %}
+
+
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">عدد نتائج البحث : {{ total_regions }}</label>
+
+
+<div class="search-container">
+    <form method="get" action="">
+        <div class="grid-item input-container">
+            <select name="governorate">
+                <option value="">اختر المحافظة</option>
+                {% for governorate in governorates %}
+                    <option value="{{ governorate.id }}" {% if selected_governorate == governorate.id|stringformat:"s" %}selected{% endif %}>
+                        {{ governorate.name_arabic }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="grid-item input-container">
+            <button type="submit" class="leftsidemenu-button">بحث</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+
+{% block titlecontent %}
+
+{% endblock %}
+
+
+
+
+{% block content %}
+<h2>إحصائيات المناطق</h2>
+<div class="table-container">
+    <table class="creative-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>اسم المحافظة بالعربي</th>
+                <th>اسم المنطقة بالعربي</th>
+                <th>اسم المنطقة بالإنكليزي</th>
+                <th>مدخل المنطقة</th>
+                <th>ملاحظات</th>
+    
+                <th>عرض التفاصيل</th>
+                <th>تحديث</th>
+                <th>حذف</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for region in regions %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ region.governorate.name_arabic }}</td>
+                <td>{{ region.name_arabic }}</td>
+                <td>{{ region.name_english }}</td>
+                <td>{{ region.created_by }}</td>
+                <td>{{ region.description }}</td>
+                
+                <td>
+                    {% if perms.locations.can_view_region_details %}
+                    <a href="{% url 'locations:region_detail' region.slug %}" class="update_button">عرض </a>
+                    {% else %}
+                    ليس لديك صلاحية
+                        {% endif %}
+                </td>
+                
+                <td>
+                    {% if perms.locations.can_update_region %}
+                    <a href="{% url 'locations:update_region' region.slug %}" class="update_button">تحديث</a>
+                    {% else %}
+                    ليس لديك صلاحية
+                        {% endif %}
+                </td>
+                <td>
+                    {% if perms.locations.can_delete_region %}
+                    <a href="{% url 'locations:delete_region' region.slug %}" class="delete_button"  onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه المنطقة؟')">حذف</a>
+                    {% else %}
+                    ليس لديك صلاحية
+                        {% endif %}
+                
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="11">لا توجد مناطق مسجلة حالياً.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+
+{% block pagination %}
+<div class="pagination-container">
+    <div class="pagination-info">
+        <span>عدد العناصر بالصفحة:</span>
+        <form method="get" action="" class="pagination-form">
+            <input type="number" id="results_per_page" name="results_per_page" placeholder="عدد النتائج لكل صفحة" value="{{ results_per_page }}" class="pagination-input">
+        </form>
+    </div>
+    <div class="pagination-controls">
+        {% if regions.has_previous %}
+            <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page=1" class="pagination-button">الأولى</a>
+            <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ regions.previous_page_number }}" class="pagination-button">السابق</a>
+        {% endif %}
+        <span>صفحة {{ regions.number }} من {{ regions.paginator.num_pages }}</span>
+        {% if regions.has_next %}
+            <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ regions.next_page_number }}" class="pagination-button">التالي</a>
+            <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ regions.paginator.num_pages }}" class="pagination-button">الأخيرة</a>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+{% block sidemenu %}
+
+<div class="button-container">
+
+    <a href="{% url 'locations:main_locations_dashboard' %}" class="custom-button">الاماكن</a>
+    {% if perms.locations.can_create_region %}
+    <a href="{% url 'locations:create_region' %}" class="custom-button"> منطقة جديدة</a>
+  {% endif  %}
+   
+    <a href="?governorate={{ request.GET.governorate }}&export=csv" class="custom-button">تصدير إلى CSV</a>
+
+        <a href="{% url 'locations:download_sample_regions_csv' %}" class="custom-button"> نموذج CSV </a>
+
+        {% if perms.locations.can_create_region %}
+        <a href="{% url 'locations:upload_regions_csv' %}" class="custom-button"> رفع CSV </a>
+        {% endif  %}
+  
+   
+        
+
+</div>
+
+
+{% endblock %}
+
+
+

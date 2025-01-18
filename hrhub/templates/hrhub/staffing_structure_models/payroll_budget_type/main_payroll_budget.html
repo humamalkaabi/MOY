@@ -1,0 +1,71 @@
+{% extends 'core/base.html' %}
+
+{% block searchbar %}
+    <!-- يمكنك إضافة شريط البحث هنا إذا كنت بحاجة له -->
+{% endblock %}
+
+{% block titleleftsidemenu %}
+    <!-- يمكن إضافة عنوان هنا إذا كنت بحاجة له -->
+{% endblock %}
+
+{% block leftsidemenu %}
+    <!-- يمكن إضافة قائمة جانبية هنا إذا كنت بحاجة لها -->
+{% endblock %}
+
+{% block titlecontent %}
+    <!-- يمكن إضافة عنوان المحتوى هنا إذا كنت بحاجة له -->
+{% endblock %}
+
+{% block content %}
+    <table class="custom-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>الاسم بالعربية</th>
+                <th>الاسم بالإنجليزية</th>
+                <th>افتراضي</th>
+                <th>تحديث</th>
+                <th>حذف</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for payroll in payroll_budgets %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ payroll.name_in_arabic }}</td>
+                <td>{{ payroll.name_in_english }}</td>
+                <td>{{ payroll.is_default|yesno:"نعم,لا" }}</td>
+                <td>
+                    <a href="{% url 'hrhub:update_payroll_budget'  payroll.slug%}" class="update_button"> تعديل</a>
+                </td> 
+                <td>
+                    <a href="{% url 'hrhub:delete_payroll_budget'  payroll.slug%}" class="delete_button"> حذف</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">لا توجد موازنات مسجلة حالياً.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block titlesidemenu %}
+    <!-- يمكن إضافة عنوان القائمة الجانبية هنا إذا كنت بحاجة له -->
+{% endblock %}
+
+
+{% block sidemenu %}
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'hrhub:main_hrhub' %}" class="custom-button">  الموارد البشرية      </a>
+    <a href="{% url 'hrhub:upload_employee_staff_kind_csv' %}" class="custom-button"> رفع ملف    </a>
+    <a href="{% url 'hrhub:main_staff_structer_type' %}" class="custom-button"> صفحة انواع الملاك     </a>
+    <a href="{% url 'hrhub:add_payroll_budget' %}" class="custom-button">اضافة موازنة</a>
+
+
+    
+</div>
+{% endblock %}

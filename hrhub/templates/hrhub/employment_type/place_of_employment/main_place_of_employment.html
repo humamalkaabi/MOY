@@ -1,0 +1,69 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+قائمة المؤسسات
+{% endblock %}
+
+{% block titlesidemenu %}
+<h2 style="color: #fff;">مرحبا، {{ request.user.get_full_name }}</h2>
+{% endblock %}
+
+{% block sidemenu %}
+{% comment %} <a href="{% url 'personalinfo:main_personalinfo' %}" class="button">صفحة المعلومات الشخصية الأساسية</a><br> {% endcomment %}
+ <a href="{% url 'hrhub:add_place_of_employment' %}" class="button">إضافة مؤسسة جديدة</a><br> 
+{% endblock %}
+
+{% block titlecontent %}
+<h2>قائمة المؤسسات</h2>
+{% endblock %}
+
+{% block content %}
+<div class="table-container">
+    <table class="creative-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>اسم المؤسسة</th>
+                <th>المؤسسة الأعلى</th>
+                <th>الوصف</th>
+                <th>مدخل البيانات</th>
+                <th>تاريخ الإنشاء</th>
+                <th>عرض التفاصيل</th>
+                <th>تحديث البيانات </th>
+                <th>حذف البيانات </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for place in places %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ place.title_in_arabic }}</td>
+                <td>
+                    {% if place.parent %}
+                        {{ place.parent.title_in_arabic }}
+                    {% else %}
+                        لا توجد
+                    {% endif %}
+                </td>
+                <td>{{ place.description|default:"لا يوجد وصف" }}</td>
+                <td>{{ place.created_by}}</td>
+                <td>{{ place.created_at|date:"Y-m-d" }}</td>
+                <td>
+                    <a href="{% url 'hrhub:place_of_employment_detail' place.slug %}">عرض</a> 
+                </td>
+                <td>
+                    <a href="{% url 'hrhub:update_place_of_employment' place.slug %}">تعديل</a> 
+                </td>
+                    <td> 
+                    <a href="{% url 'hrhub:delete_place_of_employment' place.slug %}">حذف</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">لا توجد مؤسسات مسجلة حالياً.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

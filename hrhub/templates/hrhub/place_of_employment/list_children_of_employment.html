@@ -1,0 +1,33 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h2>قائمة الأبناء لـ {{ parent.name_in_arabic }}</h2>
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>عنوان المؤسسة</th>
+            <th>الوصف</th>
+            <th>تفاصيل</th>
+            <th>تحديث</th>
+            <th>حذف</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for place in places_of_employment %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ place.name_in_arabic }}</td>
+            <td>{{ place.description }}</td>
+            <td><a href="{% url 'hrhub:place_of_employment_detail' slug=place.slug %}">عرض التفاصيل</a></td>
+            <td><a href="{% url 'hrhub:update_place_of_employment' slug=place.slug %}">تحديث</a></td>
+            <td><a href="{% url 'hrhub:delete_place_of_employment' slug=place.slug %}" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه البيانات؟')">حذف</a></td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">لا توجد أماكن مسجلة حالياً.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

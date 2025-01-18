@@ -1,0 +1,40 @@
+{% extends 'core/base.html' %}
+
+
+{% block searchbar %}
+
+    
+{% endblock %}
+
+
+
+{% block content %}
+<h2>تحديث  صورة الموظف</h2>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="update_button">تحديث الصورة</button>
+</form>
+
+ 
+
+{% endblock %}
+
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+
+
+{% block sidemenu %}
+
+<div class="button-container">
+
+  <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+</div>
+
+
+{% endblock %}

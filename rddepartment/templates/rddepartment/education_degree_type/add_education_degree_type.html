@@ -1,0 +1,46 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="form-container">
+    <h2 class="form-title">إضافة نوع دراسة  : {{ employee.username }}</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}
+            <small class="help-text">{{ field.help_text }}</small>
+            {% endif %}
+            {% for error in field.errors %}
+            <small class="error-text">{{ error }}</small>
+            {% endfor %}
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn-submit">حفظ</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block sidemenu %}
+<div class="button-container">
+
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'rddepartment:main_rddepartment' %}" class="custom-button">   الشهادات والتطوير     </a>
+    <a href="{% url 'rddepartment:main_education_degree_type' %}" class="custom-button">   انواع الشهادات      </a>
+
+    {% if perms.rddepartment.can_add_education_degree_type %}
+    <a href="{% url 'rddepartment:add_education_degree_type' %}" class="custom-button">  اضافة نوع الشهادة   </a>
+    {% endif %}
+    <a href="{% url 'rddepartment:export_education_degree_type_to_csv' %}" class="custom-button">
+        تصدير  CSV
+    </a>
+
+
+</div>
+{% endblock %}
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

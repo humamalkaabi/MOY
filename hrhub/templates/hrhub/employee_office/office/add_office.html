@@ -1,0 +1,66 @@
+{% extends 'core/base.html' %}
+
+
+{% block title %}
+
+{% endblock %}
+
+{% block leftsidemenu %}
+
+<label class="result-label">
+    موظف الادخال  : {{ request.user }}
+</label>
+{% endblock %}
+
+
+
+{% block titlesidemenu %}
+
+{% endblock %}
+
+{% block sidemenu %}
+
+<h3>  </h3>
+<div class="button-container">
+
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">الصفحة الشخصية   </a>
+   
+
+   
+    <a href="{% url 'hrhub:main_offices' %}" class="custom-button">الوحدات الادارية  </a>
+
+    <a href="{% url 'hrhub:mainemployeeoffice' %}" class="custom-button"> صفحة دوائر الموظفين  </a>
+
+    {% if perms.hrhub.can_add_office %}
+    <a href="{% url 'hrhub:add_office' %}" class="custom-button">  اضافة وحدة ادارية   </a>
+    {% endif %}
+    <a href="{% url 'hrhub:download_offices_csv_template' %}" class="custom-button">  نموذج CSV       </a>
+    {% if perms.hrhub.can_add_office %}
+        <a href="{% url 'hrhub:upload_offices_csv' %}" class="custom-button">  رفع ملف CSV     </a>
+        {% endif %}
+
+
+</div>
+
+
+
+
+
+{% endblock %}
+
+{% block titlecontent %}
+
+{% endblock %} 
+
+{% block content %}
+
+
+<h2>اضافة وحدة ادارية جديدة  </h2>
+
+<form method="post" novalidate>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="update_button">حفظ</button>
+</form>
+
+{% endblock %}

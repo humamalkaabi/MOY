@@ -1,0 +1,45 @@
+{% extends 'core/base.html' %}
+
+
+{% block title %}
+
+{% endblock %}
+
+
+
+{% block titlesidemenu %}
+<h2 style="color: #fff;">مرحبا، {{ user.username }}</h2>
+
+{% endblock %}
+
+
+{% block sidemenu %}
+<br> 
+
+{% endblock %}
+
+
+{% block titlecontent %}
+
+{% endblock %} 
+
+
+{% block content %}
+<div class="container mt-5">
+    
+
+    <!-- رسالة تحذير -->
+    <div class="delete-warning">
+        <p>هل أنت متأكد أنك تريد حذف بيانات الموظف <strong>{{ basic_info.get_full_name }}،  سيتم حذف جميع البيانات المرتبطة به</strong>  ؟</p>
+    </div>
+
+    <!-- نموذج التأكيد للحذف -->
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="delete-btn">نعم، حذف</button>
+        <a href="{% url 'personalinfo:basic_info_detail' slug=basic_info.slug %}" class="cancel-btn">إلغاء</a>
+    </form>
+</div>
+
+
+{% endblock %}

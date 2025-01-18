@@ -1,0 +1,47 @@
+
+{% extends 'core/base.html' %}
+
+
+{% block searchbar %}
+
+    
+{% endblock %}
+
+{% block titleleftsidemenu %}
+
+
+{% endblock %}
+
+{% block leftsidemenu %}
+
+{% endblock %}
+
+
+{% block titlecontent %}
+
+{% endblock %}
+
+
+{% block content %}
+
+<h1>{% if form.instance.pk %}تحديث شعار{% else %}إضافة شعار{% endif %}</h1>
+
+<form method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">حفظ</button>
+</form>
+
+{% endblock %}
+
+
+
+{% block titlesidemenu %}
+
+{% endblock %}
+
+{% block sidemenu %}
+<p> <a href="{% url 'core:view_main_about_us' %}" class="button">  عرض الصفحة  </a> </p>
+
+{% endblock %}
+

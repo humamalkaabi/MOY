@@ -1,0 +1,46 @@
+{% extends 'core/base.html' %}
+
+{% block titlecontent %}تفاصيل المحافظة{% endblock %}
+
+{% block content %}
+<h2>تفاصيل المحافظة: {{ governorate.name_arabic }}</h2>
+
+<p><strong>الاسم بالإنكليزي:</strong> {{ governorate.name_english }}</p>
+<p><strong>الوصف:</strong> {{ governorate.description }}</p>
+<p><strong>تم إدخال البيانات بواسطة:</strong> {{ governorate.created_by.get_full_name }}</p>
+<p><strong>تاريخ الإنشاء:</strong> {{ governorate.created_at }}</p>
+<p><strong>تاريخ التحديث:</strong> {{ governorate.updated_at }}</p>
+
+
+<a href="{% url 'locations:update_governorate' governorate.slug %}" class="update_button">تحديث</a>
+<a href="{% url 'locations:delete_governorate' governorate.slug %}" class="delete_button" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه المحافظة؟')">حذف</a>
+
+{% endblock %}
+
+
+
+{% block sidemenu %}
+
+<div class="button-container">
+    
+
+<a href="{% url 'locations:main_locations_dashboard' %}" class="custom-button">الاماكن</a>
+<a href="{% url 'locations:governorate_statistics' %}" class="custom-button">المحافظات</a>
+<a href="{% url 'locations:governorate_create' %}" class="custom-button">ادخال محافظة جديدة</a>
+<a href="{% url 'locations:export_governorates_csv' %}" class="custom-button">تصدير CSV</a>
+<a href="{% url 'locations:download_sample_governorates_csv' %}" class="custom-button"> نموذج CSV</a>
+<a href="{% url 'locations:download_all_governorates_csv' %}" class="custom-button">   جميع المحافظات </a>
+<a href="{% url 'locations:upload_governorates_csv' %}" class="custom-button"> رفع CSV</a>
+
+
+
+
+</div>
+
+
+{% endblock %}
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

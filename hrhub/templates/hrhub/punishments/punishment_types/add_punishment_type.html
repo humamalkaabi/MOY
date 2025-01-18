@@ -1,0 +1,25 @@
+{% extends 'core/base.html' %}
+
+{% block title %}تحديث نوع العقوبة{% endblock %}
+
+{% block titlesidemenu %}
+<h2 style="color: #fff;">تحديث نوع العقوبة</h2>
+{% endblock %}
+
+{% block sidemenu %}
+<a href="{% url 'hrhub:main_punishment_types' %}" class="button">العودة إلى قائمة أنواع العقوبات</a><br>
+{% endblock %}
+
+{% block content %}
+
+<div class="form-container">
+    <h2>اضافة نوع العقوبة: {{ punishment_type.punishment_name }}</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" class="button primary-button">تحديث</button>
+    </form>
+</div>
+
+{% endblock %}

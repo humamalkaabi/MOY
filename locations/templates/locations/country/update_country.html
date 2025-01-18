@@ -1,0 +1,36 @@
+{% extends 'core/base.html' %}
+
+{% block titlecontent %} {% endblock %}
+
+{% block content %}
+<h2>تحديث الدولة: {{ country.name_arabic }}</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="update_button">حفظ التغييرات</button>
+</form>
+
+
+
+{% endblock %}
+
+
+{% block sidemenu %}
+
+<div class="button-container">
+
+<a href="{% url 'locations:main_locations_dashboard' %}" class="custom-button">الاماكن</a>
+<a href="{% url 'locations:country_statistics' %}" class="custom-button">صفحة الدول</a>
+
+
+
+
+</div>
+
+
+{% endblock %}
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}

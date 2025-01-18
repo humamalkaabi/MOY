@@ -1,0 +1,183 @@
+{% extends 'core/base.html' %}
+
+{% block title %}الصفحة الرئيسية للجامعات العراقية     {% endblock %}
+
+{% block titlesidemenu %}
+{% endblock %}
+
+{% block searchbar %}
+<form method="get" action="">
+    
+    <div class="main_searchbar">
+        <div class="grid-container">
+            <!-- حقل نوع الجامعة -->
+            <div class="grid-item input-container">
+                
+                <select name="university_type" id="university_type">
+                    <option value="">-- اختر نوع الجامعة --</option>
+                    <option value="governmental" {% if request.GET.university_type == "governmental" %}selected{% endif %}>حكومية</option>
+                    <option value="private" {% if request.GET.university_type == "private" %}selected{% endif %}>أهلية</option>
+                </select>
+            </div>
+
+            <div class="grid-item input-container">
+                <select name="governorate" id="governorate">
+                    <option value="">-- اختر المحافظة --</option>
+                    {% for governorate in governorates %}
+                        <option value="{{ governorate.id }}" {% if request.GET.governorate == governorate.id|stringformat:"s" %}selected{% endif %}>{{ governorate.name_arabic }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- حقل البحث باسم الجامعة بالعربية -->
+            <div class="grid-item input-container">
+                <input 
+                    type="text" 
+                    name="name_in_arabic" 
+                    id="name_in_arabic" 
+                    placeholder="اسم الجامعة بالعربية"
+                    value="{{ searched_name|default:'' }}">
+            </div>
+
+            <!-- زر البحث -->
+            <div class="grid-item input-container">
+                <button type="submit">بحث</button>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+
+{% block content %}
+
+
+<h2>قائمة الجامعات العراقية  المتوفرة بالنظام</h2>
+
+
+<table class="custom-table">
+
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>اسم الجامعة بالانكليزية </th>
+            <th>اسم الجامعة بالعربية </th>
+            <th>  نوع الجامعة </th>
+    
+            <th>محافظة الجامعة </th>
+            <th>تفاصيل البيانات </th>
+          
+           
+        </tr>
+    </thead>
+    <tbody>
+        {% for iraqiuniversity in universities %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ iraqiuniversity.name_in_english }}</td>
+            <td>{{ iraqiuniversity.name_in_arabic }}</td>
+         
+           
+            <td>
+                {% if iraqiuniversity.university_type == 'governmental' %}
+                    حكومية
+                {% elif iraqiuniversity.university_type == 'private' %}
+                    أهلية
+                {% endif %}
+            </td>
+
+            <td>{{ iraqiuniversity.governorate }}</td>
+           
+
+
+             <td> 
+                <a href="{% url 'rddepartment:iraqiuniversity_detail' slug=iraqiuniversity.slug %}" class="update_button">  التفاصيل </a>  
+            
+            </td> 
+
+          
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="10">لا توجد بيانات مسجلة حالياً.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}
+
+
+
+
+
+{% block sidemenu %}
+
+
+
+<div class="button-container">
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم     </a>
+    <a href="{% url 'rddepartment:main_rddepartment' %}" class="custom-button">   الشهادات والتطوير     </a>
+
+    {% if perms.rddepartment.can_add_iraqi_university %}
+    <a href="{% url 'rddepartment:add_iraqiuniversity' %}" class="custom-button">  اضافة  جامعة عراقية    </a>
+    {% else %}
+    ليس  لديك صلاحية ادخال جامعة 
+    {% endif %}
+    <a href="?{% for key, value in request.GET.items %}{{ key }}={{ value }}&{% endfor %}export_csv=true" class="custom-button">تصدير إلى CSV</a>
+
+    <a href="{% url 'rddepartment:download_sample_iraqi_university_csv' %}" class="custom-button">   نموذج CSV      </a>
+    
+    {% if perms.rddepartment.can_add_iraqi_university %}
+    <a href="{% url 'rddepartment:upload_iraqi_university_csv' %}" class="custom-button">  رفع ملف CSV       </a>
+    {% else %}
+    ليس  لديك صلاحية ادخال جامعة 
+    {% endif %}
+
+
+    
+</div>
+
+
+
+{% endblock %}
+
+
+
+{% block pagination %}
+<div class="pagination-container">
+    <div class="pagination-info">
+        <span>عدد العناصر بالصفحة:</span>
+        <form method="get" action="" class="pagination-form">
+            <input type="number" id="results_per_page" name="results_per_page" placeholder="عدد النتائج لكل صفحة" value="{{ request.GET.results_per_page|default:10 }}" class="pagination-input">
+        </form>
+    </div>
+
+
+
+    <div class="pagination-controls">
+        {% if universities.has_previous %}
+            <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page=1" class="pagination-button">الأولى</a>
+            <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ universities.previous_page_number }}" class="pagination-button">السابق</a>
+        {% endif %}
+        <span>صفحة {{ universities.number }} من {{ universities.paginator.num_pages }}</span>
+        {% if universities.has_next %}
+            <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ universities.next_page_number }}" class="pagination-button">التالي</a>
+            <a href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ universities.paginator.num_pages }}" class="pagination-button">الأخيرة</a>
+        {% endif %}
+    </div>
+    
+    
+    
+    
+</div>
+{% endblock %}
+
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">عدد نتائج البحث : {{ results_count }}</label>
+{% endblock %}

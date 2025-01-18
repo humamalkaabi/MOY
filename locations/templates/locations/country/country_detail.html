@@ -1,0 +1,40 @@
+{% extends 'core/base.html' %}
+
+{% block titlecontent %} {% endblock %}
+
+{% block content %}
+<h2>تفاصيل الدولة: {{ country.name_arabic }}</h2>
+
+<p>اسم الدولة بالإنكليزي: {{ country.name_english }}</p>
+<p>اسم القارة: {{ country.continent.name_arabic }}</p>
+<p>الوصف: {{ country.description }}</p>
+<p>مدخل البيانات: {{ country.created_by.get_full_name }}</p>
+<p>تاريخ إنشاء البيانات: {{ country.created_at }}</p>
+<p>تاريخ تحديث البيانات: {{ country.updated_at }}</p>
+
+<a href="{% url 'locations:update_country' country.slug %}" class="update_button">تحديث الدولة</a>
+<a href="{% url 'locations:delete_country' country.slug %}" class="delete_button" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه الدولة')">حذف</a>
+
+
+{% endblock %}
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+
+
+{% block sidemenu %}
+
+<div class="button-container">
+
+<a href="{% url 'locations:main_locations_dashboard' %}" class="custom-button">الاماكن</a>
+<a href="{% url 'locations:country_statistics' %}" class="custom-button">صفحة الدول</a>
+
+
+
+
+</div>
+
+
+{% endblock %}

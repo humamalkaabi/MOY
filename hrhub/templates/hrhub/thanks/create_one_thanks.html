@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+
+{% block title %}إضافة كتاب شكر{% endblock %}
+
+{% block content %}
+<h2>إضافة كتاب شكر لموظف: {{ employee.get_full_name }}</h2>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    {{ form.as_p }}
+    
+    <button type="submit">إضافة كتاب شكر</button>
+</form>
+
+{% endblock %}
+
+
+{% block sidemenu %}
+
+
+<p><a href="{% url 'accounts:view_profile' %}" class="button">الصفحة الشخصية   </a></p>
+<p><a href="{% url 'hrhub:main_thanks_type' %}" class="button">صفحة انواع كتب الشكر       </a></p>
+
+<p><a href="{% url 'hrhub:main_thanks' %}" class="button">صفحة  كتب شكر         </a></p>
+
+{% endblock %}

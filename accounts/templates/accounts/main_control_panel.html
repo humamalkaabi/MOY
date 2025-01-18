@@ -1,0 +1,114 @@
+{% extends 'core/base.html' %}
+
+
+
+{% block content %}
+<div class="cards-container">
+
+
+    {% if user.is_superuser %}
+
+
+    <div class="card">
+        <h3 class="card-title">صفحة الحسابات</h3>
+        <p class="card-description">يهتم هذا الجزء بإعداد الحسابات للموظفين من إنشاء وتغيير باسوورد وصلاحيات.</p>
+        <a href="{% url 'accounts:main_accounts_page' %}" class="button">اضغط هنا  </a>
+    </div>
+    {% endif %}
+
+    <div class="card">
+        <h3 class="card-title">البيانات الشخصية</h3>
+        <p class="card-description">يتناول هذا الجزء البيانات الشخصية للموظفين من بيانات أساسية وبيانات إضافية ووثائق شخصية.</p>
+        <a href="{% url 'personalinfo:main_personalinfo' %}" class="button">اضغط هنا  </a>
+    </div>
+
+    <div class="card">
+        <h3 class="card-title">صفحة الشهادات والتطوير</h3>
+        <p class="card-description">يهتم هذا الجزء بجانب الشهادات الأكاديمية والأمور التطويرية.</p>
+        <a href="{% url 'rddepartment:main_rddepartment' %}" class="button">اضغط هنا  </a>
+    </div>
+
+    
+    <div class="card">
+        <h3 class="card-title">صفحة المعلومات الجغرافية </h3>
+        <p class="card-description">يهتم هذا الجزء بجانب المعلومات الجغرافية من قارات ودول و محافظات ومناطق   .</p>
+        <a href="{% url 'locations:main_locations_dashboard' %}" class="button">اضغط هنا  </a>
+    </div>
+
+
+    <div class="card">
+        <h3 class="card-title">صفحة الموارد البشرية  </h3>
+        <p class="card-description">يهتم هذا الجزء بجانب المعلومات الجغرافية من قارات ودول و محافظات ومناطق   .</p>
+        <a href="{% url 'hrhub:main_hrhub' %}" class="button">اضغط هنا  </a>
+    </div>
+
+
+    <div class="card">
+       
+        <div class="card-content">
+            <h3 class="card-title">صفحة الشعار والاتصال بنا    </h3>
+            <p class="card-description">يهتم هذا الجزء بالمعلومات الخاصة بصفحة للاتصال بنا وشعار الموقع               .</p>
+            <a href="{% url 'core:main_about_us_create_or_update' %}" class="button"> اضغط هنا </a>
+        </div>
+    </div>
+    <!-- أضف المزيد من الكروت هنا -->
+
+    {% comment %} <div class="card">
+        <h3 class="card-title">خدمة الطلبات الالكترونية </h3>
+        <p class="card-description"> يهتم هذا الجزء في الطلبات الالكترونية للموظفين والاجابة عليها  </p>
+        <a href="{% url 'requests_app:mainrequests' %}" class="button">اضغط هنا  </a>
+    </div>
+</div> {% endcomment %}
+
+
+
+{% endblock %}
+
+
+
+{% block titlesidemenu %}
+
+{% endblock %}
+
+{% block sidemenu %}
+
+
+<h3>  </h3>
+
+<div class="button-container">
+   
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'accounts:main_control_panel' %}" class="custom-button">  لوحة التحكم الادارية     </a>
+
+
+   
+    <a href="{% url 'locations:export_governorates_csv' %}" class="custom-button">تصدير اسماء المحافظات </a>
+    <a href="{% url 'locations:export_all_countries_csv' %}" class="custom-button">تصدير اسماء الدول </a>
+
+    <a href="{% url 'rddepartment:export_iraqi_university_to_csv' %}" class="custom-button">تصدير اسماء الجامعات العراقية </a>
+
+    <a href="{% url 'rddepartment:export_education_degree_type_to_csv' %}" class="custom-button">تصدير اسماء الشهادات الاكاديمية </a>
+
+
+    
+
+
+
+    
+
+
+
+</div>
+
+
+
+
+
+{% endblock %}
+
+
+{% block leftsidemenu %}
+<label class="result-label">
+    العدد الكلي للموظفين: {{ total_employees_count }}
+</label>
+{% endblock %}

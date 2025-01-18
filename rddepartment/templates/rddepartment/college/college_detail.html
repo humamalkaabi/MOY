@@ -1,0 +1,49 @@
+{% extends 'core/base.html' %}
+
+{% block title %}  تفاصيل {{ degree_type.name_in_arabic }}      {% endblock %}
+
+{% block titlesidemenu %}
+{% endblock %}
+
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">   {{ request.user }}</label>
+{% endblock %}
+
+
+
+{% block sidemenu %}
+
+
+
+<div class="button-container">
+   <a href="{% url 'rddepartment:main_college' %}" class="custom-button"> صفحة الكليات</a>
+
+
+</div>
+
+
+
+{% endblock %}
+
+{% block content %}
+<h1>اسم الكلية: {{ college.arabic_name }}</h1>
+<p><strong>الاسم بالإنجليزية:</strong> {{ college.english_name }}</p>
+
+
+<p><strong>تم الإنشاء بواسطة:</strong> {{ college.created_by }}</p>
+<p><strong>تاريخ الإنشاء:</strong> {{ college.created_at|date:"d/m/Y H:i" }}</p>
+<p><strong>آخر تحديث:</strong> {{ college.updated_at|date:"d/m/Y H:i" }}</p>
+
+<a href="{% url 'rddepartment:update_college' slug=college.slug %}"  class="update_button"> تحديث  </a>   
+
+
+
+<a href="{% url 'rddepartment:delete_college' college.slug %}" 
+   class="delete_button" 
+   onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه الجامعة؟')">
+   حذف
+</a>  
+{% endblock %}

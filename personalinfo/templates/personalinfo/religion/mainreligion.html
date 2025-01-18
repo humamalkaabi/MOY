@@ -1,0 +1,98 @@
+{% extends 'core/base.html' %}
+
+
+{% block searchbar %}
+
+    
+{% endblock %}
+
+{% block titleleftsidemenu %}
+
+
+{% endblock %}
+
+
+
+{% block leftsidemenu %}
+<label class="result-label">عدد الديانات  : {{ religion_count }}</label>
+
+{% endblock %}
+
+
+{% block titlecontent %}
+
+{% endblock %}
+
+
+{% block content %}
+
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>اسم الديانة</th>
+            <th>مدخل الديانة</th>
+            <th>تفاصيل الديانة</th>
+            <th>تحديث الديانة</th>
+            <th>حذف الديانة</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for religion in religions %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ religion.name_in_arabic }}</td>
+            <td>{{ religion.created_by.basic_info }}</td>
+            <td> 
+                <a href="{% url 'personalinfo:religion_detail' slug=religion.slug %}" class="details-button">عرض </a>  
+            </td>
+            <td> 
+                {% if perms.personalinfo.can_update_religion %}
+                <a href="{% url 'personalinfo:update_religion' religion.slug %}"  class="update_button" >تحديث</a>
+                {%  else %}
+                لا تمتلك الصلاحية
+                {% endif %}
+            </td>
+            <td> 
+                {% if perms.personalinfo.can_delete_religion %}
+                <a href="{% url 'personalinfo:delete_religion' religion.slug %}" class="delete_button" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه الديانة؟')">حذف</a>
+                {%  else %}
+                لا تمتلك الصلاحية
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">لا توجد ديانات مسجلة حالياً.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
+
+
+
+{% block sidemenu %}
+
+
+<h3>  </h3>
+
+<div class="button-container">
+
+    <a href="{% url 'accounts:view_profile' %}" class="custom-button">  الصفحة الشخصية    </a>
+    <a href="{% url 'personalinfo:main_personalinfo' %}" class="custom-button"> ادارة المعلومات الشخصية     </a>
+
+    {% if perms.personalinfo.can_create_religion %}
+   
+    <a href="{% url 'personalinfo:add_religion' %}" class="custom-button">  اضافة ديانة   </a>
+    {%  else %}
+                لا تمتلك الصلاحية
+                {% endif %}
+
+    <a href="{% url 'personalinfo:export_religions_csv' %}" class="custom-button">  تصدير CSV     </a>
+                
+
+</div>
+
+{% endblock %}
