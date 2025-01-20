@@ -420,7 +420,8 @@
 {% block leftsidemenu %}
 <div class="leftsidemenu-container">
 
-    {% if basic_info and basic_info.avatar %}
+    {% if basic_info %}
+        {% if  basic_info.avatar%}
         <div class="avatar-wrapper">
             <img src="{{ basic_info.avatar.url }}" alt="{{ basic_info.get_full_name }}'s avatar" class="avatar-image">
         </div>
@@ -428,12 +429,14 @@
         {% if perms.personalinfo.can_update_avatar %}
         <a href="{% url 'personalinfo:update_avatar' slug=basic_info.slug %}" class="update_button">تحديث الصورة</a>
         {% endif %}
+      
     {% else %}
         <p class="no-avatar">لا توجد صورة 
             {% if perms.personalinfo.can_update_avatar %}
-            <a href="{% url 'personalinfo:update_avatar' slug=basic_info.slug %}" class="update_button">إضافة الصورة</a>
+            <a href="{% url 'personalinfo:update_avatar' slug=employebasic_info.slug %}" class="update_button">إضافة الصورة</a>
             {% endif %}
         </p>
+        {% endif %}
     {% endif %}
 </div>
 
